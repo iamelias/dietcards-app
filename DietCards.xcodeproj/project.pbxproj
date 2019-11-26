@@ -3,27 +3,43 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46320A4CC0AD219FBCB5715B /* Pods_DietCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDC85A4644E264929219FE6B /* Pods_DietCards.framework */; };
+		6441BC62238B3C0B0066B5DE /* AddFoodItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6441BC61238B3C0B0066B5DE /* AddFoodItemController.swift */; };
+		644A651D237F393700610568 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644A651C237F393700610568 /* HomeCollectionViewCell.swift */; };
+		644A651F237F5E9700610568 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644A651E237F5E9700610568 /* HomeViewController.swift */; };
+		646A68E92380FEDA00AF1F5E /* CardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646A68E82380FEDA00AF1F5E /* CardDetailViewController.swift */; };
+		646D1D4F238C66F200374FA4 /* NutritionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646D1D4E238C66F200374FA4 /* NutritionData.swift */; };
+		6497A68F2381E15E00BE58F0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6497A68E2381E15E00BE58F0 /* GoogleService-Info.plist */; };
 		64C02903237E71E30052FD1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C02902237E71E30052FD1D /* AppDelegate.swift */; };
-		64C02905237E71E30052FD1D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C02904237E71E30052FD1D /* ViewController.swift */; };
 		64C02908237E71E30052FD1D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64C02906237E71E30052FD1D /* Main.storyboard */; };
 		64C0290B237E71E30052FD1D /* DietCards.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 64C02909237E71E30052FD1D /* DietCards.xcdatamodeld */; };
 		64C0290D237E71E50052FD1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64C0290C237E71E50052FD1D /* Assets.xcassets */; };
 		64C02910237E71E50052FD1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64C0290E237E71E50052FD1D /* LaunchScreen.storyboard */; };
+		64DD73EB238768E900E1D042 /* FoodClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD73EA238768E900E1D042 /* FoodClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B1AC1C1A078EFD69CEA7819 /* Pods-DietCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DietCards.release.xcconfig"; path = "Target Support Files/Pods-DietCards/Pods-DietCards.release.xcconfig"; sourceTree = "<group>"; };
+		4C405BB9908E46861C25E76B /* Pods-DietCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DietCards.debug.xcconfig"; path = "Target Support Files/Pods-DietCards/Pods-DietCards.debug.xcconfig"; sourceTree = "<group>"; };
+		6441BC61238B3C0B0066B5DE /* AddFoodItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodItemController.swift; sourceTree = "<group>"; };
+		644A651C237F393700610568 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
+		644A651E237F5E9700610568 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		646A68E82380FEDA00AF1F5E /* CardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailViewController.swift; sourceTree = "<group>"; };
+		646D1D4E238C66F200374FA4 /* NutritionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionData.swift; sourceTree = "<group>"; };
+		6497A68E2381E15E00BE58F0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		64C028FF237E71E30052FD1D /* DietCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DietCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64C02902237E71E30052FD1D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		64C02904237E71E30052FD1D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		64C02907237E71E30052FD1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		64C0290A237E71E30052FD1D /* DietCards.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DietCards.xcdatamodel; sourceTree = "<group>"; };
 		64C0290C237E71E50052FD1D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		64C0290F237E71E50052FD1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		64C02911237E71E50052FD1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		64DD73EA238768E900E1D042 /* FoodClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodClient.swift; sourceTree = "<group>"; };
+		BDC85A4644E264929219FE6B /* Pods_DietCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DietCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +47,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46320A4CC0AD219FBCB5715B /* Pods_DietCards.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		354B047021E5067D27BAFE78 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BDC85A4644E264929219FE6B /* Pods_DietCards.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		64C028F6237E71E30052FD1D = {
 			isa = PBXGroup;
 			children = (
 				64C02901237E71E30052FD1D /* DietCards */,
 				64C02900237E71E30052FD1D /* Products */,
+				DD0174F4E0CD9B4B01C3AF2F /* Pods */,
+				354B047021E5067D27BAFE78 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,14 +84,29 @@
 			isa = PBXGroup;
 			children = (
 				64C02902237E71E30052FD1D /* AppDelegate.swift */,
-				64C02904237E71E30052FD1D /* ViewController.swift */,
 				64C02906237E71E30052FD1D /* Main.storyboard */,
 				64C0290C237E71E50052FD1D /* Assets.xcassets */,
 				64C0290E237E71E50052FD1D /* LaunchScreen.storyboard */,
 				64C02911237E71E50052FD1D /* Info.plist */,
 				64C02909237E71E30052FD1D /* DietCards.xcdatamodeld */,
+				644A651C237F393700610568 /* HomeCollectionViewCell.swift */,
+				644A651E237F5E9700610568 /* HomeViewController.swift */,
+				646A68E82380FEDA00AF1F5E /* CardDetailViewController.swift */,
+				6497A68E2381E15E00BE58F0 /* GoogleService-Info.plist */,
+				64DD73EA238768E900E1D042 /* FoodClient.swift */,
+				6441BC61238B3C0B0066B5DE /* AddFoodItemController.swift */,
+				646D1D4E238C66F200374FA4 /* NutritionData.swift */,
 			);
 			path = DietCards;
+			sourceTree = "<group>";
+		};
+		DD0174F4E0CD9B4B01C3AF2F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4C405BB9908E46861C25E76B /* Pods-DietCards.debug.xcconfig */,
+				3B1AC1C1A078EFD69CEA7819 /* Pods-DietCards.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +116,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 64C02914237E71E50052FD1D /* Build configuration list for PBXNativeTarget "DietCards" */;
 			buildPhases = (
+				81716FFA56FB8DAEE1CCFE1B /* [CP] Check Pods Manifest.lock */,
 				64C028FB237E71E30052FD1D /* Sources */,
 				64C028FC237E71E30052FD1D /* Frameworks */,
 				64C028FD237E71E30052FD1D /* Resources */,
+				75C4065055F3074B4B055F5C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -126,6 +170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				64C02910237E71E50052FD1D /* LaunchScreen.storyboard in Resources */,
+				6497A68F2381E15E00BE58F0 /* GoogleService-Info.plist in Resources */,
 				64C0290D237E71E50052FD1D /* Assets.xcassets in Resources */,
 				64C02908237E71E30052FD1D /* Main.storyboard in Resources */,
 			);
@@ -133,14 +178,61 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		75C4065055F3074B4B055F5C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DietCards/Pods-DietCards-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DietCards/Pods-DietCards-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DietCards/Pods-DietCards-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		81716FFA56FB8DAEE1CCFE1B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DietCards-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		64C028FB237E71E30052FD1D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6441BC62238B3C0B0066B5DE /* AddFoodItemController.swift in Sources */,
+				646A68E92380FEDA00AF1F5E /* CardDetailViewController.swift in Sources */,
 				64C0290B237E71E30052FD1D /* DietCards.xcdatamodeld in Sources */,
-				64C02905237E71E30052FD1D /* ViewController.swift in Sources */,
+				64DD73EB238768E900E1D042 /* FoodClient.swift in Sources */,
+				646D1D4F238C66F200374FA4 /* NutritionData.swift in Sources */,
 				64C02903237E71E30052FD1D /* AppDelegate.swift in Sources */,
+				644A651D237F393700610568 /* HomeCollectionViewCell.swift in Sources */,
+				644A651F237F5E9700610568 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +376,7 @@
 		};
 		64C02915237E71E50052FD1D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C405BB9908E46861C25E76B /* Pods-DietCards.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -302,6 +395,7 @@
 		};
 		64C02916237E71E50052FD1D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3B1AC1C1A078EFD69CEA7819 /* Pods-DietCards.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
