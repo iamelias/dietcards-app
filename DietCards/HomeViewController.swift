@@ -13,6 +13,17 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
     
+    enum Days: String {
+        case Monday
+        case Tuesday
+        case Wednesday
+        case Thursday
+        case Friday
+        case Saturday
+        case Sunday
+    }
+    
+    
     static let daysOfWeek: [String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     
     override func viewDidLoad() {
@@ -26,10 +37,12 @@ class HomeViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        print("Home View Will Appear Called")
+    }
+    
     @IBAction func dayButtonTapped(_ sender: Any) {
-        
-        FoodClient.getFood()
-        
+                
         collectionView.contentOffset = CGPoint(x: 50.0, y: 0.0)
         let button = sender as! UIButton
         print("Button: \(button.tag) was pressed")
@@ -47,8 +60,9 @@ class HomeViewController: UIViewController {
             collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
         }
     }
-    
 }
+
+//MARK: * Collection View Code *
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     

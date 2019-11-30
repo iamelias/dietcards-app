@@ -9,15 +9,37 @@
 import Foundation
 import UIKit
 
-class AddFoodItemController: UIViewController {
+protocol GetFoodDelegate {
+   // func didGetFood(foodName: String, foodCalories: Double)
+    func didGetFoodData(food: NutritionData)
+    
+}
+
+class AddFoodItemController: UIViewController{
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var foodText: UITextField!
+    @IBOutlet weak var mealText: UITextField! //either breakfast, lunch, dinner snacks
+    
+    var getFoodDelegate: GetFoodDelegate!
+    let pickerMeals: [String] = ["Breakfast", "Lunch", "Dinner", "Snack"]
+    var selectedMeal: String?
+    
     
     override func viewDidLoad() {
-
+        super.viewDidLoad()
+        foodText.delegate = self
         
+        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(AddFoodItemController.action)) //when view is tapped picker/keyboard is dismissed
+        
+        view.addGestureRecognizer(tapGesture)
+        
+        setUpPickerView()
+        makePickerToolbar()
     }
     
-    func viewWillAppear() {
+    override func viewWillAppear(_ animated: Bool) {
+        
+        print("AddFood view will appear called")
         
     }
     
@@ -25,16 +47,94 @@ class AddFoodItemController: UIViewController {
         
     }
     
+    @IBAction func cancelTapped(_ sender: Any) {
+        action() //dismisses keyboard/picker before returning to previous controller.
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
     @IBAction func findFoodTapped(_ sender: Any) { //when find food is tapped
         //Network call to retrieve Food name and coressponding nutrition
         //Add to persisted etc.
         //dismiss back to the tableView controller
-        
-        
-//        FoodClient.getFood() //calling nutrionix api
-        
-        dismiss(animated: true)
     
+        FoodClient.getFood(foodID: self.foodText.text ?? "", completion: self.getFoodResponse(success: foodID: error:)) //calling nutrionix api
+        
+        
+        dismiss(animated: true, completion: nil)
+    
+    }
+    
+    func getFoodResponse(success: Bool, foodID: NutritionData, error: Error?) {
+        
+        if success {
+            
+            print("&&&&&&&&&&&&&&&&&&&&")
+            print("FoodName: \(foodID.foodName)")
+            print("Nutrition: \(foodID.nutrition)")
+            print("&&&&&&&&&&&&&&&&&&&&")
+            
+            
+           // getFoodDelegate.didGetFood(foodName: foodID.foodName, foodCalories: foodID.nutrition)
+            getFoodDelegate.didGetFoodData(food: foodID)
+
+        }
+        else {
+            
+        }
+        
+        return
+    }
+    
+    func setUpPickerView() {
+        let myPicker = UIPickerView() //creating UIPicker
+        myPicker.delegate = self
+        mealText.inputView = myPicker //showing UIPicker
+    }
+    
+    func makePickerToolbar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        let button = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.action))
+        toolBar.setItems([button], animated: true)
+        toolBar.isUserInteractionEnabled = true
+        mealText.inputAccessoryView = toolBar
+    }
+    @objc func action() {
+        view.endEditing(true)
+    }
+}
+
+//MARK: *UITextField*
+
+extension AddFoodItemController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        foodText.resignFirstResponder()
+        mealText.resignFirstResponder()
+        return true
+    }
+}
+
+//MARK: *UIPickerView*
+
+extension AddFoodItemController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    
+        return pickerMeals.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerMeals[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedMeal = pickerMeals[row] //selecting either breakfast, lunch, dinner, snacks
+        mealText.text = selectedMeal
     }
     
     
