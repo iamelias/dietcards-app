@@ -6,12 +6,24 @@
 //  Copyright © 2019 Elias Hall. All rights reserved.
 //
 
+// Stack: HomeViewController -> CardDetailController -> AddFoodController
+
 import Foundation
 import UIKit
 
 class CardDetailViewController: UIViewController {
+
+    var retrievedFood: NutritionData?
+    var foodsArray: [NutritionData] = [] //Stores food items
     
    // let animalsArray: [String] = ["Cat", "Dog", "Giraffe", "Camel", "Turtle", "Elephant", "Rhino", "Lion"]
+    
+    enum MealTypes: String {
+        case breakfast
+        case lunch
+        case dinner
+        case snack
+    }
   
     var breakfast: [String] = ["Egg", "Sausage", "Hashbrowns", "Toast", "Orange Juice"]
     var lunch: [String] = ["Hamburger", "Turkey Sandwich", "Orange Chicken", "Pad Thai"]
@@ -24,15 +36,37 @@ class CardDetailViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-                
+        
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isHidden = true
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none //removes lines in between cells
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+//        print("Food Name: \(newFoodName)")
+//        print("Food Calories: \(newFoodCalories)")
+        
+        print("Food Name: \(retrievedFood?.foodName ?? "") ") //
+        print("Calories: \(retrievedFood?.nutrition ?? 0.0)")
+        print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+
+    }
+    
     @IBAction func cancelButton(_ sender: Any) {
-        dismiss(animated: true)
+        dismiss(animated: true, completion: nil)
+    }
+    @IBAction func addFoodTapped(_ sender: Any) {
+        
+        let addFoodVC = storyboard?.instantiateViewController(withIdentifier: "AddFoodItemController") as! AddFoodItemController
+        
+        addFoodVC.getFoodDelegate = self
+        
+      //  addFoodVC.modalPresentationStyle = .fullScreen
+        
+        present(addFoodVC, animated: true, completion: nil )
+        
     }
     
 }
@@ -74,6 +108,20 @@ extension CardDetailViewController: UITableViewDataSource, UITableViewDelegate {
         cell.textLabel!.text = breakfast[indexPath.row]
         return cell
     }
+}
+
+extension CardDetailViewController: GetFoodDelegate {
+    func didGetFoodData(food: NutritionData) {
+        self.retrievedFood = food
+        self.foodsArray.append(retrievedFood!) //storing food item in array.
+    }
+    
+//    func didGetFoodData(foodName: String, foodCalories: Double) {
+//
+//        self.newFoodName = foodName
+//        self.newFoodCalories = foodCalories
+//
+//    }
 }
 
 

@@ -11,7 +11,7 @@ import Alamofire
 
 class FoodClient {
     
-    class func getFood() {
+    class func getFood(foodID: String, completion: @escaping (Bool, NutritionData, Error?) -> Void) { //add completion handler to return error
         
         //Instant Search API url
         //        let urlString: String = "https://trackapi.nutritionix.com/v2/search/instant?query=apple"
@@ -29,10 +29,8 @@ class FoodClient {
             "x-remote-user-id": "0"
         ]
         
-        let parameters = ["query": "orange"]
-        
-        
-        
+        let parameters = ["query": foodID] //foodID is user inputted food item
+
         //Nutrition API Config
         AF.request(url!, method: .post, parameters: parameters, encoder: URLEncodedFormParameterEncoder(destination: .httpBody), headers: headers).validate().responseJSON { (response) in
          //   debugPrint(response) printing full json response
@@ -42,9 +40,9 @@ class FoodClient {
             switch response.result {
             case let .success(value):
                 
-                if let foods = value as? [String: Any] {
+                if let foods = value as? [String: Any] { //format of foods
 
-                    data.foodData = foods["foods"] as! Array //value of food key
+                    data.foodData = foods["foods"] as! Array // assigning value of food key to foodData
                     let newfoodData = data.foodData.first as! [String: Any] //accessing value array
                     data.foodName = newfoodData["food_name"] as! String //calling food name key
                     data.nutrition = newfoodData["nf_calories"] as! Double //calling calorie key
@@ -53,10 +51,18 @@ class FoodClient {
                     print("FoodName: \(data.foodName)")
                     print("Nutrition: \(data.nutrition)")
                     print("*****************")
+                    
+                    DispatchQueue.main.async {
+                    completion(true, data, nil) //returnining foodName and nutrition to calling controller
+                    //return data completion handler
+                    }
                 }
 
             case .failure(_):
-                print("Error")
+                print("Error 1")
+                DispatchQueue.main.async {
+                    completion(false, data, nil)
+                }
             }
             
         }
