@@ -21,21 +21,20 @@ class AddFoodItemController: UIViewController{
     @IBOutlet weak var mealText: UITextField! //either breakfast, lunch, dinner snacks
     
     var getFoodDelegate: GetFoodDelegate!
-    let pickerMeals: [String] = ["Breakfast", "Lunch", "Dinner", "Snacks"]
+    let pickerMeals: [String] = ["Breakfast", "Lunch", "Dinner", "Snack"]
     var selectedMeal: String?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         foodText.delegate = self
-        let foodTextPadding = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 5.0))
-        foodText.leftView = foodTextPadding
-        foodText.leftViewMode = .always
-        let myPicker = UIPickerView() //creating UIPicker
-        myPicker.delegate = self
-        mealText.inputView = myPicker //showing UIPicker
-        makePickerToolbar()
         
+        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(AddFoodItemController.action)) //when view is tapped picker/keyboard is dismissed
+        
+        view.addGestureRecognizer(tapGesture)
+        
+        setUpPickerView()
+        makePickerToolbar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,6 +48,7 @@ class AddFoodItemController: UIViewController{
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
+        action() //dismisses keyboard/picker before returning to previous controller.
         dismiss(animated: true, completion: nil)
     }
     
@@ -81,10 +81,15 @@ class AddFoodItemController: UIViewController{
         }
         else {
             
-            
         }
         
         return
+    }
+    
+    func setUpPickerView() {
+        let myPicker = UIPickerView() //creating UIPicker
+        myPicker.delegate = self
+        mealText.inputView = myPicker //showing UIPicker
     }
     
     func makePickerToolbar() {
