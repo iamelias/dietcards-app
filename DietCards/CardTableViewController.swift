@@ -46,9 +46,19 @@ class CardTableViewController: UIViewController {
         
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isHidden = true
+//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: UIApplication.shared.keyWindow!.safeAreaInsets.bottom, right: 0.0);
+       // view.backgroundColor = .red
+
+        tableView.separatorColor = .black
+        //tableView.backgroundColor = .red
+        tableView.separatorStyle = .singleLine
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none //removes lines in between cells
         
     }
+    
+
+    
+
     
     override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()
@@ -91,19 +101,37 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        //return array count for each section
         if section == 0 {
+            guard breakfastArray.count != 0 else {
+                return 1
+            }
             return breakfastArray.count
         }
         
         if section == 1 {
+            guard lunchArray.count != 0 else {
+                return 1
+            }
+
             return lunchArray.count
+            
         }
         
         if section == 2 {
+            guard dinnerArray.count != 0 else {
+                return 1
+            }
+
             return dinnerArray.count
+            
         }
         
         if section == 3 {
+            guard snackArray.count != 0 else {
+                return 1
+            }
+
             return snackArray.count
+            
         }
         
         else { return 0 }
@@ -111,7 +139,8 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
-        label.backgroundColor = .lightGray
+        label.backgroundColor = .clear
+        
         label.font = .boldSystemFont(ofSize: 17)
         if section == 0 {
         label.text = "Breakfast"
@@ -135,21 +164,44 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell")!
         //cell.textLabel!.text = breakfastArray[indexPath.row]
+        tableView.backgroundColor = .groupTableViewBackground
+        cell.textLabel?.text = "empty"
+        cell.textLabel?.textColor = .lightGray
+        cell.layer.cornerRadius = 10 //rounding corners of cell
+        cell.layer.masksToBounds = true
+        cell.layer.shadowOffset = CGSize(width: 5, height: 5)
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 0.25
+        cell.layer.shadowRadius = 4
+        
         
         if indexPath.section == 0 {
+            
+            if breakfastArray.count != 0 {
+            cell.textLabel?.textColor = .black
             cell.textLabel!.text = breakfastArray[indexPath.row].foodName
+            }
         }
 
         if indexPath.section == 1 {
+            if lunchArray.count != 0 {
+            cell.textLabel?.textColor = .black
             cell.textLabel!.text = lunchArray[indexPath.row].foodName
+            }
         }
 
         if indexPath.section == 2 {
+            if dinnerArray.count != 0 {
+            cell.textLabel?.textColor = .black
             cell.textLabel!.text = dinnerArray[indexPath.row].foodName
+            }
         }
 
         if indexPath.section == 3 {
+            if snackArray.count != 0 {
+            cell.textLabel?.textColor = .black
             cell.textLabel!.text = snackArray[indexPath.row].foodName
+            }
         }
         return cell
     }
