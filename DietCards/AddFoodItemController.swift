@@ -44,7 +44,7 @@ class AddFoodItemController: UIViewController{
     }
     
     func viewDidAppear() {
-        
+
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
@@ -74,9 +74,13 @@ class AddFoodItemController: UIViewController{
             print("Nutrition: \(foodID.nutrition)")
             print("&&&&&&&&&&&&&&&&&&&&")
             
+            var passFoodID = NutritionData()
+            passFoodID.foodName = foodID.foodName
+            passFoodID.nutrition = foodID.nutrition
+            passFoodID.mealTime = mealText.text! //mealText will always have value
             
            // getFoodDelegate.didGetFood(foodName: foodID.foodName, foodCalories: foodID.nutrition)
-            getFoodDelegate.didGetFoodData(food: foodID)
+            getFoodDelegate.didGetFoodData(food: passFoodID)
 
         }
         else {
@@ -114,6 +118,8 @@ extension AddFoodItemController: UITextFieldDelegate {
         mealText.resignFirstResponder()
         return true
     }
+    
+    
 }
 
 //MARK: *UIPickerView*
@@ -129,6 +135,10 @@ extension AddFoodItemController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        if mealText.text == "" {
+        mealText.text = pickerMeals[0]
+        }
         return pickerMeals[row]
     }
     
@@ -137,5 +147,7 @@ extension AddFoodItemController: UIPickerViewDelegate, UIPickerViewDataSource {
         mealText.text = selectedMeal
     }
     
+    
+    //Project Tap Gesture Recognizer, and PickerView,
     
 }
