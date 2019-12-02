@@ -53,7 +53,8 @@ class CardTableViewController: UIViewController {
         //tableView.backgroundColor = .red
         tableView.separatorStyle = .singleLine
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none //removes lines in between cells
-        
+        tableView.allowsSelection = false
+
     }
     
 
@@ -163,9 +164,14 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell")!
+        cell.isHighlighted = false
         //cell.textLabel!.text = breakfastArray[indexPath.row]
         tableView.backgroundColor = .groupTableViewBackground
+        
         cell.textLabel?.text = "empty"
+        cell.detailTextLabel!.isHidden = true
+        
+        
         cell.textLabel?.textColor = .lightGray
         cell.layer.cornerRadius = 10 //rounding corners of cell
         cell.layer.masksToBounds = true
@@ -173,38 +179,53 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         cell.layer.shadowColor = UIColor.black.cgColor
         cell.layer.shadowOpacity = 0.25
         cell.layer.shadowRadius = 4
-        
-        
+    
         if indexPath.section == 0 {
-            
+            cell.detailTextLabel!.isHidden = false
+            cell.detailTextLabel!.textColor = .black
             if breakfastArray.count != 0 {
-            cell.textLabel?.textColor = .black
+
+            cell.textLabel!.textColor = .black
             cell.textLabel!.text = breakfastArray[indexPath.row].foodName
+            cell.detailTextLabel!.text = "\(breakfastArray[indexPath.row].nutrition) kcal"
+
             }
         }
 
         if indexPath.section == 1 {
+            cell.detailTextLabel!.isHidden = false
+            cell.detailTextLabel!.textColor = .black
             if lunchArray.count != 0 {
             cell.textLabel?.textColor = .black
             cell.textLabel!.text = lunchArray[indexPath.row].foodName
+                cell.detailTextLabel!.text = "\(lunchArray[indexPath.row].nutrition) kcal"
             }
         }
 
         if indexPath.section == 2 {
+            cell.detailTextLabel!.isHidden = false
+            cell.detailTextLabel!.textColor = .black
             if dinnerArray.count != 0 {
             cell.textLabel?.textColor = .black
             cell.textLabel!.text = dinnerArray[indexPath.row].foodName
+            cell.detailTextLabel!.text = "\(dinnerArray[indexPath.row].nutrition) kcal"
+
             }
         }
 
         if indexPath.section == 3 {
+            cell.detailTextLabel!.isHidden = false
+            cell.detailTextLabel!.textColor = .black
             if snackArray.count != 0 {
             cell.textLabel?.textColor = .black
             cell.textLabel!.text = snackArray[indexPath.row].foodName
+            cell.detailTextLabel!.text = "\(snackArray[indexPath.row].nutrition) kcal"
+
             }
         }
         return cell
     }
+    
 }
 
 extension CardTableViewController: GetFoodDelegate {
