@@ -48,7 +48,7 @@ class HomeViewController: UIViewController {
         print("Button: \(button.tag) was pressed")
         collectionView.reloadData()
         
-        switch button.tag {
+        switch button.tag { //positions when day button is tapped
         case 1: collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
         case 2: collectionView.contentOffset = CGPoint(x: 150.0, y: 0.0)
         case 3: collectionView.contentOffset = CGPoint(x: 385.0, y: 0.0)

@@ -13,6 +13,7 @@ struct NutritionData {
     
     var foodName: String = ""
     var nutrition: Double = 0.0
+    var mealTime: String = ""
     var foodData: [Any] = []
     
 }
