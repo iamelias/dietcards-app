@@ -15,7 +15,7 @@ protocol GetFoodDelegate {
     
 }
 
-class AddFoodItemController: UIViewController{
+class AddFoodItemController: UIViewController {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var foodText: UITextField!
     @IBOutlet weak var mealText: UITextField! //either breakfast, lunch, dinner snacks

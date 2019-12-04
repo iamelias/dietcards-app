@@ -11,16 +11,20 @@
 import Foundation
 import UIKit
 
+
 class CardTableViewController: UIViewController {
 
     var retrievedFood: NutritionData?
     var foodsArray: [NutritionData] = [] //Stores food items
+    var selectedCard: Int = 0 //retrieving selected card number from previous controller
     
 //used for table population. Arrays hold full food Data.
     var breakfastArray: [NutritionData] = []
     var lunchArray: [NutritionData] = []
     var dinnerArray: [NutritionData] = []
     var snackArray: [NutritionData] = []
+    var calSum: Double = 0
+    static var calorieSum: Double = 0
     
     enum MT: String { //Meal Types
         case Breakfast
@@ -28,13 +32,6 @@ class CardTableViewController: UIViewController {
         case Dinner
         case Snack
     }
-    
-//
-//
-//    var breakfast: [String] = ["Egg", "Sausage", "Hashbrowns", "Toast", "Orange Juice"]
-//    var lunch: [String] = ["Hamburger", "Turkey Sandwich", "Orange Chicken", "Pad Thai"]
-//    var dinner: [String] = ["Steak", "Roast Chicken", "Baked Potato", "Ceasar Salad"]
-//    var snack: [String] = ["Cookie"]
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -49,6 +46,8 @@ class CardTableViewController: UIViewController {
 //        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: UIApplication.shared.keyWindow!.safeAreaInsets.bottom, right: 0.0);
        // view.backgroundColor = .red
 
+        
+        print("&&&Selected Card: \(selectedCard)")
         tableView.separatorColor = .black
         //tableView.backgroundColor = .red
         tableView.separatorStyle = .singleLine
@@ -56,11 +55,7 @@ class CardTableViewController: UIViewController {
         tableView.allowsSelection = false
 
     }
-    
 
-    
-
-    
     override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()
         print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
@@ -86,6 +81,12 @@ class CardTableViewController: UIViewController {
       //  addFoodVC.modalPresentationStyle = .fullScreen
         
         present(addFoodVC, animated: true, completion: nil )
+        
+    }
+    
+    func sumCalories(_ foodCal: Double) {
+    
+        self.calSum += foodCal
         
     }
     
@@ -228,10 +229,19 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
+//MARK: *GetFoodDelegate*
+
 extension CardTableViewController: GetFoodDelegate {
     func didGetFoodData(food: NutritionData) {
         self.retrievedFood = food
         self.foodsArray.append(retrievedFood!) //storing food item in array.
+        
+        self.calSum += retrievedFood!.nutrition //calculating total calories for day
+        CardTableViewController.calorieSum += retrievedFood!.nutrition //unecessary
+        
+        print(calSum)
+        
+        
         
         switch food.mealTime {
         case MT.Breakfast.rawValue: breakfastArray.append(food)
@@ -255,3 +265,9 @@ extension CardTableViewController: GetFoodDelegate {
 
 
 
+//
+//
+//    var breakfast: [String] = ["Egg", "Sausage", "Hashbrowns", "Toast", "Orange Juice"]
+//    var lunch: [String] = ["Hamburger", "Turkey Sandwich", "Orange Chicken", "Pad Thai"]
+//    var dinner: [String] = ["Steak", "Roast Chicken", "Baked Potato", "Ceasar Salad"]
+//    var snack: [String] = ["Cookie"]

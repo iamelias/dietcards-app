@@ -14,6 +14,7 @@
 		646A68E92380FEDA00AF1F5E /* CardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646A68E82380FEDA00AF1F5E /* CardTableViewController.swift */; };
 		646D1D4F238C66F200374FA4 /* NutritionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646D1D4E238C66F200374FA4 /* NutritionData.swift */; };
 		6497A68F2381E15E00BE58F0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6497A68E2381E15E00BE58F0 /* GoogleService-Info.plist */; };
+		6497E372239738F5007AD1F9 /* CardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6497E371239738F5007AD1F9 /* CardData.swift */; };
 		64C02903237E71E30052FD1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C02902237E71E30052FD1D /* AppDelegate.swift */; };
 		64C02908237E71E30052FD1D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64C02906237E71E30052FD1D /* Main.storyboard */; };
 		64C0290B237E71E30052FD1D /* DietCards.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 64C02909237E71E30052FD1D /* DietCards.xcdatamodeld */; };
@@ -31,6 +32,7 @@
 		646A68E82380FEDA00AF1F5E /* CardTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTableViewController.swift; sourceTree = "<group>"; };
 		646D1D4E238C66F200374FA4 /* NutritionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionData.swift; sourceTree = "<group>"; };
 		6497A68E2381E15E00BE58F0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6497E371239738F5007AD1F9 /* CardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardData.swift; sourceTree = "<group>"; };
 		64C028FF237E71E30052FD1D /* DietCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DietCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64C02902237E71E30052FD1D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		64C02907237E71E30052FD1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				64DD73EA238768E900E1D042 /* FoodClient.swift */,
 				6497A68E2381E15E00BE58F0 /* GoogleService-Info.plist */,
 				646D1D4E238C66F200374FA4 /* NutritionData.swift */,
+				6497E371239738F5007AD1F9 /* CardData.swift */,
 			);
 			path = DietCards;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				64DD73EB238768E900E1D042 /* FoodClient.swift in Sources */,
 				646D1D4F238C66F200374FA4 /* NutritionData.swift in Sources */,
 				64C02903237E71E30052FD1D /* AppDelegate.swift in Sources */,
+				6497E372239738F5007AD1F9 /* CardData.swift in Sources */,
 				644A651D237F393700610568 /* HomeCollectionViewCell.swift in Sources */,
 				644A651F237F5E9700610568 /* HomeViewController.swift in Sources */,
 			);
