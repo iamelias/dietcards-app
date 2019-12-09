@@ -14,6 +14,9 @@ class HomeViewController: UIViewController {
     
     var retrievedCalSum = 0.0
     
+    //Key is going to be day card: Value is going to be specific array data
+    //Key is going to be arbitrary: Value is going to be all card data/food Array... updates whenever app is launched/ whenever specific data is 
+    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
     

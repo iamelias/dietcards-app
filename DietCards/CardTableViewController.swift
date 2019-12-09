@@ -8,17 +8,23 @@
 
 // Stack: HomeViewController -> CardDetailController -> AddFoodController
 
+/*
+ selectedCard corresponding ints:  Monday: 0, Tuesday: 1, Wednesday: 2, Thursday: 3, Friday: 4, Saturday: 5, Sunday: 6
+ */
+
 import Foundation
 import UIKit
-
+import FirebaseDatabase
 
 class CardTableViewController: UIViewController {
-
+    
     var retrievedFood: NutritionData?
     var foodsArray: [NutritionData] = [] //Stores food items
     var selectedCard: Int = 0 //retrieving selected card number from previous controller
+    var ref: DatabaseReference! // reference to Firebase database
+
     
-//used for table population. Arrays hold full food Data.
+    //All arrays below will need to recieve persisted data
     var breakfastArray: [NutritionData] = []
     var lunchArray: [NutritionData] = []
     var dinnerArray: [NutritionData] = []
@@ -43,30 +49,42 @@ class CardTableViewController: UIViewController {
         
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isHidden = true
-//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: UIApplication.shared.keyWindow!.safeAreaInsets.bottom, right: 0.0);
-       // view.backgroundColor = .red
-
         
-        print("&&&Selected Card: \(selectedCard)")
+        print("Selected Card: \(selectedCard)") //from HomeViewController
         tableView.separatorColor = .black
-        //tableView.backgroundColor = .red
         tableView.separatorStyle = .singleLine
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none //removes lines in between cells
         tableView.allowsSelection = false
+        
+//        ref = Database.database().reference()
+
+        // ref.child("Monday/Breakfast/foodName").setValue("kiwi") // changing value in database
+        
+
+//        ref.child("Monday/Breakfast/foodName").observeSingleEvent(of: .value){ (snapshot) in
+//            let name = snapshot.value as? String //retrieving from database
+        
+//        ref.child("Monday/Breakfast").observeSingleEvent(of: .value){ (snapshot) in
+//            let name = snapshot.value as? [String: Any]  //retrieving from database
+        
+//        ref.child("Monday/Breakfast/foodName").observeSingleEvent(of: .value){ (snapshot) in
+//            let name = snapshot.value as? String  //retrieving from database
+            
+//
+//            print("*************************")
+//            print(name!)
+//            //print(name)
+//            print("*************************")
+//
+//        }
 
     }
 
     override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()
-        print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-//        print("Food Name: \(newFoodName)")
-//        print("Food Calories: \(newFoodCalories)")
-        
         print("Food Name: \(retrievedFood?.foodName ?? "") ") //
         print("Calories: \(retrievedFood?.nutrition ?? 0.0)")
         print("Meal Time: \(retrievedFood?.mealTime ?? "")")
-        print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-
     }
     
     @IBAction func cancelButton(_ sender: Any) {
@@ -78,7 +96,8 @@ class CardTableViewController: UIViewController {
         
         addFoodVC.getFoodDelegate = self
         
-      //  addFoodVC.modalPresentationStyle = .fullScreen
+        addFoodVC.passedInDay = selectedCard
+        addFoodVC.modalPresentationStyle = .fullScreen
         
         present(addFoodVC, animated: true, completion: nil )
         
@@ -92,7 +111,7 @@ class CardTableViewController: UIViewController {
     
 }
 
-// Mark: - TableView Delegate and DataSource
+// MARK: - TableView Delegate and DataSource - BEGIN
 
 extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -165,6 +184,7 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell")!
+        cell.detailTextLabel!.text = ""
         cell.isHighlighted = false
         //cell.textLabel!.text = breakfastArray[indexPath.row]
         tableView.backgroundColor = .groupTableViewBackground
@@ -188,7 +208,9 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
 
             cell.textLabel!.textColor = .black
             cell.textLabel!.text = breakfastArray[indexPath.row].foodName
+                if !breakfastArray.isEmpty {
             cell.detailTextLabel!.text = "\(breakfastArray[indexPath.row].nutrition) kcal"
+                }
 
             }
         }
@@ -224,17 +246,39 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
 
             }
         }
+        
+        
         return cell
     }
     
-}
+     func tableView(_ tableView: UITableView, commit editingStyle:UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if breakfastArray.count == 1 || breakfastArray.count == 0 {
+            breakfastArray.removeAll()
+            
 
-//MARK: *GetFoodDelegate*
+            tableView.reloadData()
+        }
+        else {
+            breakfastArray.remove(at: 0)
+            let indexPath = IndexPath(item: 0, section: 0)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+
+        }
+    }
+    
+}
+// MARK: - TableView Delegate and DataSource - END
+
+
+//MARK: *GetFoodDelegate* BEGIN
 
 extension CardTableViewController: GetFoodDelegate {
     func didGetFoodData(food: NutritionData) {
         self.retrievedFood = food
         self.foodsArray.append(retrievedFood!) //storing food item in array.
+        
+        retrievedFood?.dayCard = selectedCard //holding the associated card
         
         self.calSum += retrievedFood!.nutrition //calculating total calories for day
         CardTableViewController.calorieSum += retrievedFood!.nutrition //unecessary
@@ -261,11 +305,9 @@ extension CardTableViewController: GetFoodDelegate {
 //
 //    }
 }
+//MARK: *GetFoodDelegate* END
 
 
-
-
-//
 //
 //    var breakfast: [String] = ["Egg", "Sausage", "Hashbrowns", "Toast", "Orange Juice"]
 //    var lunch: [String] = ["Hamburger", "Turkey Sandwich", "Orange Chicken", "Pad Thai"]

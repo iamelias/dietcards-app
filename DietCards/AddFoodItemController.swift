@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseDatabase
 
 protocol GetFoodDelegate {
    // func didGetFood(foodName: String, foodCalories: Double)
@@ -23,8 +24,11 @@ class AddFoodItemController: UIViewController {
     var getFoodDelegate: GetFoodDelegate!
     let pickerMeals: [String] = ["Breakfast", "Lunch", "Dinner", "Snack"]
     var selectedMeal: String?
+    var passedInDay: Int = 0 // the card's week day
+    var ref: DatabaseReference! // reference to Firebase database
     
-    
+    var daysDict:[Int:String] = [0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         foodText.delegate = self
@@ -67,6 +71,7 @@ class AddFoodItemController: UIViewController {
     
     func getFoodResponse(success: Bool, foodID: NutritionData, error: Error?) {
         
+        
         if success {
             
             print("&&&&&&&&&&&&&&&&&&&&")
@@ -82,6 +87,38 @@ class AddFoodItemController: UIViewController {
            // getFoodDelegate.didGetFood(foodName: foodID.foodName, foodCalories: foodID.nutrition)
             getFoodDelegate.didGetFoodData(food: passFoodID)
 
+            //**************************** FireBase start ********************************
+            
+//            ref = Database.database().reference()
+            
+
+            
+            print("%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+            
+            print(passedInDay)
+            print(mealText.text!)
+            print(foodID.foodName)
+            print(foodID.nutrition)
+            
+            
+            print("%%%%%%%%%%%%%%%%%%%%%%%%%%")
+            
+            
+            //updating database with entry data
+            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/foodName").setValue("\(foodID.foodName)")
+            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/nutrition").setValue("\(foodID.nutrition)")
+            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/dayCard").setValue("\(passedInDay)")
+            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/mealTime").setValue("\(foodID.mealText)")
+
+
+
+            
+            
+            //        ref.child("Monday/Breakfast/foodName").observeSingleEvent(of: .value){ (snapshot) in
+            //            let name = snapshot.value as? String //retrieving from database
+            
+            
+            //**************************** FireBase finish ********************************
         }
         else {
             
