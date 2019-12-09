@@ -251,6 +251,10 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        return true
+//    }
+    
      func tableView(_ tableView: UITableView, commit editingStyle:UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if breakfastArray.count == 1 || breakfastArray.count == 0 {
@@ -260,9 +264,12 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
             tableView.reloadData()
         }
         else {
-            breakfastArray.remove(at: 0)
-            let indexPath = IndexPath(item: 0, section: 0)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+//            breakfastArray.remove(at: 0)
+            breakfastArray.remove(at: indexPath.row)
+
+            //tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPath], with: .fade)
+         //   tableView.endUpdates()
 
         }
     }
