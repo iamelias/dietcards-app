@@ -257,6 +257,8 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
     
      func tableView(_ tableView: UITableView, commit editingStyle:UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
+        if indexPath.section == 0 {
+        
         if breakfastArray.count == 1 || breakfastArray.count == 0 {
             breakfastArray.removeAll()
             
@@ -272,6 +274,69 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
          //   tableView.endUpdates()
 
         }
+    }
+        
+        if indexPath.section == 1 {
+            
+            if lunchArray.count == 1 || lunchArray.count == 0 {
+                lunchArray.removeAll()
+                
+                
+                tableView.reloadData()
+            }
+            else {
+                //            breakfastArray.remove(at: 0)
+                lunchArray.remove(at: indexPath.row)
+                
+                //tableView.beginUpdates()
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                //   tableView.endUpdates()
+                
+            }
+        }
+        
+        if indexPath.section == 2 {
+            
+            if dinnerArray.count == 1 || dinnerArray.count == 0 {
+                dinnerArray.removeAll()
+                
+                
+                tableView.reloadData()
+            }
+            else {
+                //            breakfastArray.remove(at: 0)
+                dinnerArray.remove(at: indexPath.row)
+                
+                //tableView.beginUpdates()
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                //   tableView.endUpdates()
+                
+            }
+        }
+        
+        if indexPath.section == 3 {
+            
+            if snackArray.count == 1 || snackArray.count == 0 {
+                snackArray.removeAll()
+                
+                
+                tableView.reloadData()
+            }
+            else {
+                //            breakfastArray.remove(at: 0)
+                snackArray.remove(at: indexPath.row)
+                
+                //tableView.beginUpdates()
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                //   tableView.endUpdates()
+                
+            }
+        }
+   
+    
+    
+    
+    
     }
     
 }
@@ -290,7 +355,10 @@ extension CardTableViewController: GetFoodDelegate {
         self.calSum += retrievedFood!.nutrition //calculating total calories for day
         CardTableViewController.calorieSum += retrievedFood!.nutrition //unecessary
         
+        print("(((((((((((((((((((((")
         print(calSum)
+        print("(((((((((((((((((((((")
+
         
         
         
