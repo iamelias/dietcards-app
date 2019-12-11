@@ -30,7 +30,6 @@ class HomeViewController: UIViewController {
         case Sunday
     }
     
-    
     static let daysOfWeek: [String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     
     

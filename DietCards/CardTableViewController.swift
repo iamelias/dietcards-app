@@ -24,13 +24,14 @@ class CardTableViewController: UIViewController {
     var ref: DatabaseReference! // reference to Firebase database
 
     
-    //All arrays below will need to recieve persisted data
+    //4 arrays below are populated with Firebase saved food data
     var breakfastArray: [NutritionData] = []
     var lunchArray: [NutritionData] = []
     var dinnerArray: [NutritionData] = []
     var snackArray: [NutritionData] = []
-    var calSum: Double = 0
-    static var calorieSum: Double = 0
+    
+    var calSum: Double = 0 //necessary?
+    static var calorieSum: Double = 0 //necessary?
     
     enum MT: String { //Meal Types
         case Breakfast
@@ -55,28 +56,6 @@ class CardTableViewController: UIViewController {
         tableView.separatorStyle = .singleLine
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none //removes lines in between cells
         tableView.allowsSelection = false
-        
-//        ref = Database.database().reference()
-
-        // ref.child("Monday/Breakfast/foodName").setValue("kiwi") // changing value in database
-        
-
-//        ref.child("Monday/Breakfast/foodName").observeSingleEvent(of: .value){ (snapshot) in
-//            let name = snapshot.value as? String //retrieving from database
-        
-//        ref.child("Monday/Breakfast").observeSingleEvent(of: .value){ (snapshot) in
-//            let name = snapshot.value as? [String: Any]  //retrieving from database
-        
-//        ref.child("Monday/Breakfast/foodName").observeSingleEvent(of: .value){ (snapshot) in
-//            let name = snapshot.value as? String  //retrieving from database
-            
-//
-//            print("*************************")
-//            print(name!)
-//            //print(name)
-//            print("*************************")
-//
-//        }
 
     }
 
@@ -85,6 +64,8 @@ class CardTableViewController: UIViewController {
         print("Food Name: \(retrievedFood?.foodName ?? "") ") //
         print("Calories: \(retrievedFood?.nutrition ?? 0.0)")
         print("Meal Time: \(retrievedFood?.mealTime ?? "")")
+        
+        //loadFirebaseData()
     }
     
     @IBAction func cancelButton(_ sender: Any) {
@@ -94,21 +75,19 @@ class CardTableViewController: UIViewController {
         
         let addFoodVC = storyboard?.instantiateViewController(withIdentifier: "AddFoodItemController") as! AddFoodItemController
         
-        addFoodVC.getFoodDelegate = self
+        addFoodVC.getFoodDelegate = self //necessary?
         
-        addFoodVC.passedInDay = selectedCard
+        addFoodVC.passedInDay = selectedCard //sending day of the week selected to next view controller
         addFoodVC.modalPresentationStyle = .fullScreen
         
-        present(addFoodVC, animated: true, completion: nil )
+        present(addFoodVC, animated: true, completion: nil ) // presenting next vc. passing selected day
         
     }
     
     func sumCalories(_ foodCal: Double) {
     
         self.calSum += foodCal
-        
     }
-    
 }
 
 // MARK: - TableView Delegate and DataSource - BEGIN
@@ -251,10 +230,6 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-//        return true
-//    }
-    
      func tableView(_ tableView: UITableView, commit editingStyle:UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if indexPath.section == 0 {
@@ -266,12 +241,9 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
             tableView.reloadData()
         }
         else {
-//            breakfastArray.remove(at: 0)
             breakfastArray.remove(at: indexPath.row)
 
-            //tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .fade)
-         //   tableView.endUpdates()
 
         }
     }
@@ -285,12 +257,9 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
                 tableView.reloadData()
             }
             else {
-                //            breakfastArray.remove(at: 0)
                 lunchArray.remove(at: indexPath.row)
                 
-                //tableView.beginUpdates()
                 tableView.deleteRows(at: [indexPath], with: .fade)
-                //   tableView.endUpdates()
                 
             }
         }
@@ -304,12 +273,9 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
                 tableView.reloadData()
             }
             else {
-                //            breakfastArray.remove(at: 0)
                 dinnerArray.remove(at: indexPath.row)
                 
-                //tableView.beginUpdates()
                 tableView.deleteRows(at: [indexPath], with: .fade)
-                //   tableView.endUpdates()
                 
             }
         }
@@ -323,23 +289,72 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
                 tableView.reloadData()
             }
             else {
-                //            breakfastArray.remove(at: 0)
                 snackArray.remove(at: indexPath.row)
                 
-                //tableView.beginUpdates()
                 tableView.deleteRows(at: [indexPath], with: .fade)
-                //   tableView.endUpdates()
-                
             }
         }
-   
-    
-    
-    
-    
     }
     
+    func loadFirebaseData() { //reading the saved food items from firebase realtime database
+        
+        //clearing all array for fresh reload whenever view controller is called.
+        breakfastArray.removeAll()
+        lunchArray.removeAll()
+        dinnerArray.removeAll()
+        snackArray.removeAll()
+        
+        var fireBaseCard = "" //to be used for firebase call
+        
+        switch selectedCard { //selected card comes from homeviewcontroller
+        case 0: fireBaseCard = "Monday"
+        case 1: fireBaseCard = "Tuesday"
+        case 2: fireBaseCard = "Wednesday"
+        case 3: fireBaseCard = "Thursday"
+        case 4: fireBaseCard = "Friday"
+        case 5: fireBaseCard = "Saturday"
+        case 6: fireBaseCard = "Sunday"
+        default: print("Error in selected card switch array")
+        }
+        
+        ref.child(fireBaseCard).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            guard let value = snapshot.value as? NSDictionary else {
+                print("There are no saved records")
+                return
+            }
+            
+            for item in value {
+                let dictionary = item.value as! NSDictionary
+                
+                let dayCard = dictionary["dayCard"] as? Int ?? 0 // ex. 0
+                let foodName = dictionary["foodName"] as? String  ?? ""//ex. "apple"
+                let foodid = dictionary["foodid"] as? String ?? "" // ex. "kjsfakl;fjkla;dfkal;f"
+                let mealTime = dictionary["mealTime"] as?  String ?? "" // ex. "Breakfast"
+                let nutrition = dictionary["nutrition"] as?  Double ?? 0.0 // ex. 56.43
+                
+                var foodObject = NutritionData()
+                foodObject.dayCard = dayCard
+                foodObject.foodName = foodName
+                foodObject.id = foodid
+                foodObject.mealTime = mealTime
+                foodObject.nutrition = nutrition
+            
+                
+                switch mealTime { //adding meal to array to be used when populating table
+                case "Breakfast": self.breakfastArray.append(foodObject)
+                case "Lunch": self.lunchArray.append(foodObject)
+                case "Dinner": self.dinnerArray.append(foodObject)
+                case "Snack": self.snackArray.append(foodObject)
+                
+                default: print("Error")
+                }
+                self.tableView.reloadData()
+            }
+        })
+    }
 }
+
 // MARK: - TableView Delegate and DataSource - END
 
 
@@ -349,19 +364,16 @@ extension CardTableViewController: GetFoodDelegate {
     func didGetFoodData(food: NutritionData) {
         self.retrievedFood = food
         self.foodsArray.append(retrievedFood!) //storing food item in array.
-        
+
         retrievedFood?.dayCard = selectedCard //holding the associated card
-        
+
         self.calSum += retrievedFood!.nutrition //calculating total calories for day
         CardTableViewController.calorieSum += retrievedFood!.nutrition //unecessary
-        
+
         print("(((((((((((((((((((((")
         print(calSum)
         print("(((((((((((((((((((((")
 
-        
-        
-        
         switch food.mealTime {
         case MT.Breakfast.rawValue: breakfastArray.append(food)
         case MT.Lunch.rawValue: lunchArray.append(food)
@@ -370,9 +382,21 @@ extension CardTableViewController: GetFoodDelegate {
         default:
             return
         }
-        
+
         print(breakfastArray)
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 //    func didGetFoodData(foodName: String, foodCalories: Double) {
 //
 //        self.newFoodName = foodName
@@ -388,3 +412,27 @@ extension CardTableViewController: GetFoodDelegate {
 //    var lunch: [String] = ["Hamburger", "Turkey Sandwich", "Orange Chicken", "Pad Thai"]
 //    var dinner: [String] = ["Steak", "Roast Chicken", "Baked Potato", "Ceasar Salad"]
 //    var snack: [String] = ["Cookie"]
+
+
+
+//        ref = Database.database().reference()
+
+// ref.child("Monday/Breakfast/foodName").setValue("kiwi") // changing value in database
+
+
+//        ref.child("Monday/Breakfast/foodName").observeSingleEvent(of: .value){ (snapshot) in
+//            let name = snapshot.value as? String //retrieving from database
+
+//        ref.child("Monday/Breakfast").observeSingleEvent(of: .value){ (snapshot) in
+//            let name = snapshot.value as? [String: Any]  //retrieving from database
+
+//        ref.child("Monday/Breakfast/foodName").observeSingleEvent(of: .value){ (snapshot) in
+//            let name = snapshot.value as? String  //retrieving from database
+
+//
+//            print("*************************")
+//            print(name!)
+//            //print(name)
+//            print("*************************")
+//
+//        }

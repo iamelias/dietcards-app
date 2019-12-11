@@ -71,7 +71,6 @@ class AddFoodItemController: UIViewController {
     
     func getFoodResponse(success: Bool, foodID: NutritionData, error: Error?) {
         
-        
         if success {
             
             print("&&&&&&&&&&&&&&&&&&&&")
@@ -89,29 +88,36 @@ class AddFoodItemController: UIViewController {
 
             //**************************** FireBase start ********************************
             
-//            ref = Database.database().reference()
-            
+            ref = Database.database().reference()
 
-            
-            print("%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-            
-            print(passedInDay)
-            print(mealText.text!)
-            print(foodID.foodName)
-            print(foodID.nutrition)
-            
-            
-            print("%%%%%%%%%%%%%%%%%%%%%%%%%%")
-            
-            
             //updating database with entry data
+            //updating all at once
+            
+             let key = ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
+            
+            let data = [
+                "foodid": key!,
+                "foodName": foodID.foodName,
+                "nutrition": foodID.nutrition,
+                "dayCard": passedInDay,
+                "mealTime": mealText.text!
+                ] as [String : Any]
+            
+           ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
+           // ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().setValue(data)
+            
+            
+//    ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(foodObject)").setValue(["foodName":"\(foodID.foodName)", "nutrition":"\(foodID.nutrition)", "dayCard":"\(passedInDay)", "mealTime":"\(mealText.text!)"])
+           
+            
+            //option to update individual values
             // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/foodName").setValue("\(foodID.foodName)")
             // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/nutrition").setValue("\(foodID.nutrition)")
             // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/dayCard").setValue("\(passedInDay)")
             // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/mealTime").setValue("\(foodID.mealText)")
 
 
-
+            
             
             
             //        ref.child("Monday/Breakfast/foodName").observeSingleEvent(of: .value){ (snapshot) in
@@ -155,8 +161,6 @@ extension AddFoodItemController: UITextFieldDelegate {
         mealText.resignFirstResponder()
         return true
     }
-    
-    
 }
 
 //MARK: *UIPickerView*
@@ -184,7 +188,5 @@ extension AddFoodItemController: UIPickerViewDelegate, UIPickerViewDataSource {
         mealText.text = selectedMeal
     }
     
-    
     //Project Tap Gesture Recognizer, and PickerView,
-    
 }

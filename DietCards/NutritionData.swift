@@ -16,6 +16,8 @@ struct NutritionData {
     var mealTime: String = ""
     var foodData: [Any] = [] //used in client
     var dayCard: Int = 0
+    var id: String = ""
+    
     
 }
 
