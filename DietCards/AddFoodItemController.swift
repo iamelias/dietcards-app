@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseDatabase
 
 protocol GetFoodDelegate {
    // func didGetFood(foodName: String, foodCalories: Double)
@@ -15,7 +16,7 @@ protocol GetFoodDelegate {
     
 }
 
-class AddFoodItemController: UIViewController{
+class AddFoodItemController: UIViewController {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var foodText: UITextField!
     @IBOutlet weak var mealText: UITextField! //either breakfast, lunch, dinner snacks
@@ -23,8 +24,11 @@ class AddFoodItemController: UIViewController{
     var getFoodDelegate: GetFoodDelegate!
     let pickerMeals: [String] = ["Breakfast", "Lunch", "Dinner", "Snack"]
     var selectedMeal: String?
+    var passedInDay: Int = 0 // the card's week day
+    var ref: DatabaseReference! // reference to Firebase database
     
-    
+    var daysDict:[Int:String] = [0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         foodText.delegate = self
@@ -82,6 +86,45 @@ class AddFoodItemController: UIViewController{
            // getFoodDelegate.didGetFood(foodName: foodID.foodName, foodCalories: foodID.nutrition)
             getFoodDelegate.didGetFoodData(food: passFoodID)
 
+            //**************************** FireBase start ********************************
+            
+            ref = Database.database().reference()
+
+            //updating database with entry data
+            //updating all at once
+            
+             let key = ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
+            
+            let data = [
+                "foodid": key!,
+                "foodName": foodID.foodName,
+                "nutrition": foodID.nutrition,
+                "dayCard": passedInDay,
+                "mealTime": mealText.text!
+                ] as [String : Any]
+            
+           ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
+           // ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().setValue(data)
+            
+            
+//    ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(foodObject)").setValue(["foodName":"\(foodID.foodName)", "nutrition":"\(foodID.nutrition)", "dayCard":"\(passedInDay)", "mealTime":"\(mealText.text!)"])
+           
+            
+            //option to update individual values
+            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/foodName").setValue("\(foodID.foodName)")
+            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/nutrition").setValue("\(foodID.nutrition)")
+            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/dayCard").setValue("\(passedInDay)")
+            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/mealTime").setValue("\(foodID.mealText)")
+
+
+            
+            
+            
+            //        ref.child("Monday/Breakfast/foodName").observeSingleEvent(of: .value){ (snapshot) in
+            //            let name = snapshot.value as? String //retrieving from database
+            
+            
+            //**************************** FireBase finish ********************************
         }
         else {
             
@@ -118,8 +161,6 @@ extension AddFoodItemController: UITextFieldDelegate {
         mealText.resignFirstResponder()
         return true
     }
-    
-    
 }
 
 //MARK: *UIPickerView*
@@ -147,7 +188,5 @@ extension AddFoodItemController: UIPickerViewDelegate, UIPickerViewDataSource {
         mealText.text = selectedMeal
     }
     
-    
     //Project Tap Gesture Recognizer, and PickerView,
-    
 }

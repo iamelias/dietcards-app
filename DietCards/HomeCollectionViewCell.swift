@@ -23,6 +23,7 @@ class HomeCollectionViewCell: UICollectionViewCell
         cardTitleLabel.text = dayOfWeek
         cardTitleLabel.textAlignment = .center
         cardTitleLabel.textColor = .black
+    
     }
     
     override func layoutSubviews() {
@@ -36,5 +37,6 @@ class HomeCollectionViewCell: UICollectionViewCell
         self.clipsToBounds = false
     }
 }
+
 
 
