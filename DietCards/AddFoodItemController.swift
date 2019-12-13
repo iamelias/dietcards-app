@@ -10,29 +10,25 @@ import Foundation
 import UIKit
 import FirebaseDatabase
 
-protocol GetFoodDelegate {
-   // func didGetFood(foodName: String, foodCalories: Double)
-    func didGetFoodData(food: NutritionData)
-    
-}
-
 class AddFoodItemController: UIViewController {
-    @IBOutlet weak var label: UILabel!
-    @IBOutlet weak var foodText: UITextField!
-    @IBOutlet weak var mealText: UITextField! //either breakfast, lunch, dinner snacks
+    //@IBOutlet weak var label: UILabel!
+    @IBOutlet weak var foodText: UITextField! //food entered
+    @IBOutlet weak var mealText: UITextField! //breakfast, lunch, dinner, snacks selected
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var getFoodDelegate: GetFoodDelegate!
-    let pickerMeals: [String] = ["Breakfast", "Lunch", "Dinner", "Snack"]
+    let pickerMeals: [String] = ["Breakfast", "Lunch", "Dinner", "Snack"] //value used for mealText assignment
     var selectedMeal: String?
-    var passedInDay: Int = 0 // the card's week day
+    var passedInDay: Int = 0 // Day of the Week passed in as Int
     var ref: DatabaseReference! // reference to Firebase database
     
+    // giving passedInDay a string value using daysDict
     var daysDict:[Int:String] = [0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"]
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         foodText.delegate = self
-        
+        activityIndicator.isHidden = true
+       
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(AddFoodItemController.action)) //when view is tapped picker/keyboard is dismissed
         
         view.addGestureRecognizer(tapGesture)
@@ -41,93 +37,47 @@ class AddFoodItemController: UIViewController {
         makePickerToolbar()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        print("AddFood view will appear called")
-        
-    }
-    
-    func viewDidAppear() {
-
-    }
-    
     @IBAction func cancelTapped(_ sender: Any) {
         action() //dismisses keyboard/picker before returning to previous controller.
         dismiss(animated: true, completion: nil)
     }
     
-    
     @IBAction func findFoodTapped(_ sender: Any) { //when find food is tapped
-        //Network call to retrieve Food name and coressponding nutrition
-        //Add to persisted etc.
-        //dismiss back to the tableView controller
-    
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
         FoodClient.getFood(foodID: self.foodText.text ?? "", completion: self.getFoodResponse(success: foodID: error:)) //calling nutrionix api
         
-        
         dismiss(animated: true, completion: nil)
-    
+        
     }
     
-    func getFoodResponse(success: Bool, foodID: NutritionData, error: Error?) {
+    func getFoodResponse(success: Bool, foodID: NutritionData, error: Error?) { //Network response
         
-        if success {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+        if success { //if response is sucessful
+            //
+            //            var passFoodID = NutritionData() //create passFoodID ref variable of type NutritionData
+            //            passFoodID.foodName = foodID.foodName
+            //            passFoodID.nutrition = foodID.nutrition
+            //            passFoodID.mealTime = mealText.text!
             
-            print("&&&&&&&&&&&&&&&&&&&&")
-            print("FoodName: \(foodID.foodName)")
-            print("Nutrition: \(foodID.nutrition)")
-            print("&&&&&&&&&&&&&&&&&&&&")
+            ref = Database.database().reference() //connecting to firebase database
             
-            var passFoodID = NutritionData()
-            passFoodID.foodName = foodID.foodName
-            passFoodID.nutrition = foodID.nutrition
-            passFoodID.mealTime = mealText.text! //mealText will always have value
+            //writing to database
+            let key = ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
+            //passedInDay is selected day chosen in HomeViewController, will always have value 0...6
+            //mealText from pickerView Breakfast...Snack
             
-           // getFoodDelegate.didGetFood(foodName: foodID.foodName, foodCalories: foodID.nutrition)
-            getFoodDelegate.didGetFoodData(food: passFoodID)
-
-            //**************************** FireBase start ********************************
-            
-            ref = Database.database().reference()
-
-            //updating database with entry data
-            //updating all at once
-            
-             let key = ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
-            
-            let data = [
-                "foodid": key!,
-                "foodName": foodID.foodName,
-                "nutrition": foodID.nutrition,
-                "dayCard": passedInDay,
-                "mealTime": mealText.text!
+            let data = [ //data to be added to database
+                "foodid": key!, //unique key
+                "foodName": foodID.foodName, //from Network response
+                "nutrition": foodID.nutrition, //from Network response
+                "dayCard": passedInDay, //from HomeViewController
+                "mealTime": mealText.text! //selected in pickerView
                 ] as [String : Any]
             
-           ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
-           // ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().setValue(data)
-            
-            
-//    ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(foodObject)").setValue(["foodName":"\(foodID.foodName)", "nutrition":"\(foodID.nutrition)", "dayCard":"\(passedInDay)", "mealTime":"\(mealText.text!)"])
-           
-            
-            //option to update individual values
-            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/foodName").setValue("\(foodID.foodName)")
-            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/nutrition").setValue("\(foodID.nutrition)")
-            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/dayCard").setValue("\(passedInDay)")
-            // ref.child("\(daysDict[passedInDay])/\(mealText.text!)/mealTime").setValue("\(foodID.mealText)")
-
-
-            
-            
-            
-            //        ref.child("Monday/Breakfast/foodName").observeSingleEvent(of: .value){ (snapshot) in
-            //            let name = snapshot.value as? String //retrieving from database
-            
-            
-            //**************************** FireBase finish ********************************
-        }
-        else {
-            
+            ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
         }
         
         return
@@ -156,7 +106,7 @@ class AddFoodItemController: UIViewController {
 
 extension AddFoodItemController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool { //dismissing keyboard
         foodText.resignFirstResponder()
         mealText.resignFirstResponder()
         return true
@@ -171,22 +121,20 @@ extension AddFoodItemController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    
+        
         return pickerMeals.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
         if mealText.text == "" {
-        mealText.text = pickerMeals[0]
+            mealText.text = pickerMeals[0]
         }
         return pickerMeals[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedMeal = pickerMeals[row] //selecting either breakfast, lunch, dinner, snacks
-        mealText.text = selectedMeal
+        mealText.text = selectedMeal //updating mealText textfield with selectedMeal from pickerView
     }
-    
-    //Project Tap Gesture Recognizer, and PickerView,
 }

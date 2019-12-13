@@ -248,11 +248,16 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Jbd-Sv-PR3">
+                                <rect key="frame" x="177" y="127" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="YbN-OS-bRW"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="Jbd-Sv-PR3" id="xLD-ME-Tym"/>
                         <outlet property="tableView" destination="jkz-FO-4rf" id="Paf-uy-H2z"/>
                     </connections>
                 </viewController>
@@ -311,12 +316,17 @@
                                     <action selector="findFoodTapped:" destination="qRK-ox-6c2" eventType="touchUpInside" id="523-7O-9vG"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="aqh-EG-s58">
+                                <rect key="frame" x="177" y="411" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="y8J-Sp-fX6"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="aqh-EG-s58" id="r5K-fW-wHn"/>
                         <outlet property="foodText" destination="9pF-9H-EPZ" id="i37-1v-ivM"/>
                         <outlet property="mealText" destination="A6f-4Y-Yzz" id="wDZ-ft-apC"/>
                     </connections>
