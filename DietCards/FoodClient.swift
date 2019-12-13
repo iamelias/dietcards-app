@@ -13,9 +13,6 @@ class FoodClient {
     
     class func getFood(foodID: String, completion: @escaping (Bool, NutritionData, Error?) -> Void) { //add completion handler to return error
         
-        //Instant Search API url
-        //        let urlString: String = "https://trackapi.nutritionix.com/v2/search/instant?query=apple"
-        
         //Nutrition API url
         let urlString: String = "https://trackapi.nutritionix.com/v2/natural/nutrients"
         
@@ -33,7 +30,6 @@ class FoodClient {
 
         //Nutrition API Config
         AF.request(url!, method: .post, parameters: parameters, encoder: URLEncodedFormParameterEncoder(destination: .httpBody), headers: headers).validate().responseJSON { (response) in
-         //   debugPrint(response) printing full json response
             
             var data = NutritionData()
 
@@ -46,12 +42,7 @@ class FoodClient {
                     let newfoodData = data.foodData.first as! [String: Any] //accessing value array
                     data.foodName = newfoodData["food_name"] as! String //calling food name key
                     data.nutrition = newfoodData["nf_calories"] as! Double //calling calorie key
-                    
-                    print("*****************")
-                    print("FoodName: \(data.foodName)")
-                    print("Nutrition: \(data.nutrition)")
-                    print("*****************")
-                    
+
                     DispatchQueue.main.async {
                     completion(true, data, nil) //returnining foodName and nutrition to calling controller
                     //return data completion handler
@@ -59,12 +50,11 @@ class FoodClient {
                 }
 
             case .failure(_):
-                print("Error 1")
+                print("Error")
                 DispatchQueue.main.async {
                     completion(false, data, nil)
                 }
             }
-            
         }
     }
 }

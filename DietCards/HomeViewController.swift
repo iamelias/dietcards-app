@@ -10,13 +10,10 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    var selectedCard = 8 //default card(doesn't exist)
+    var selectedCard = 8 //default card setting
     
     var retrievedCalSum = 0.0
-    
-    //Key is going to be day card: Value is going to be specific array data
-    //Key is going to be arbitrary: Value is going to be all card data/food Array... updates whenever app is launched/ whenever specific data is 
-    
+
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
     
@@ -85,8 +82,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         
         let data = HomeViewController.daysOfWeek
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
-                
-        //cell.configureCell(with: Data[indexPath.row])
         
         cell.configureCell(data[indexPath.row])
         return cell
@@ -94,23 +89,18 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "pushDetailView", sender: indexPath.row)
         
-//        let selectedCardID = indexPath.row //getting a selectedcard. 1'st card's ID is 0. Now I need to pass that selectedCardID to tableViewController so it can be saved as a property. Maybe I need to create a card object and assign it a selectedCardID and a total nutrition ID for display on card.
-//        print("selected card: \(selectedCardID)")
-//        self.selectedCard = selectedCardID
+        performSegue(withIdentifier: "pushDetailView", sender: indexPath.row) //segue to CardTableViewController
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "pushDetailView" { //segue used pushes to collectionView
-            
-           // let testObject = CardData()
-            
-            
+
             if segue.destination is CardTableViewController
             {
-                let vc = segue.destination as? CardTableViewController
-                vc?.selectedCard = sender as! Int
+                let vc = segue.destination as? CardTableViewController //seguing to CardTableViewController
+                vc?.selectedCard = sender as! Int //passing user selected day card as digit 0-6(Mon-Sun)
             }
         }
     }
