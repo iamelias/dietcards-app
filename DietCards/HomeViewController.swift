@@ -42,11 +42,27 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         print("Home View Will Appear Called")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+       // collectionView.contentOffset = CGPoint(x: 300.0, y: 0.0)
+//        let w = UIScreen.main.bounds.width
+//        let t = collectionView.bounds.maxX
+//        let v = collectionView.
+//        let h = UIScreen.main.bounds.height
+//
+//
+//        collectionView.contentOffset = CGPoint(x: t, y: 0)
+//
+
+    }
+    
     @IBAction func dayButtonTapped(_ sender: Any) {
-                
+        
+        
         collectionView.contentOffset = CGPoint(x: 50.0, y: 0.0)
         let button = sender as! UIButton
         print("Button: \(button.tag) was pressed")
@@ -78,6 +94,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         return 7
     }
     
+    
+    //MARK: CELL DEFINITION
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let data = HomeViewController.daysOfWeek
