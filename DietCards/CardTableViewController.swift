@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import FirebaseDatabase
+import FirebaseUI
 
 class CardTableViewController: UIViewController {
     
@@ -57,10 +58,19 @@ class CardTableViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         //tableView.reloadData()
+        
+        if Auth.auth().currentUser != nil {
+            print("(((((()))))))********")
+           // print(Auth.auth().currentUser!)
+            print("(((((()))))))********")
+
+        }
+
         loadFirebaseData()
         
         activityIndicator.stopAnimating()
         activityIndicator.isHidden = true
+        
         
         
     }

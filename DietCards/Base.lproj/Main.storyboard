@@ -335,6 +335,49 @@
             </objects>
             <point key="canvasLocation" x="3260" y="114.53201970443351"/>
         </scene>
+        <!--Login View Controller-->
+        <scene sceneID="Zsb-gK-ACn">
+            <objects>
+                <viewController id="XWr-yQ-Grc" customClass="LoginViewController" customModule="DietCards" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="UHa-cR-dS9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Vqk-N8-edN">
+                                <rect key="frame" x="124.66666666666669" y="375" width="126" height="62.333333333333314"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DietCards Demo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcD-Fu-7hf">
+                                        <rect key="frame" x="0.0" y="0.0" width="126" height="20.333333333333332"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RX8-Bv-mqz">
+                                        <rect key="frame" x="43.999999999999986" y="32.333333333333314" width="38" height="30"/>
+                                        <state key="normal" title="Login"/>
+                                        <connections>
+                                            <action selector="loginTapped:" destination="XWr-yQ-Grc" eventType="touchUpInside" id="bqR-Ut-vbv"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Vqk-N8-edN" firstAttribute="centerX" secondItem="UHa-cR-dS9" secondAttribute="centerX" id="btf-IP-RJH"/>
+                            <constraint firstItem="Vqk-N8-edN" firstAttribute="centerY" secondItem="UHa-cR-dS9" secondAttribute="centerY" id="qDp-eu-2YL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="mOW-iV-9XV"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="xzL-jj-kXU"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="toHomeSegue" id="HRx-pB-mIF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kL9-f2-Ozi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="206" y="115"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="cji-DS-RT4">
             <objects>
@@ -346,12 +389,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Lwq-8s-Vbg"/>
+                        <segue destination="XWr-yQ-Grc" kind="relationship" relationship="rootViewController" id="TX1-fV-nMY"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ibl-tw-Ygk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="115.27093596059113"/>
+            <point key="canvasLocation" x="-620" y="115"/>
         </scene>
     </scenes>
     <resources>
