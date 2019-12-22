@@ -11,9 +11,26 @@ import FirebaseUI
 
 class HomeViewController: UIViewController {
     
+    // prompts user to answer if they are a Leader of Member? Leader = True, Member = False
+    //sends response to next view controller along with selectedCard
+    //Updates title Label to indicate if you are a member or leader
+    
+    //var leader: Bool = false //to pass to next view controller for database call
     var selectedCard = 8 //default card setting
     
     var retrievedCalSum = 0.0
+    
+    var permType = "" //will change to indicate permission type group creator or member
+    
+    
+    var leader: Bool = false
+    var userEmail = "" //user details
+    var userUid = ""
+    
+    
+    var getUserEmailInput = ""
+    
+    var amILeader:Bool = false
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
@@ -44,11 +61,22 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         
+        whatAreYou()
+        print("^^^^&&&&****((((")
+        print(amILeader)
+       // print(amILeader)
+        print("^^^^&&&&****((((")
+
+        
         if Auth.auth().currentUser != nil {
             print("(((((()))))))********")
             let user = Auth.auth().currentUser!
             let myemail = user.email
             let myuserid = user.uid
+            
+            self.leader = true
+            self.userEmail = user.email!
+            self.userUid = user.uid
             
             
             //will use to create nodes and to determine access
@@ -65,19 +93,83 @@ class HomeViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        
-        
-       // collectionView.contentOffset = CGPoint(x: 300.0, y: 0.0)
-//        let w = UIScreen.main.bounds.width
-//        let t = collectionView.bounds.maxX
-//        let v = collectionView.
-//        let h = UIScreen.main.bounds.height
-//
-//
-//        collectionView.contentOffset = CGPoint(x: t, y: 0)
-//
 
+        print("@@@@@@@@@@")
+        print(permType) //gets replaced with leader or follower when selected
+        print("@@@@@@@@@@")
+        
+       NotificationCenter.default.removeObserver(self)
+    }
+    
+    func whatAreYou() { //This method asks if you are a leader or follower
+        //returns if you are a follower or leader// will be used to determine
+        
+        //var isLeader: Bool = false //default is false =
+        
+        var isTrueLeader: Bool {
+            
+            return true
+            
+        }
+        
+        var isFollower: Bool {
+            return false
+        }
+        
+        //promptForAnswer()
+        
+        let alert = UIAlertController(title: "Leader or Follower?", message: "choose", preferredStyle: .alert)
+        let leaderOption = UIAlertAction(title: "Leader", style: .default, handler: { action in self.amILeader = true })
+
+//        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.amILeader = false })
+        
+        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.promptForAnswer()})
+
+
+
+        alert.addAction(leaderOption)
+        alert.addAction(followerOption)
+
+
+        present(alert, animated: true)
+        
+    }
+    
+    func promptForAnswer() {
+        
+        self.amILeader = false
+        let ac = UIAlertController(title: "Enter answer", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
+            let answer = ac.textFields![0]
+            
+            self.getUserEmailInput = answer.text ?? ""
+            // do something interesting with "answer" here
+        }
+
+        ac.addAction(submitAction)
+
+        present(ac, animated: true)
+    }
+
+    @IBAction func joinGroupTapped(_ sender: Any) {
+        
+        print("((((((((******&&&&&&&&&&&*****")
+        print(getUserEmailInput)
+        print("((((((((******&&&&&&&&&&&*****")
+        
+        let selectedVC = storyboard?.instantiateViewController(withIdentifier: "AddGroupController") as! AddGroupController
+        selectedVC.chosenUser = self
+        
+        //selectedVC.
+        
+        present(selectedVC, animated: true, completion: dismissResponse)
+    }
+    
+    func dismissResponse() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(viewDidAppear), name: Notification.Name("ViewDidAppear"), object: nil)
     }
     
     @IBAction func dayButtonTapped(_ sender: Any) {
@@ -129,7 +221,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         performSegue(withIdentifier: "pushDetailView", sender: indexPath.row) //segue to CardTableViewController
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -138,9 +229,21 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             if segue.destination is CardTableViewController
             {
                 let vc = segue.destination as? CardTableViewController //seguing to CardTableViewController
+                
+                vc?.leader = self.leader
+                vc?.uid = self.userUid
+                vc?.email = self.userEmail
                 vc?.selectedCard = sender as! Int //passing user selected day card as digit 0-6(Mon-Sun)
             }
         }
+    }
+}
+
+extension HomeViewController: TypeOfUserDelegate {
+    
+    func didSelectUser(type: String) {
+        
+        permType = type // retrieved userType from AddGroupController
     }
 }
 

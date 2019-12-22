@@ -18,6 +18,10 @@ class CardTableViewController: UIViewController {
     var selectedCard: Int = 0 //selected card num from previous controller 0-6(Mon-Sun)
     var ref: DatabaseReference! // reference to Firebase database
     
+    var leader: Bool = false // if true we will create new user, if false we will call uid
+    var email: String = "" //will use to find leaders data brach or
+    var uid: String = "" //will use to find leaders data branch
+    
     //4 arrays below are populated with Firebase saved food data
     var breakfastArray: [NutritionData] = []
     var lunchArray: [NutritionData] = []
@@ -59,12 +63,21 @@ class CardTableViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         //tableView.reloadData()
         
-        if Auth.auth().currentUser != nil {
-            print("(((((()))))))********")
-           // print(Auth.auth().currentUser!)
-            print("(((((()))))))********")
+//        if Auth.auth().currentUser != nil {
+//            print("(((((()))))))********")
+//           // print(Auth.auth().currentUser!)
+//            print("(((((()))))))********")
+//
+//        }
+        
+        print("***********((((((((((&&&&&&&&&&&&&&&")
+        print(leader)
+        print(email)
+        print(uid)
+        print(selectedCard)
+        
+        print("***********((((((((((&&&&&&&&&&&&&&&")
 
-        }
 
         loadFirebaseData()
         
