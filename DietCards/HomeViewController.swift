@@ -11,27 +11,17 @@ import FirebaseUI
 
 class HomeViewController: UIViewController {
     
-    // prompts user to answer if they are a Leader of Member? Leader = True, Member = False
-    //sends response to next view controller along with selectedCard
-    //Updates title Label to indicate if you are a member or leader
-    
-    //var leader: Bool = false //to pass to next view controller for database call
     var selectedCard = 8 //default card setting
     
     var retrievedCalSum = 0.0
     
     var permType = "" //will change to indicate permission type group creator or member
     
-    
-    var leader: Bool = false
     var userEmail = "" //user details
     var userUid = ""
     
-    
     var getUserEmailInput = ""
     
-    var amILeader:Bool = false
-
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
     @IBOutlet weak var joinGroupButton: UIButton!
@@ -48,7 +38,6 @@ class HomeViewController: UIViewController {
     
     static let daysOfWeek: [String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -64,87 +53,26 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        whatAreYou()
-        print("^^^^&&&&****((((")
-        print(amILeader)
-       // print(amILeader)
-        print("^^^^&&&&****((((")
-
-        
+         
         if Auth.auth().currentUser != nil {
-            print("(((((()))))))********")
             let user = Auth.auth().currentUser!
-            let myemail = user.email
-            let myuserid = user.uid
-            
-            self.leader = true
+
             self.userEmail = user.email!
             self.userUid = user.uid
-            
-            
-            //will use to create nodes and to determine access
-            print(myemail!) //users email
-            print(myuserid) //users uid
-            
-          
-            print("(((((()))))))********")
-
-            
-        }
         
-        print("Home View Will Appear Called")
+    }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-
-        print("@@@@@@@@@@")
-        print(permType) //gets replaced with leader or follower when selected
-        print(getUserEmailInput)
-        
-//        if getUserEmailInput != "" {
-//
-//            joinGroupButton.setTitle(getUserEmailInput, for: .normal)
-//       // joinGroupButton.titleLabel?.text = getUserEmailInput
-//        }
-
-        print("@@@@@@@@@@")
         
        NotificationCenter.default.removeObserver(self)
     }
     
-    func whatAreYou() { //This method asks if you are a leader or follower
-        //returns if you are a follower or leader// will be used to determine
-        
-        //var isLeader: Bool = false //default is false =
-        
-        var isTrueLeader: Bool {
-            
-            return true
-            
-        }
-        
-        var isFollower: Bool {
-            return false
-        }
-        
-//
-        
-    }
-    
-//
-
     @IBAction func joinGroupTapped(_ sender: Any) {
-        
-        print("((((((((******&&&&&&&&&&&*****")
-        print(getUserEmailInput)
-        print("((((((((******&&&&&&&&&&&*****")
-        
+      
         let selectedVC = storyboard?.instantiateViewController(withIdentifier: "AddGroupController") as! AddGroupController
         selectedVC.chosenUser = self
-        
-        //selectedVC.
-        
+                
         present(selectedVC, animated: true, completion: dismissResponse)
     }
     
@@ -175,7 +103,7 @@ class HomeViewController: UIViewController {
     }
 }
 
-//MARK: * Collection View Code *
+//MARK:  Collection View Code 
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -188,7 +116,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     
-    //MARK: CELL DEFINITION
+//MARK: CELL DEFINITION
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let data = HomeViewController.daysOfWeek
@@ -211,9 +139,20 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             {
                 let vc = segue.destination as? CardTableViewController //seguing to CardTableViewController
                 
-                vc?.leader = self.leader
-                vc?.uid = self.userUid
-                vc?.email = self.userEmail
+//MARK: DATA FOR CARDTABLECONTROLLER
+                vc?.uid = self.userUid // current user uid
+                
+                if permType == "leader" {
+                    vc?.email = self.userEmail                 }
+                
+                else if permType == "follower" {
+                    
+                    vc?.email = self.getUserEmailInput
+                    
+                }
+                
+              //  vc?.email = self.userEmail // current user email
+                vc?.memberOfEmail = self.getUserEmailInput //for join group people
                 vc?.selectedCard = sender as! Int //passing user selected day card as digit 0-6(Mon-Sun)
             }
         }
@@ -234,10 +173,6 @@ extension HomeViewController: TypeOfUserDelegate {
         else if type == "leader" {
             joinGroupButton.setTitle(userEmail, for: .normal)
         }
-        
-
-        
-        
     }
 }
 
