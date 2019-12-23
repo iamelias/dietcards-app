@@ -14,9 +14,17 @@ class HomeViewController: UIViewController {
     var selectedCard = 8 //default card setting
     
     var retrievedCalSum = 0.0
-
+    
+    var permType = "" //will change to indicate permission type group creator or member
+    
+    var userEmail = "" //user details
+    var userUid = ""
+    
+    var getUserEmailInput = ""
+    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
+    @IBOutlet weak var joinGroupButton: UIButton!
     
     enum Days: String {
         case Monday
@@ -30,10 +38,12 @@ class HomeViewController: UIViewController {
     
     static let daysOfWeek: [String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isHidden = true
+        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.backgroundColor = .clear
+        navigationController?.navigationBar.backItem?.backBarButtonItem = .none
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.locale = Locale(identifier: "en_US")
@@ -43,41 +53,32 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+         
         if Auth.auth().currentUser != nil {
-            print("(((((()))))))********")
             let user = Auth.auth().currentUser!
-            let myemail = user.email
-            let myuserid = user.uid
-            
-            
-            //will use to create nodes and to determine access
-            print(myemail!) //users email
-            print(myuserid) //users uid
-            
-          
-            print("(((((()))))))********")
 
-            
-        }
+            self.userEmail = user.email!
+            self.userUid = user.uid
         
-        print("Home View Will Appear Called")
+    }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
-        
-        
-       // collectionView.contentOffset = CGPoint(x: 300.0, y: 0.0)
-//        let w = UIScreen.main.bounds.width
-//        let t = collectionView.bounds.maxX
-//        let v = collectionView.
-//        let h = UIScreen.main.bounds.height
-//
-//
-//        collectionView.contentOffset = CGPoint(x: t, y: 0)
-//
-
+       NotificationCenter.default.removeObserver(self)
+    }
+    
+    @IBAction func joinGroupTapped(_ sender: Any) {
+      
+        let selectedVC = storyboard?.instantiateViewController(withIdentifier: "AddGroupController") as! AddGroupController
+        selectedVC.chosenUser = self
+                
+        present(selectedVC, animated: true, completion: dismissResponse)
+    }
+    
+    func dismissResponse() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(viewDidAppear), name: Notification.Name("ViewDidAppear"), object: nil)
     }
     
     @IBAction func dayButtonTapped(_ sender: Any) {
@@ -102,7 +103,7 @@ class HomeViewController: UIViewController {
     }
 }
 
-//MARK: * Collection View Code *
+//MARK:  Collection View Code 
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -115,7 +116,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     
-    //MARK: CELL DEFINITION
+//MARK: CELL DEFINITION
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let data = HomeViewController.daysOfWeek
@@ -129,7 +130,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         performSegue(withIdentifier: "pushDetailView", sender: indexPath.row) //segue to CardTableViewController
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -138,9 +138,100 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             if segue.destination is CardTableViewController
             {
                 let vc = segue.destination as? CardTableViewController //seguing to CardTableViewController
+                
+//MARK: DATA FOR CARDTABLECONTROLLER
+                vc?.uid = self.userUid // current user uid
+                
+                if permType == "leader" {
+                    vc?.email = self.userEmail                 }
+                
+                else if permType == "follower" {
+                    
+                    vc?.email = self.getUserEmailInput
+                    
+                }
+                
+              //  vc?.email = self.userEmail // current user email
+                vc?.memberOfEmail = self.getUserEmailInput //for join group people
                 vc?.selectedCard = sender as! Int //passing user selected day card as digit 0-6(Mon-Sun)
             }
         }
     }
 }
 
+extension HomeViewController: TypeOfUserDelegate {
+    
+    func didSelectUser(type: String, email: String) { //recieving group type and email
+        
+        permType = type // retrieved userType from AddGroupController
+        getUserEmailInput = email
+        
+        if type == "follower" {
+        joinGroupButton.setTitle(getUserEmailInput, for: .normal)
+        }
+        
+        else if type == "leader" {
+            joinGroupButton.setTitle(userEmail, for: .normal)
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//********************************
+
+//    func promptForAnswer() {
+//
+//        self.amILeader = false
+//        let ac = UIAlertController(title: "Enter answer", message: nil, preferredStyle: .alert)
+//        ac.addTextField()
+//
+//        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
+//            let answer = ac.textFields![0]
+//
+//            self.getUserEmailInput = answer.text ?? ""
+//            // do something interesting with "answer" here
+//        }
+//
+//        ac.addAction(submitAction)
+//
+//        present(ac, animated: true)
+//    }
+
+//************************************
+        //promptForAnswer()
+//
+//        let alert = UIAlertController(title: "Leader or Follower?", message: "choose", preferredStyle: .alert)
+//        let leaderOption = UIAlertAction(title: "Leader", style: .default, handler: { action in self.amILeader = true })
+//
+////        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.amILeader = false })
+//
+//        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.promptForAnswer()})
+//
+//
+//
+//        alert.addAction(leaderOption)
+//        alert.addAction(followerOption)
+//
+//
+//        present(alert, animated: true)

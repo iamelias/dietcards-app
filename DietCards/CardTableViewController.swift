@@ -18,6 +18,10 @@ class CardTableViewController: UIViewController {
     var selectedCard: Int = 0 //selected card num from previous controller 0-6(Mon-Sun)
     var ref: DatabaseReference! // reference to Firebase database
     
+    var email: String = "" //current user email or group's email - from previous vc
+    var memberOfEmail: String = "" //for join group people - from previous vc
+    var uid: String = "" //will use to find leaders data branch
+    
     //4 arrays below are populated with Firebase saved food data
     var breakfastArray: [NutritionData] = []
     var lunchArray: [NutritionData] = []
@@ -48,7 +52,6 @@ class CardTableViewController: UIViewController {
         
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        print("Selected Card: \(selectedCard)") //from HomeViewController
         tableView.separatorColor = .black
         tableView.separatorStyle = .singleLine
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none //removes lines in between cells
@@ -57,21 +60,16 @@ class CardTableViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        //tableView.reloadData()
+
+        print(email) //current user state email or group email
+        print(uid) //current user uid
+        print(selectedCard) //selected card number
+        print(memberOfEmail) // join user acquired email
         
-        if Auth.auth().currentUser != nil {
-            print("(((((()))))))********")
-           // print(Auth.auth().currentUser!)
-            print("(((((()))))))********")
-
-        }
-
-        loadFirebaseData()
+        loadFirebaseData() //calling realtime database
         
         activityIndicator.stopAnimating()
         activityIndicator.isHidden = true
-        
-        
         
     }
     
@@ -326,12 +324,25 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         default: print("Error in selected card switch array")
         }
         
+     print(email)
+        
+//        self.ref.child(email).setValue(fireBaseCard)
+
+        
         ref.child(fireBaseCard).observeSingleEvent(of: .value, with: { (snapshot) in
+//        ref.child(email).child(fireBaseCard).observeSingleEvent(of: .value, with: { (snapshot) in
+        
+       // ref.child("\(email)").setValue(fireBaseCard)
             
+//        ref.child(email).observeSingleEvent(of: .value, with: { (snapshot) in
+
+        
             guard let value = snapshot.value as? NSDictionary else { //if there are no saved records return
                 print("There are no saved records")
                 return
             }
+            
+            
             
             //MARK: O(n^2) algorithm
             for item in value { // iterating through breakfast,lunch,dinner,snack
@@ -367,8 +378,5 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         })
     }
 }
-
-
-
 
 

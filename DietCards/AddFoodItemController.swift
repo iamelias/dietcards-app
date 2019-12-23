@@ -56,19 +56,11 @@ class AddFoodItemController: UIViewController {
         activityIndicator.stopAnimating()
         activityIndicator.isHidden = true
         if success { //if response is sucessful
-            //
-            //            var passFoodID = NutritionData() //create passFoodID ref variable of type NutritionData
-            //            passFoodID.foodName = foodID.foodName
-            //            passFoodID.nutrition = foodID.nutrition
-            //            passFoodID.mealTime = mealText.text!
-            
+
             ref = Database.database().reference() //connecting to firebase database
             
-            //writing to database
             let key = ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
-            //passedInDay is selected day chosen in HomeViewController, will always have value 0...6
-            //mealText from pickerView Breakfast...Snack
-            
+
             let data = [ //data to be added to database
                 "foodid": key!, //unique key
                 "foodName": foodID.foodName, //from Network response
