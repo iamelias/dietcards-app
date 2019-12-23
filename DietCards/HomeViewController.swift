@@ -34,6 +34,7 @@ class HomeViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
+    @IBOutlet weak var joinGroupButton: UIButton!
     
     enum Days: String {
         case Monday
@@ -50,7 +51,10 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isHidden = true
+        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.backgroundColor = .clear
+        navigationController?.navigationBar.backItem?.backBarButtonItem = .none
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.locale = Locale(identifier: "en_US")
@@ -96,6 +100,14 @@ class HomeViewController: UIViewController {
 
         print("@@@@@@@@@@")
         print(permType) //gets replaced with leader or follower when selected
+        print(getUserEmailInput)
+        
+//        if getUserEmailInput != "" {
+//
+//            joinGroupButton.setTitle(getUserEmailInput, for: .normal)
+//       // joinGroupButton.titleLabel?.text = getUserEmailInput
+//        }
+
         print("@@@@@@@@@@")
         
        NotificationCenter.default.removeObserver(self)
@@ -116,42 +128,11 @@ class HomeViewController: UIViewController {
             return false
         }
         
-        //promptForAnswer()
-        
-        let alert = UIAlertController(title: "Leader or Follower?", message: "choose", preferredStyle: .alert)
-        let leaderOption = UIAlertAction(title: "Leader", style: .default, handler: { action in self.amILeader = true })
-
-//        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.amILeader = false })
-        
-        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.promptForAnswer()})
-
-
-
-        alert.addAction(leaderOption)
-        alert.addAction(followerOption)
-
-
-        present(alert, animated: true)
+//
         
     }
     
-    func promptForAnswer() {
-        
-        self.amILeader = false
-        let ac = UIAlertController(title: "Enter answer", message: nil, preferredStyle: .alert)
-        ac.addTextField()
-
-        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
-            let answer = ac.textFields![0]
-            
-            self.getUserEmailInput = answer.text ?? ""
-            // do something interesting with "answer" here
-        }
-
-        ac.addAction(submitAction)
-
-        present(ac, animated: true)
-    }
+//
 
     @IBAction func joinGroupTapped(_ sender: Any) {
         
@@ -241,9 +222,81 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
 extension HomeViewController: TypeOfUserDelegate {
     
-    func didSelectUser(type: String) {
+    func didSelectUser(type: String, email: String) { //recieving group type and email
         
         permType = type // retrieved userType from AddGroupController
+        getUserEmailInput = email
+        
+        if type == "follower" {
+        joinGroupButton.setTitle(getUserEmailInput, for: .normal)
+        }
+        
+        else if type == "leader" {
+            joinGroupButton.setTitle(userEmail, for: .normal)
+        }
+        
+
+        
+        
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//********************************
+
+//    func promptForAnswer() {
+//
+//        self.amILeader = false
+//        let ac = UIAlertController(title: "Enter answer", message: nil, preferredStyle: .alert)
+//        ac.addTextField()
+//
+//        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
+//            let answer = ac.textFields![0]
+//
+//            self.getUserEmailInput = answer.text ?? ""
+//            // do something interesting with "answer" here
+//        }
+//
+//        ac.addAction(submitAction)
+//
+//        present(ac, animated: true)
+//    }
+
+//************************************
+        //promptForAnswer()
+//
+//        let alert = UIAlertController(title: "Leader or Follower?", message: "choose", preferredStyle: .alert)
+//        let leaderOption = UIAlertAction(title: "Leader", style: .default, handler: { action in self.amILeader = true })
+//
+////        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.amILeader = false })
+//
+//        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.promptForAnswer()})
+//
+//
+//
+//        alert.addAction(leaderOption)
+//        alert.addAction(followerOption)
+//
+//
+//        present(alert, animated: true)

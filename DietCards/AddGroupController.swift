@@ -11,7 +11,7 @@ import UIKit
 
 protocol TypeOfUserDelegate {
     
-    func didSelectUser(type: String)
+    func didSelectUser(type: String, email: String)
     
 }
 
@@ -35,19 +35,15 @@ class AddGroupController: UIViewController {
     
     @IBAction func createGroupTapped(_ sender: Any) {
       //  NotificationCenter.default.removeObserver("ViewDidAppear")
-        chosenUser.didSelectUser(type: "leader")
+        chosenUser.didSelectUser(type: "leader", email: "")
         notify()
         dismiss(animated: true)
-        
-        
     }
     
     
     @IBAction func joinGroupTapped(_ sender: Any) {
       //  NotificationCenter.default.removeObserver("ViewDidAppear")
         promptForAnswer()
-        chosenUser.didSelectUser(type: "follower")
-        notify()
        // dismiss(animated: true)
     }
     
@@ -58,15 +54,18 @@ class AddGroupController: UIViewController {
     
     
     func promptForAnswer() {
-        
        // self.amILeader = false
-        let ac = UIAlertController(title: "Enter Group Leader's email", message: nil, preferredStyle: .alert)
+        let ac = UIAlertController(title: "Join Group", message: "Enter group leader's email address", preferredStyle: .alert)
         ac.addTextField()
 
-        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
+        let submitAction = UIAlertAction(title: "Join", style: .default) { [unowned ac] _ in
             let answer = ac.textFields![0]
             
             self.getEmailInput = answer.text ?? ""
+           // print(self.getEmailInput)
+            
+            self.chosenUser.didSelectUser(type: "follower", email: self.getEmailInput)
+            self.notify()
             
             self.dismiss(animated: true)
         }

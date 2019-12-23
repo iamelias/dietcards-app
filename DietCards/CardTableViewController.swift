@@ -61,14 +61,7 @@ class CardTableViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        //tableView.reloadData()
-        
-//        if Auth.auth().currentUser != nil {
-//            print("(((((()))))))********")
-//           // print(Auth.auth().currentUser!)
-//            print("(((((()))))))********")
-//
-//        }
+
         
         print("***********((((((((((&&&&&&&&&&&&&&&")
         print(leader)
@@ -83,8 +76,6 @@ class CardTableViewController: UIViewController {
         
         activityIndicator.stopAnimating()
         activityIndicator.isHidden = true
-        
-        
         
     }
     
