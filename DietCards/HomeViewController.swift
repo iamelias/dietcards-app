@@ -20,7 +20,9 @@ class HomeViewController: UIViewController {
     var userEmail = "" //user details
     var userUid = ""
     
-    var getUserEmailInput = ""
+    var getGroupNameInput = ""
+    
+    var updatedAlert: Bool = false
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
@@ -41,7 +43,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isHidden = true
         navigationController?.navigationBar.backgroundColor = .clear
         navigationController?.navigationBar.backItem?.backBarButtonItem = .none
         let dateFormatter = DateFormatter()
@@ -49,6 +51,7 @@ class HomeViewController: UIViewController {
         dateFormatter.locale = Locale(identifier: "en_US")
         homeTitleLabel.text = dateFormatter.string(from: Date())
         homeTitleLabel.textColor = .black
+        
         
     }
     
@@ -66,10 +69,34 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         
        NotificationCenter.default.removeObserver(self)
+                
+ if updatedAlert == true {
+         if permType == "leader" {
+            let message = "You've created: \(getGroupNameInput)"
+            let updateTitle = "Joined"
+
+        createJoinAlert(updateTitle, message)
+        }
+        
+        else if permType == "follower" {
+        let message = "You've joined: \(getGroupNameInput)"
+        let updateTitle = "Created"
+
+        createJoinAlert(updateTitle, message)
+    }
+     }
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        for cell in collectionView.visibleCells {
+            let indexPath = collectionView.indexPath(for: cell)
+            print(indexPath!)
+        }
+    }
+    
+    
     @IBAction func joinGroupTapped(_ sender: Any) {
-      
+
         let selectedVC = storyboard?.instantiateViewController(withIdentifier: "AddGroupController") as! AddGroupController
         selectedVC.chosenUser = self
                 
@@ -77,30 +104,32 @@ class HomeViewController: UIViewController {
     }
     
     func dismissResponse() {
+        
+        //let a = collectionView.layer.position
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(viewDidAppear), name: Notification.Name("ViewDidAppear"), object: nil)
     }
     
-    @IBAction func dayButtonTapped(_ sender: Any) {
-        
-        
-        collectionView.contentOffset = CGPoint(x: 50.0, y: 0.0)
-        let button = sender as! UIButton
-        print("Button: \(button.tag) was pressed")
-        collectionView.reloadData()
-        
-        switch button.tag { //positions when day button is tapped
-        case 1: collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
-        case 2: collectionView.contentOffset = CGPoint(x: 150.0, y: 0.0)
-        case 3: collectionView.contentOffset = CGPoint(x: 385.0, y: 0.0)
-        case 4: collectionView.contentOffset = CGPoint(x: 625.0, y: 0.0)
-        case 5: collectionView.contentOffset = CGPoint(x: 830.0, y: 0.0)
-        case 6: collectionView.contentOffset = CGPoint(x: 1075.0, y: 0.0)
-        case 7: collectionView.contentOffset = CGPoint(x: 1360.0, y: 0.0)
-        default:
-            collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
-        }
-    }
+//    @IBAction func dayButtonTapped(_ sender: Any) {
+//
+//
+//        collectionView.contentOffset = CGPoint(x: 50.0, y: 0.0)
+//        let button = sender as! UIButton
+//        print("Button: \(button.tag) was pressed")
+//        collectionView.reloadData()
+//
+//        switch button.tag { //positions when day button is tapped
+//        case 1: collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
+//        case 2: collectionView.contentOffset = CGPoint(x: 150.0, y: 0.0)
+//        case 3: collectionView.contentOffset = CGPoint(x: 385.0, y: 0.0)
+//        case 4: collectionView.contentOffset = CGPoint(x: 625.0, y: 0.0)
+//        case 5: collectionView.contentOffset = CGPoint(x: 830.0, y: 0.0)
+//        case 6: collectionView.contentOffset = CGPoint(x: 1075.0, y: 0.0)
+//        case 7: collectionView.contentOffset = CGPoint(x: 1360.0, y: 0.0)
+//        default:
+//            collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
+//        }
+//    }
 }
 
 //MARK:  Collection View Code 
@@ -115,7 +144,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         return 7
     }
     
-    
 //MARK: CELL DEFINITION
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -125,7 +153,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         cell.configureCell(data[indexPath.row])
         return cell
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -139,99 +166,54 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             {
                 let vc = segue.destination as? CardTableViewController //seguing to CardTableViewController
                 
-//MARK: DATA FOR CARDTABLECONTROLLER
                 vc?.uid = self.userUid // current user uid
                 
                 if permType == "leader" {
-                    vc?.email = self.userEmail                 }
-                
-                else if permType == "follower" {
-                    
-                    vc?.email = self.getUserEmailInput
+                    vc?.groupName = self.getGroupNameInput
                     
                 }
                 
-              //  vc?.email = self.userEmail // current user email
-                vc?.memberOfEmail = self.getUserEmailInput //for join group people
+                else if permType == "follower" {
+                    
+                    vc?.groupName = self.getGroupNameInput
+                }
+                
                 vc?.selectedCard = sender as! Int //passing user selected day card as digit 0-6(Mon-Sun)
             }
         }
     }
+    
+    func createJoinAlert(_ useTitle: String, _ useMessage: String) {
+        
+        DispatchQueue.main.async {
+        let alert1 = UIAlertController(title: useTitle, message: useMessage, preferredStyle: .alert) //alert for after creating or joining group
+        
+        let contAction = UIAlertAction(title: "Continue", style: .default, handler: nil)
+        
+        alert1.addAction(contAction)
+            self.updatedAlert = false
+            self.present(alert1, animated: true)
+        }
+        return
+    }
+    
+    
 }
 
 extension HomeViewController: TypeOfUserDelegate {
     
-    func didSelectUser(type: String, email: String) { //recieving group type and email
-        
+    func didSelectUser(type: String, groupName: String) { //recieving group type and email
+        updatedAlert = true
         permType = type // retrieved userType from AddGroupController
-        getUserEmailInput = email
+        getGroupNameInput = groupName
         
         if type == "follower" {
-        joinGroupButton.setTitle(getUserEmailInput, for: .normal)
+        joinGroupButton.setTitle(getGroupNameInput, for: .normal)
+    
         }
         
         else if type == "leader" {
-            joinGroupButton.setTitle(userEmail, for: .normal)
+            joinGroupButton.setTitle(getGroupNameInput, for: .normal)
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//********************************
-
-//    func promptForAnswer() {
-//
-//        self.amILeader = false
-//        let ac = UIAlertController(title: "Enter answer", message: nil, preferredStyle: .alert)
-//        ac.addTextField()
-//
-//        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
-//            let answer = ac.textFields![0]
-//
-//            self.getUserEmailInput = answer.text ?? ""
-//            // do something interesting with "answer" here
-//        }
-//
-//        ac.addAction(submitAction)
-//
-//        present(ac, animated: true)
-//    }
-
-//************************************
-        //promptForAnswer()
-//
-//        let alert = UIAlertController(title: "Leader or Follower?", message: "choose", preferredStyle: .alert)
-//        let leaderOption = UIAlertAction(title: "Leader", style: .default, handler: { action in self.amILeader = true })
-//
-////        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.amILeader = false })
-//
-//        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.promptForAnswer()})
-//
-//
-//
-//        alert.addAction(leaderOption)
-//        alert.addAction(followerOption)
-//
-//
-//        present(alert, animated: true)

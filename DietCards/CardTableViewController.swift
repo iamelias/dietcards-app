@@ -18,8 +18,7 @@ class CardTableViewController: UIViewController {
     var selectedCard: Int = 0 //selected card num from previous controller 0-6(Mon-Sun)
     var ref: DatabaseReference! // reference to Firebase database
     
-    var email: String = "" //current user email or group's email - from previous vc
-    var memberOfEmail: String = "" //for join group people - from previous vc
+    var groupName: String = "" //current user email or group's email - from previous vc
     var uid: String = "" //will use to find leaders data branch
     
     //4 arrays below are populated with Firebase saved food data
@@ -61,10 +60,9 @@ class CardTableViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
 
-        print(email) //current user state email or group email
+        print(groupName) //current user state email or group email
         print(uid) //current user uid
         print(selectedCard) //selected card number
-        print(memberOfEmail) // join user acquired email
         
         loadFirebaseData() //calling realtime database
         
@@ -83,6 +81,7 @@ class CardTableViewController: UIViewController {
         let addFoodVC = storyboard?.instantiateViewController(withIdentifier: "AddFoodItemController") as! AddFoodItemController
         
         addFoodVC.passedInDay = selectedCard //sending selected day data to AddFoodItemController
+        addFoodVC.passedInGroupName = groupName
         addFoodVC.modalPresentationStyle = .fullScreen
         
         present(addFoodVC, animated: true, completion: nil ) // presenting AddFoodItemController
@@ -324,17 +323,19 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         default: print("Error in selected card switch array")
         }
         
-     print(email)
+     print(groupName)
         
 //        self.ref.child(email).setValue(fireBaseCard)
 
         
-        ref.child(fireBaseCard).observeSingleEvent(of: .value, with: { (snapshot) in
+//        ref.child(fireBaseCard).observeSingleEvent(of: .value, with: { (snapshot) in
 //        ref.child(email).child(fireBaseCard).observeSingleEvent(of: .value, with: { (snapshot) in
         
        // ref.child("\(email)").setValue(fireBaseCard)
             
-//        ref.child(email).observeSingleEvent(of: .value, with: { (snapshot) in
+       // let check = "eliashall" //username
+        
+        ref.child("\(groupName)/\(fireBaseCard)").observeSingleEvent(of: .value, with: { (snapshot) in
 
         
             guard let value = snapshot.value as? NSDictionary else { //if there are no saved records return
