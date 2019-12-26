@@ -52,6 +52,7 @@ class HomeViewController: UIViewController {
         homeTitleLabel.text = dateFormatter.string(from: Date())
         homeTitleLabel.textColor = .black
         
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,23 +64,13 @@ class HomeViewController: UIViewController {
             self.userUid = user.uid
         
     }
-        
-        //Mark: UIAlert alert!!!
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
        NotificationCenter.default.removeObserver(self)
-        
-        //MARK: Add Success Alert ********
-        
-        
-        
-        
+                
  if updatedAlert == true {
-    print("aaaaaaaaa\(Thread.current)")
-        print("Made it inside updateAlert&&&&&&&&&&&&&&")
          if permType == "leader" {
             let message = "You've created: \(getGroupNameInput)"
             let updateTitle = "Joined"
@@ -96,8 +87,16 @@ class HomeViewController: UIViewController {
      }
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        for cell in collectionView.visibleCells {
+            let indexPath = collectionView.indexPath(for: cell)
+            print(indexPath!)
+        }
+    }
+    
+    
     @IBAction func joinGroupTapped(_ sender: Any) {
-      
+
         let selectedVC = storyboard?.instantiateViewController(withIdentifier: "AddGroupController") as! AddGroupController
         selectedVC.chosenUser = self
                 
@@ -105,6 +104,8 @@ class HomeViewController: UIViewController {
     }
     
     func dismissResponse() {
+        
+        //let a = collectionView.layer.position
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(viewDidAppear), name: Notification.Name("ViewDidAppear"), object: nil)
     }
@@ -143,7 +144,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         return 7
     }
     
-    
 //MARK: CELL DEFINITION
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -153,7 +153,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         cell.configureCell(data[indexPath.row])
         return cell
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -167,7 +166,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             {
                 let vc = segue.destination as? CardTableViewController //seguing to CardTableViewController
                 
-//MARK: DATA FOR CARDTABLECONTROLLER
                 vc?.uid = self.userUid // current user uid
                 
                 if permType == "leader" {
@@ -178,10 +176,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
                 else if permType == "follower" {
                     
                     vc?.groupName = self.getGroupNameInput
-                    
                 }
                 
-              //  vc?.email = self.userEmail // current user email
                 vc?.selectedCard = sender as! Int //passing user selected day card as digit 0-6(Mon-Sun)
             }
         }
@@ -195,9 +191,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         let contAction = UIAlertAction(title: "Continue", style: .default, handler: nil)
         
         alert1.addAction(contAction)
-        print("made it to createJoinAlert")
             self.updatedAlert = false
-        print("cccccccc\(Thread.current)")
             self.present(alert1, animated: true)
         }
         return
@@ -206,11 +200,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
 }
 
-
 extension HomeViewController: TypeOfUserDelegate {
     
     func didSelectUser(type: String, groupName: String) { //recieving group type and email
-        print("bbbbbbbb\(Thread.current)")
         updatedAlert = true
         permType = type // retrieved userType from AddGroupController
         getGroupNameInput = groupName
@@ -225,63 +217,3 @@ extension HomeViewController: TypeOfUserDelegate {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//********************************
-
-//    func promptForAnswer() {
-//
-//        self.amILeader = false
-//        let ac = UIAlertController(title: "Enter answer", message: nil, preferredStyle: .alert)
-//        ac.addTextField()
-//
-//        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
-//            let answer = ac.textFields![0]
-//
-//            self.getUserEmailInput = answer.text ?? ""
-//            // do something interesting with "answer" here
-//        }
-//
-//        ac.addAction(submitAction)
-//
-//        present(ac, animated: true)
-//    }
-
-//************************************
-        //promptForAnswer()
-//
-//        let alert = UIAlertController(title: "Leader or Follower?", message: "choose", preferredStyle: .alert)
-//        let leaderOption = UIAlertAction(title: "Leader", style: .default, handler: { action in self.amILeader = true })
-//
-////        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.amILeader = false })
-//
-//        let followerOption = UIAlertAction(title: "Follower", style: .default, handler: {action in self.promptForAnswer()})
-//
-//
-//
-//        alert.addAction(leaderOption)
-//        alert.addAction(followerOption)
-//
-//
-//        present(alert, animated: true)

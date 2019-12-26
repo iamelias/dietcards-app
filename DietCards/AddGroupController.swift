@@ -78,7 +78,14 @@ class AddGroupController: UIViewController {
 
         ac.addAction(submitAction)
 
-        present(ac, animated: true)
+        present(ac, animated: true, completion:{
+            ac.view.superview?.isUserInteractionEnabled = true
+            ac.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.acBackgroundTapped)))} )
+    }
+    
+    @objc func acBackgroundTapped()
+    {
+        self.dismiss(animated: true, completion: nil) //dismissing alert
     }
     
     
@@ -110,7 +117,9 @@ class AddGroupController: UIViewController {
 
         ac.addAction(submitAction)
 
-        present(ac, animated: true)
+        present(ac, animated: true, completion:{
+                ac.view.superview?.isUserInteractionEnabled = true
+                   ac.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.acBackgroundTapped)))})
     }
     
     func checkDatabase(_ getGroupName: String,completion: @escaping (_ group: Bool) -> Void){
