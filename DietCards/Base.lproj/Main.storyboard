@@ -45,6 +45,17 @@ Join Group</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91J-gY-PzA">
+                                <rect key="frame" x="338" y="46.666666666666742" width="21" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.76535978202287314" green="0.39650771069263097" blue="0.32078681934230935" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" backgroundImage="xmark" catalog="system">
+                                    <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="dismissVC:" destination="UTp-jn-d0G" eventType="touchUpInside" id="cg0-mJ-cd3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="CSW-qI-Lyu"/>
@@ -56,7 +67,7 @@ Join Group</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v8k-Ea-brq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1078" y="-620"/>
+            <point key="canvasLocation" x="1077.5999999999999" y="-620.68965517241384"/>
         </scene>
         <!--AddGroupController-->
         <scene sceneID="tne-QT-ifu">
@@ -134,82 +145,9 @@ Join Group</string>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="et2-cR-RMA">
-                                <rect key="frame" x="16" y="650" width="342" height="51"/>
-                                <subviews>
-                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ErY-DP-WQb">
-                                        <rect key="frame" x="0.0" y="0.0" width="51" height="51"/>
-                                        <state key="normal" title="M" backgroundImage="redOval">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="dayButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9Zq-ZK-x9Z"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9QM-4e-Ifr">
-                                        <rect key="frame" x="72.666666666666671" y="0.0" width="51" height="51"/>
-                                        <state key="normal" title="T" backgroundImage="orangeOval">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="dayButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WSm-8o-3bi"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dDc-XQ-9hZ">
-                                        <rect key="frame" x="145.66666666666666" y="0.0" width="51" height="51"/>
-                                        <state key="normal" title="W" backgroundImage="yellowOval">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="dayButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ijB-8J-AvQ"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N28-hM-PZl">
-                                        <rect key="frame" x="218.33333333333334" y="0.0" width="51.000000000000028" height="51"/>
-                                        <state key="normal" title="Th" backgroundImage="greenOval">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="dayButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="olm-A7-47u"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xIj-di-FCR">
-                                        <rect key="frame" x="291" y="0.0" width="51" height="51"/>
-                                        <state key="normal" title="F" backgroundImage="blueOval">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="dayButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oKO-qx-fmL"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Eaz-tb-bvk">
-                                <rect key="frame" x="125" y="704" width="125" height="51"/>
-                                <subviews>
-                                    <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBi-i4-ucB">
-                                        <rect key="frame" x="0.0" y="0.0" width="51" height="51"/>
-                                        <state key="normal" title="S" backgroundImage="purpleOval">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="dayButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HqI-iX-qHL"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l2a-JY-bLs">
-                                        <rect key="frame" x="74" y="0.0" width="51" height="51"/>
-                                        <state key="normal" title="Su" backgroundImage="violetOval">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="dayButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qsc-28-lIP"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bYQ-EI-Zod">
-                                <rect key="frame" x="16" y="101" width="342" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bYQ-EI-Zod">
+                                <rect key="frame" x="16" y="707" width="343" height="30"/>
+                                <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Join Group"/>
                                 <connections>
                                     <action selector="joinGroupTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N19-0p-mb0"/>
@@ -219,19 +157,16 @@ Join Group</string>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="YOG-8J-bss" firstAttribute="top" secondItem="g1m-dY-X2H" secondAttribute="bottom" constant="16" id="0NF-gL-nEE"/>
+                            <constraint firstItem="bYQ-EI-Zod" firstAttribute="top" secondItem="YOG-8J-bss" secondAttribute="bottom" constant="65" id="CiX-qR-UyD"/>
+                            <constraint firstItem="bYQ-EI-Zod" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="H6O-XA-rkV"/>
                             <constraint firstItem="g1m-dY-X2H" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="S2N-PV-8tr"/>
                             <constraint firstItem="YOG-8J-bss" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="TpV-jr-de4"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="et2-cR-RMA" secondAttribute="bottom" constant="77" id="cmg-sU-l4K"/>
-                            <constraint firstItem="Eaz-tb-bvk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="125" id="cp6-kl-NfZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bYQ-EI-Zod" secondAttribute="trailing" constant="16" id="X4i-hg-hHp"/>
                             <constraint firstItem="fvf-B5-9lP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="51" id="dLQ-Hc-jSJ"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="et2-cR-RMA" secondAttribute="trailing" constant="17" id="eNV-ir-chQ"/>
                             <constraint firstItem="g1m-dY-X2H" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="f6g-uj-wxS"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YOG-8J-bss" secondAttribute="trailing" constant="16" id="jdF-X4-dZE"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Eaz-tb-bvk" secondAttribute="bottom" constant="23" id="jmj-I5-qLr"/>
-                            <constraint firstItem="et2-cR-RMA" firstAttribute="top" secondItem="YOG-8J-bss" secondAttribute="bottom" constant="8" id="kUh-Mh-5PM"/>
                             <constraint firstItem="fvf-B5-9lP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="mXU-mb-PLk"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Eaz-tb-bvk" secondAttribute="trailing" constant="125" id="uC3-xy-Ycb"/>
-                            <constraint firstItem="et2-cR-RMA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="viW-c6-CVP"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bYQ-EI-Zod" secondAttribute="bottom" constant="41" id="qhJ-7q-eqQ"/>
                             <constraint firstItem="g1m-dY-X2H" firstAttribute="top" secondItem="fvf-B5-9lP" secondAttribute="bottom" constant="8" id="wbJ-NR-R6i"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -455,12 +390,6 @@ Join Group</string>
         </scene>
     </scenes>
     <resources>
-        <image name="blueOval" width="51" height="51"/>
-        <image name="greenOval" width="51" height="51"/>
-        <image name="orangeOval" width="51" height="51"/>
-        <image name="purpleOval" width="51" height="51"/>
-        <image name="redOval" width="51" height="51"/>
-        <image name="violetOval" width="51" height="51"/>
-        <image name="yellowOval" width="51" height="51"/>
+        <image name="xmark" catalog="system" width="64" height="56"/>
     </resources>
 </document>

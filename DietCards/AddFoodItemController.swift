@@ -19,6 +19,7 @@ class AddFoodItemController: UIViewController {
     let pickerMeals: [String] = ["Breakfast", "Lunch", "Dinner", "Snack"] //value used for mealText assignment
     var selectedMeal: String?
     var passedInDay: Int = 0 // Day of the Week passed in as Int
+    var passedInGroupName: String = ""
     var ref: DatabaseReference! // reference to Firebase database
     
     // giving passedInDay a string value using daysDict
@@ -58,8 +59,10 @@ class AddFoodItemController: UIViewController {
         if success { //if response is sucessful
 
             ref = Database.database().reference() //connecting to firebase database
-            
-            let key = ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
+           // let passedInEmail1 = "eliashall"
+            let key = ref.child("\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
+
+//            let key = ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
 
             let data = [ //data to be added to database
                 "foodid": key!, //unique key
@@ -69,7 +72,9 @@ class AddFoodItemController: UIViewController {
                 "mealTime": mealText.text! //selected in pickerView
                 ] as [String : Any]
             
-            ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
+           
+//            ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
+            ref.child("\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
         }
         
         return

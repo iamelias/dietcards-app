@@ -20,7 +20,9 @@ class HomeViewController: UIViewController {
     var userEmail = "" //user details
     var userUid = ""
     
-    var getUserEmailInput = ""
+    var getGroupNameInput = ""
+    
+    var updatedAlert: Bool = false
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
@@ -41,7 +43,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isHidden = true
         navigationController?.navigationBar.backgroundColor = .clear
         navigationController?.navigationBar.backItem?.backBarButtonItem = .none
         let dateFormatter = DateFormatter()
@@ -61,11 +63,37 @@ class HomeViewController: UIViewController {
             self.userUid = user.uid
         
     }
+        
+        //Mark: UIAlert alert!!!
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
        NotificationCenter.default.removeObserver(self)
+        
+        //MARK: Add Success Alert ********
+        
+        
+        
+        
+ if updatedAlert == true {
+    print("aaaaaaaaa\(Thread.current)")
+        print("Made it inside updateAlert&&&&&&&&&&&&&&")
+         if permType == "leader" {
+            let message = "You've created: \(getGroupNameInput)"
+            let updateTitle = "Joined"
+
+        createJoinAlert(updateTitle, message)
+        }
+        
+        else if permType == "follower" {
+        let message = "You've joined: \(getGroupNameInput)"
+        let updateTitle = "Created"
+
+        createJoinAlert(updateTitle, message)
+    }
+     }
     }
     
     @IBAction func joinGroupTapped(_ sender: Any) {
@@ -81,26 +109,26 @@ class HomeViewController: UIViewController {
         nc.addObserver(self, selector: #selector(viewDidAppear), name: Notification.Name("ViewDidAppear"), object: nil)
     }
     
-    @IBAction func dayButtonTapped(_ sender: Any) {
-        
-        
-        collectionView.contentOffset = CGPoint(x: 50.0, y: 0.0)
-        let button = sender as! UIButton
-        print("Button: \(button.tag) was pressed")
-        collectionView.reloadData()
-        
-        switch button.tag { //positions when day button is tapped
-        case 1: collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
-        case 2: collectionView.contentOffset = CGPoint(x: 150.0, y: 0.0)
-        case 3: collectionView.contentOffset = CGPoint(x: 385.0, y: 0.0)
-        case 4: collectionView.contentOffset = CGPoint(x: 625.0, y: 0.0)
-        case 5: collectionView.contentOffset = CGPoint(x: 830.0, y: 0.0)
-        case 6: collectionView.contentOffset = CGPoint(x: 1075.0, y: 0.0)
-        case 7: collectionView.contentOffset = CGPoint(x: 1360.0, y: 0.0)
-        default:
-            collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
-        }
-    }
+//    @IBAction func dayButtonTapped(_ sender: Any) {
+//
+//
+//        collectionView.contentOffset = CGPoint(x: 50.0, y: 0.0)
+//        let button = sender as! UIButton
+//        print("Button: \(button.tag) was pressed")
+//        collectionView.reloadData()
+//
+//        switch button.tag { //positions when day button is tapped
+//        case 1: collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
+//        case 2: collectionView.contentOffset = CGPoint(x: 150.0, y: 0.0)
+//        case 3: collectionView.contentOffset = CGPoint(x: 385.0, y: 0.0)
+//        case 4: collectionView.contentOffset = CGPoint(x: 625.0, y: 0.0)
+//        case 5: collectionView.contentOffset = CGPoint(x: 830.0, y: 0.0)
+//        case 6: collectionView.contentOffset = CGPoint(x: 1075.0, y: 0.0)
+//        case 7: collectionView.contentOffset = CGPoint(x: 1360.0, y: 0.0)
+//        default:
+//            collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
+//        }
+//    }
 }
 
 //MARK:  Collection View Code 
@@ -143,35 +171,57 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
                 vc?.uid = self.userUid // current user uid
                 
                 if permType == "leader" {
-                    vc?.email = self.userEmail                 }
+                    vc?.groupName = self.getGroupNameInput
+                    
+                }
                 
                 else if permType == "follower" {
                     
-                    vc?.email = self.getUserEmailInput
+                    vc?.groupName = self.getGroupNameInput
                     
                 }
                 
               //  vc?.email = self.userEmail // current user email
-                vc?.memberOfEmail = self.getUserEmailInput //for join group people
                 vc?.selectedCard = sender as! Int //passing user selected day card as digit 0-6(Mon-Sun)
             }
         }
     }
+    
+    func createJoinAlert(_ useTitle: String, _ useMessage: String) {
+        
+        DispatchQueue.main.async {
+        let alert1 = UIAlertController(title: useTitle, message: useMessage, preferredStyle: .alert) //alert for after creating or joining group
+        
+        let contAction = UIAlertAction(title: "Continue", style: .default, handler: nil)
+        
+        alert1.addAction(contAction)
+        print("made it to createJoinAlert")
+            self.updatedAlert = false
+        print("cccccccc\(Thread.current)")
+            self.present(alert1, animated: true)
+        }
+        return
+    }
+    
+    
 }
+
 
 extension HomeViewController: TypeOfUserDelegate {
     
-    func didSelectUser(type: String, email: String) { //recieving group type and email
-        
+    func didSelectUser(type: String, groupName: String) { //recieving group type and email
+        print("bbbbbbbb\(Thread.current)")
+        updatedAlert = true
         permType = type // retrieved userType from AddGroupController
-        getUserEmailInput = email
+        getGroupNameInput = groupName
         
         if type == "follower" {
-        joinGroupButton.setTitle(getUserEmailInput, for: .normal)
+        joinGroupButton.setTitle(getGroupNameInput, for: .normal)
+    
         }
         
         else if type == "leader" {
-            joinGroupButton.setTitle(userEmail, for: .normal)
+            joinGroupButton.setTitle(getGroupNameInput, for: .normal)
         }
     }
 }
