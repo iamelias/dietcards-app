@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseUI
+import Foundation
 
 class HomeViewController: UIViewController {
     
@@ -27,6 +28,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
     @IBOutlet weak var joinGroupButton: UIButton!
+    @IBOutlet weak var hideColor: UIView!
     
     enum Days: String {
         case Monday
@@ -52,6 +54,11 @@ class HomeViewController: UIViewController {
         homeTitleLabel.text = dateFormatter.string(from: Date())
         homeTitleLabel.textColor = .black
         
+        hideColor.isHidden = false
+        hideColor.backgroundColor = .gray
+        //hideColor.isOpaque = false
+        hideColor.alpha = 0.5
+        
         
     }
     
@@ -71,20 +78,28 @@ class HomeViewController: UIViewController {
        NotificationCenter.default.removeObserver(self)
                 
  if updatedAlert == true {
+    hideColor.isHidden = true
          if permType == "leader" {
             let message = "You've created: \(getGroupNameInput)"
-            let updateTitle = "Joined"
+            let updateTitle = "Created"
 
         createJoinAlert(updateTitle, message)
         }
         
         else if permType == "follower" {
         let message = "You've joined: \(getGroupNameInput)"
-        let updateTitle = "Created"
+        let updateTitle = "Joined"
 
         createJoinAlert(updateTitle, message)
     }
      }
+    
+
+        if joinGroupButton.titleLabel?.text == "Join Group" {
+            //sleep(1)
+            pulseAnim()
+        }
+
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -96,6 +111,8 @@ class HomeViewController: UIViewController {
     
     
     @IBAction func joinGroupTapped(_ sender: Any) {
+        
+        joinGroupButton.isHighlighted = false
 
         let selectedVC = storyboard?.instantiateViewController(withIdentifier: "AddGroupController") as! AddGroupController
         selectedVC.chosenUser = self
@@ -147,8 +164,13 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 //MARK: CELL DEFINITION
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        
         let data = HomeViewController.daysOfWeek
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
+        
+        if joinGroupButton.titleLabel?.text == "Join Group" {
+            cell.backgroundColor = .red
+        }
         
         cell.configureCell(data[indexPath.row])
         return cell
@@ -156,6 +178,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        guard joinGroupButton.titleLabel?.text != "Join Group" else {
+            return
+        }
         performSegue(withIdentifier: "pushDetailView", sender: indexPath.row) //segue to CardTableViewController
     }
     
@@ -181,6 +206,22 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
                 vc?.selectedCard = sender as! Int //passing user selected day card as digit 0-6(Mon-Sun)
             }
         }
+    }
+    
+    func pulseAnim() { //making join button pulsate to catch users eye.
+        let pulse = CASpringAnimation(keyPath: "transform.scale")
+        pulse.duration = 0.6 //time of animation
+        pulse.fromValue = 1 //from size of 95%
+        pulse.toValue = 0.95 // to 100%
+        pulse.repeatCount = 2 //pulses 2 times
+        pulse.initialVelocity = 0.04
+        pulse.damping = 1.0
+        pulse.autoreverses = true
+        pulse.speed = 0.2
+        
+        
+        joinGroupButton.layer.add(pulse, forKey: nil)
+        
     }
     
     func createJoinAlert(_ useTitle: String, _ useMessage: String) {
