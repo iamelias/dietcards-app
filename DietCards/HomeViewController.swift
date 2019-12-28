@@ -25,20 +25,24 @@ class HomeViewController: UIViewController {
     
     var updatedAlert: Bool = false
     
+    var firstTimeRun: Bool = true
+    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
     @IBOutlet weak var joinGroupButton: UIButton!
     @IBOutlet weak var hideColor: UIView!
     
-    enum Days: String {
-        case Monday
-        case Tuesday
-        case Wednesday
-        case Thursday
-        case Friday
-        case Saturday
-        case Sunday
+    enum Days: Int {
+        case Monday = 0
+        case Tuesday = 1
+        case Wednesday = 2
+        case Thursday = 3
+        case Friday = 4
+        case Saturday = 5
+        case Sunday = 6
     }
+    
+    var Days2:[String:Int] = ["Monday": 0, "Tuesday": 1, "Wednesday": 2, "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6]
     
     static let daysOfWeek: [String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     
@@ -59,6 +63,7 @@ class HomeViewController: UIViewController {
         //hideColor.isOpaque = false
         hideColor.alpha = 0.5
         
+
         
     }
     
@@ -94,18 +99,31 @@ class HomeViewController: UIViewController {
     }
      }
     
-
         if joinGroupButton.titleLabel?.text == "Join Group" {
             //sleep(1)
             pulseAnim()
         }
-
+        
+        
+        if firstTimeRun == true {
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "EEEE"
+            let weekDay = dateFormatter.string(from: Date())
+            
+            
+        
+        collectionView.selectItem(at: [0,Days2[weekDay]!], animated: false, scrollPosition: .centeredHorizontally) //Displaying current weekday at center of view
+            
+            firstTimeRun = false
+        }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         for cell in collectionView.visibleCells {
             let indexPath = collectionView.indexPath(for: cell)
             print(indexPath!)
+//            collectionView.selectItem(at: [3,0], animated: true, scrollPosition: .centeredHorizontally)
         }
     }
     
@@ -158,6 +176,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return 7
     }
     
@@ -176,6 +195,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         return cell
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         guard joinGroupButton.titleLabel?.text != "Join Group" else {
@@ -184,6 +204,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         performSegue(withIdentifier: "pushDetailView", sender: indexPath.row) //segue to CardTableViewController
     }
     
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "pushDetailView" { //segue used pushes to collectionView
 
