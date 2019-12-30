@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseUI
 import Foundation
+import FirebaseDatabase
 
 class HomeViewController: UIViewController {
     
@@ -27,6 +28,10 @@ class HomeViewController: UIViewController {
     
     var firstTimeRun: Bool = true
     
+    var gotCalTotals: Bool = false
+    
+    var currentWeekDay = ""
+    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
     @IBOutlet weak var joinGroupButton: UIButton!
@@ -42,13 +47,15 @@ class HomeViewController: UIViewController {
         case Sunday = 6
     }
     
+    var calTotalsArray:[Double] = []
+    
     var Days2:[String:Int] = ["Monday": 0, "Tuesday": 1, "Wednesday": 2, "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6]
     
     static let daysOfWeek: [String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         navigationController?.navigationBar.isHidden = true
         navigationController?.navigationBar.backgroundColor = .clear
         navigationController?.navigationBar.backItem?.backBarButtonItem = .none
@@ -63,8 +70,6 @@ class HomeViewController: UIViewController {
         //hideColor.isOpaque = false
         hideColor.alpha = 0.5
         
-
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,12 +81,16 @@ class HomeViewController: UIViewController {
             self.userUid = user.uid
         
     }
+        
+        print("ViewWill Appear called")
+
     }
     
+    
     override func viewDidAppear(_ animated: Bool) {
-        
+print("aaaaaaaaaaaaaaaaaaaa")
        NotificationCenter.default.removeObserver(self)
-                
+                print("ViewDidAppear called")
  if updatedAlert == true {
     hideColor.isHidden = true
          if permType == "leader" {
@@ -100,7 +109,6 @@ class HomeViewController: UIViewController {
      }
     
         if joinGroupButton.titleLabel?.text == "Join Group" {
-            //sleep(1)
             pulseAnim()
         }
         
@@ -108,8 +116,9 @@ class HomeViewController: UIViewController {
         if firstTimeRun == true {
             
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "EEEE"
+            dateFormatter.dateFormat = "EEEE" //weekday format ex. Monday
             let weekDay = dateFormatter.string(from: Date())
+            currentWeekDay = weekDay //storing day of week
             
             
         
@@ -117,6 +126,9 @@ class HomeViewController: UIViewController {
             
             firstTimeRun = false
         }
+        getCalTotalsFirebase()
+
+        
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -144,27 +156,6 @@ class HomeViewController: UIViewController {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(viewDidAppear), name: Notification.Name("ViewDidAppear"), object: nil)
     }
-    
-//    @IBAction func dayButtonTapped(_ sender: Any) {
-//
-//
-//        collectionView.contentOffset = CGPoint(x: 50.0, y: 0.0)
-//        let button = sender as! UIButton
-//        print("Button: \(button.tag) was pressed")
-//        collectionView.reloadData()
-//
-//        switch button.tag { //positions when day button is tapped
-//        case 1: collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
-//        case 2: collectionView.contentOffset = CGPoint(x: 150.0, y: 0.0)
-//        case 3: collectionView.contentOffset = CGPoint(x: 385.0, y: 0.0)
-//        case 4: collectionView.contentOffset = CGPoint(x: 625.0, y: 0.0)
-//        case 5: collectionView.contentOffset = CGPoint(x: 830.0, y: 0.0)
-//        case 6: collectionView.contentOffset = CGPoint(x: 1075.0, y: 0.0)
-//        case 7: collectionView.contentOffset = CGPoint(x: 1360.0, y: 0.0)
-//        default:
-//            collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
-//        }
-//    }
 }
 
 //MARK:  Collection View Code 
@@ -183,6 +174,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 //MARK: CELL DEFINITION
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        //print("Cell Collection Called")
         
         let data = HomeViewController.daysOfWeek
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
@@ -191,10 +183,25 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             cell.backgroundColor = .red
         }
         
-        cell.configureCell(data[indexPath.row])
+        if gotCalTotals == false {
+        print("Made to 8")
+        print("Made it 9")
+            cell.configureCell(data[indexPath.row], 0.0)
+            return cell
+        }
+        
+        else if gotCalTotals == true {
+            print(calTotalsArray)
+            print("bbbbbbbbbbbbbbbbb")
+        cell.configureCell(data[indexPath.row], calTotalsArray[indexPath.row])
         return cell
+        }
+        
+        else {
+            print("some error")
+            return cell
+        }
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -259,13 +266,75 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         return
     }
     
+    func getCalTotalsFirebase() {
+       // collectionView.reloadData()
+        let ref = Database.database().reference()
+        print("Made it 1")
+        print(getGroupNameInput)
+        print(selectedCard)
+        
+            ref.child("\("space")/\("calTotal")").observeSingleEvent(of: .value, with: { (snapshot) in
+                
+            print("Made it 2")
+                print(snapshot.value)
+        guard let value = snapshot.value as? NSDictionary else { //if there are no saved records return
+            print("There are no saved records")
+            print("Made it 3 - Error")
+            return
+        }
+                print("made it 4")
+           // for item in value {
+                print("Made it 5")
+                let detailDictionary = value //as! NSDictionary
+                let mon = detailDictionary["0"] as? Double ?? 0.0 // ex. 0
+                let tue = detailDictionary["1"] as? Double ?? 0.0 // ex. 0
+                let wed = detailDictionary["2"] as? Double ?? 0.0 // ex. 0
+                let thu = detailDictionary["3"] as? Double ?? 0.0 // ex. 0
+                let fri = detailDictionary["4"] as? Double ?? 0.0 // ex. 0
+                let sat = detailDictionary["5"] as? Double ?? 0.0 // ex. 0
+                let sun = detailDictionary["6"] as? Double ?? 0.0 // ex. 0
+                
+                self.calTotalsArray.removeAll()
+                
+                self.calTotalsArray.append(mon)
+                self.calTotalsArray.append(tue)
+                self.calTotalsArray.append(wed)
+                self.calTotalsArray.append(thu)
+                self.calTotalsArray.append(fri)
+                self.calTotalsArray.append(sat)
+                self.calTotalsArray.append(sun)
+                print("Made it 6")
+                
+                
+                print(self.calTotalsArray[0])
+                print(self.calTotalsArray[1])
+                
+                
+                var calTotal = CalorieTotals()
+                calTotal.Monday = mon
+                calTotal.Tuesday = tue
+                calTotal.Wednesday = wed
+                calTotal.Thursday = thu
+                calTotal.Friday = fri
+                calTotal.Saturday = sat
+                calTotal.Sunday = sun
+                
+               // self.collectionView.reloadData()
+                self.gotCalTotals = true
+
+                print("Made it 7")
+            })
+        
+    }
     
 }
 
 extension HomeViewController: TypeOfUserDelegate {
     
     func didSelectUser(type: String, groupName: String) { //recieving group type and email
+        getCalTotalsFirebase()
         updatedAlert = true
+        gotCalTotals = true
         permType = type // retrieved userType from AddGroupController
         getGroupNameInput = groupName
         

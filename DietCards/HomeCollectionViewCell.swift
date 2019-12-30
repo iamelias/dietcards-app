@@ -13,9 +13,12 @@ class HomeCollectionViewCell: UICollectionViewCell
 {
     @IBOutlet weak var cardTitleLabel: UILabel!
     @IBOutlet weak var cardColorView: UIView!
+    @IBOutlet weak var calTotalLabel: UILabel!
+    @IBOutlet weak var lastUpdateLabel: UILabel!
+    
     
 
-    func configureCell(_ dayOfWeek: String) {
+    func configureCell(_ dayOfWeek: String,_ calTotal: Double) {
         
         backgroundColor = .clear
         cardColorView.layer.cornerRadius = 20.0
@@ -23,6 +26,10 @@ class HomeCollectionViewCell: UICollectionViewCell
         cardTitleLabel.text = dayOfWeek
         cardTitleLabel.textAlignment = .center
         cardTitleLabel.textColor = .black
+        calTotalLabel.text = "\(calTotal) kcals"
+        calTotalLabel.textAlignment = .center
+        lastUpdateLabel.textAlignment = .center
+        //calTotalLabel.sizeToFit()
     
     }
     

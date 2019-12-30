@@ -59,7 +59,6 @@ class AddFoodItemController: UIViewController {
         if success { //if response is sucessful
 
             ref = Database.database().reference() //connecting to firebase database
-           // let passedInEmail1 = "eliashall"
             let key = ref.child("\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
 
 //            let key = ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
@@ -104,6 +103,7 @@ class AddFoodItemController: UIViewController {
 extension AddFoodItemController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool { //dismissing keyboard
+    
         foodText.resignFirstResponder()
         mealText.resignFirstResponder()
         return true
@@ -134,4 +134,5 @@ extension AddFoodItemController: UIPickerViewDelegate, UIPickerViewDataSource {
         selectedMeal = pickerMeals[row] //selecting either breakfast, lunch, dinner, snacks
         mealText.text = selectedMeal //updating mealText textfield with selectedMeal from pickerView
     }
+    
 }

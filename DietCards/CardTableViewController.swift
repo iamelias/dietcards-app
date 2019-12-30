@@ -60,6 +60,7 @@ class CardTableViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
 
+        calSum = 0.0
         print(groupName) //current user state email or group email
         print(uid) //current user uid
         print(selectedCard) //selected card number
@@ -91,6 +92,7 @@ class CardTableViewController: UIViewController {
     func sumCalories(_ foodCal: Double) { //function calculates sum of calories
         
         self.calSum += foodCal
+        print(self.calSum)
     }
 }
 
@@ -344,7 +346,6 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
             }
             
             
-            
             //MARK: O(n^2) algorithm
             for item in value { // iterating through breakfast,lunch,dinner,snack
                 let uniqueKey = item.value as! NSDictionary // mealtime value is unique key
@@ -374,10 +375,22 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
                     default: print("Error in adding foodItem to tableView")
                     }
                     self.tableView.reloadData() //reload table after each arrayappend for visual
+                    self.sumCalories(foodItem.nutrition) // calculates sum
                 }
             }
         })
     }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        ref = Database.database().reference() //connecting to firebase database
+
+        ref.child("\(groupName)/\("calTotal")/\(selectedCard)").setValue(calSum) //setting to tal in view Controller.
+        
+        
+        
+    }
+    
 }
 
 
