@@ -12,11 +12,11 @@ import FirebaseUI
 import CoreData
 
 class LoginViewController: UIViewController {
-
+    
     var dataController: DataController?
     var coreGroupName: [SavedGroup] = []
-
-   
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         retrieveCoreData() //fetching persisted data
@@ -31,9 +31,9 @@ class LoginViewController: UIViewController {
         guard authUI != nil else { //if authUI is nil return
             return
         }
-
+        
         authUI?.delegate = self
-
+        
         let providers: [FUIAuthProvider] = [
             FUIEmailAuth() //email way of signing in
         ]
@@ -54,13 +54,13 @@ class LoginViewController: UIViewController {
     }
     
     func retrieveCoreData() { //getting saved groupName from core Data - To pass to HomeVC
-    let fetchRequest: NSFetchRequest<SavedGroup> = SavedGroup.fetchRequest()
+        let fetchRequest: NSFetchRequest<SavedGroup> = SavedGroup.fetchRequest()
         
-    if let result = try? dataController?.viewContext.fetch(fetchRequest) { //fetching persisted pins
-        coreGroupName = result //storing in pins array for use in class
-
-                    return
-                }
+        if let result = try? dataController?.viewContext.fetch(fetchRequest) { //fetching persisted pins
+            coreGroupName = result //storing in pins array for use in class
+            
+            return
+        }
         else {
             debugPrint("unable to fetch")
             return
@@ -74,15 +74,15 @@ extension LoginViewController: FUIAuthDelegate {
         guard error == nil else { // error == nil means there is no error, therefore can continue
             return
         }
-
+        
         performSegue(withIdentifier: "toHomeSegue", sender: self)
-
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) { //gets called if segue is used. After firebaseUI default auth auto segues to HomeViewController
         if segue.identifier == "toHomeSegue" { //segue used pushes to collectionView
             let key = segue.destination as! HomeViewController //data to be sent to PhotoAlbum Controller
-
+            
             key.coreGroupName = coreGroupName //data to pass to next vc
             key.dataController = dataController
         }

@@ -27,7 +27,7 @@ class HomeViewController: UIViewController {
     var currentUserUid = ""
     var dataController: DataController?
     let ref = Database.database().reference() //For Firebase database call
-
+    
     
     enum Days: Int {
         case Monday = 0
@@ -42,7 +42,7 @@ class HomeViewController: UIViewController {
     static let daysOfWeek: [String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     
     var Days2:[String:Int] = ["Monday": 0, "Tuesday": 1, "Wednesday": 2, "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6]
-
+    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
     @IBOutlet weak var joinGroupButton: UIButton!
@@ -62,12 +62,12 @@ class HomeViewController: UIViewController {
         homeTitleLabel.textColor = .black
         
         joinGroupButton.setTitle("Join Group", for: .normal) //default title
-
+        
         hideColor.isHidden = false
         hideColor.backgroundColor = .gray
         hideColor.alpha = 0.5
         calTotalsArray = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] //default
-                
+        
         if !coreGroupName.isEmpty { //if coreGroupName Array is not empty...
             //Join Group button's title to index 0 name
             var coreCheck = coreGroupName[0].name!
@@ -90,28 +90,28 @@ class HomeViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-       NotificationCenter.default.removeObserver(self) //removing notification observer
- 
-    if updatedAlert == true { // when returning from AddGroupController...
-        joinGroupButton.setTitle(getGroupNameInput, for: .normal) //default title
-
-        hideColor.isHidden = true //hide the hidecolor uiview
-         if permType == "leader" { //alert if you created group
-            let message = "You've created: \(getGroupNameInput)"
-            let updateTitle = "Created"
-
-        createJoinAlert(updateTitle, message) //calling alert
+        NotificationCenter.default.removeObserver(self) //removing notification observer
+        
+        if updatedAlert == true { // when returning from AddGroupController...
+            joinGroupButton.setTitle(getGroupNameInput, for: .normal) //default title
+            
+            hideColor.isHidden = true //hide the hidecolor uiview
+            if permType == "leader" { //alert if you created group
+                let message = "You've created: \(getGroupNameInput)"
+                let updateTitle = "Created"
+                
+                createJoinAlert(updateTitle, message) //calling alert
+            }
+                
+            else if permType == "follower" { //message if you joined group
+                let message = "You've joined: \(getGroupNameInput)"
+                let updateTitle = "Joined"
+                
+                createJoinAlert(updateTitle, message) //calling alert
+            }
+            updatedAlert = false //resetting
         }
         
-        else if permType == "follower" { //message if you joined group
-        let message = "You've joined: \(getGroupNameInput)"
-        let updateTitle = "Joined"
-
-        createJoinAlert(updateTitle, message) //calling alert
-    }
-        updatedAlert = false //resetting
-     }
-    
         if joinGroupButton.titleLabel?.text == "Join Group" {//making join button animate if Join Grop is the label
             pulseAnim() //calling pulse animation
         }
@@ -122,24 +122,24 @@ class HomeViewController: UIViewController {
             dateFormatter.dateFormat = "EEEE" //weekday format ex. Monday
             let weekDay = dateFormatter.string(from: Date())
             
-        collectionView.selectItem(at: [0,Days2[weekDay]!], animated: false, scrollPosition: .centeredHorizontally) //Displaying current weekday at center of view
+            collectionView.selectItem(at: [0,Days2[weekDay]!], animated: false, scrollPosition: .centeredHorizontally) //Displaying current weekday at center of view
             
             firstTimeRun = false
         }
         
         if useFirebase == true { //controlling use of firebase
-        //getCalTotalsFirebase() //database recalled after updating AddGroup. Getting new nutrition
-        useFirebase = false //resetting
+            //getCalTotalsFirebase() //database recalled after updating AddGroup. Getting new nutrition
+            useFirebase = false //resetting
         }
-
+        
     }
     
     func getCurrentUserUID() {
         if Auth.auth().currentUser != nil {
-        let user = Auth.auth().currentUser!
-        currentUserUid = user.uid
-        
-    }
+            let user = Auth.auth().currentUser!
+            currentUserUid = user.uid
+            
+        }
     }
     
     @IBAction func joinGroupTapped(_ sender: Any) {
@@ -151,7 +151,7 @@ class HomeViewController: UIViewController {
         selectedVC.coreGroupName = coreGroupName //passing persisted array
         selectedVC.uid = userUid
         selectedVC.currentUserUid = currentUserUid
-                
+        
         present(selectedVC, animated: true, completion: dismissResponse)
     }
     
@@ -182,48 +182,48 @@ class HomeViewController: UIViewController {
             //collectionView.reloadData()
             return
             
-        //This function is never called if calling getCalTotalsFirebase from viewDidLoad
+            //This function is never called if calling getCalTotalsFirebase from viewDidLoad
         }
-    ref.child("\(getGroupNameInput)/\(userUid)/\(getGroupNameInput)").child("calTotal").observeSingleEvent(of: .value, with: { (snapshot) in //reading nutrition calories from space
+        ref.child("\(getGroupNameInput)/\(userUid)/\(getGroupNameInput)").child("calTotal").observeSingleEvent(of: .value, with: { (snapshot) in //reading nutrition calories from space
             
-        guard let value = snapshot.value as? NSDictionary else { //if there are no saved records return
+            guard let value = snapshot.value as? NSDictionary else { //if there are no saved records return
+                
+                return
+            }
+            let detailDictionary = value //as! NSDictionary
+            let mon = detailDictionary["0"] as? Double ?? 0.0 // ex. 0
+            let tue = detailDictionary["1"] as? Double ?? 0.0 // ex. 0
+            let wed = detailDictionary["2"] as? Double ?? 0.0 // ex. 0
+            let thu = detailDictionary["3"] as? Double ?? 0.0 // ex. 0
+            let fri = detailDictionary["4"] as? Double ?? 0.0 // ex. 0
+            let sat = detailDictionary["5"] as? Double ?? 0.0 // ex. 0
+            let sun = detailDictionary["6"] as? Double ?? 0.0 // ex. 0
             
-            return
-        }
-                let detailDictionary = value //as! NSDictionary
-                let mon = detailDictionary["0"] as? Double ?? 0.0 // ex. 0
-                let tue = detailDictionary["1"] as? Double ?? 0.0 // ex. 0
-                let wed = detailDictionary["2"] as? Double ?? 0.0 // ex. 0
-                let thu = detailDictionary["3"] as? Double ?? 0.0 // ex. 0
-                let fri = detailDictionary["4"] as? Double ?? 0.0 // ex. 0
-                let sat = detailDictionary["5"] as? Double ?? 0.0 // ex. 0
-                let sun = detailDictionary["6"] as? Double ?? 0.0 // ex. 0
-                
-                self.calTotalsArray.removeAll() //emptying array for each call
-                
-                self.calTotalsArray.append(mon)
-                self.calTotalsArray.append(tue)
-                self.calTotalsArray.append(wed)
-                self.calTotalsArray.append(thu)
-                self.calTotalsArray.append(fri)
-                self.calTotalsArray.append(sat)
-                self.calTotalsArray.append(sun)
-                
-//                var calTotal = CalorieTotals() //**** Check if necessary
-//                calTotal.Monday = mon
-//                calTotal.Tuesday = tue
-//                calTotal.Wednesday = wed
-//                calTotal.Thursday = thu
-//                calTotal.Friday = fri
-//                calTotal.Saturday = sat
-//                calTotal.Sunday = sun
-                
-                self.gotCalTotals = true
+            self.calTotalsArray.removeAll() //emptying array for each call
+            
+            self.calTotalsArray.append(mon)
+            self.calTotalsArray.append(tue)
+            self.calTotalsArray.append(wed)
+            self.calTotalsArray.append(thu)
+            self.calTotalsArray.append(fri)
+            self.calTotalsArray.append(sat)
+            self.calTotalsArray.append(sun)
+            
+            //                var calTotal = CalorieTotals() //**** Check if necessary
+            //                calTotal.Monday = mon
+            //                calTotal.Tuesday = tue
+            //                calTotal.Wednesday = wed
+            //                calTotal.Thursday = thu
+            //                calTotal.Friday = fri
+            //                calTotal.Saturday = sat
+            //                calTotal.Sunday = sun
+            
+            self.gotCalTotals = true
             
             DispatchQueue.main.async {
-             self.collectionView.reloadData()
+                self.collectionView.reloadData()
             }
-            })
+        })
     }
     
     func pulseAnim() { //making join button pulsate to catch users eye.
@@ -243,11 +243,11 @@ class HomeViewController: UIViewController {
     func createJoinAlert(_ useTitle: String, _ useMessage: String) {
         
         DispatchQueue.main.async {
-        let alert1 = UIAlertController(title: useTitle, message: useMessage, preferredStyle: .alert) //alert for after creating or joining group
-        
-        let contAction = UIAlertAction(title: "Continue", style: .default, handler: nil)
-        
-        alert1.addAction(contAction)
+            let alert1 = UIAlertController(title: useTitle, message: useMessage, preferredStyle: .alert) //alert for after creating or joining group
+            
+            let contAction = UIAlertAction(title: "Continue", style: .default, handler: nil)
+            
+            alert1.addAction(contAction)
             self.updatedAlert = false
             self.present(alert1, animated: true)
         }
@@ -268,9 +268,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         return 7
     }
     
-//MARK: CELL DEFINITION
+    //MARK: CELL DEFINITION
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-                
+        
         let data = HomeViewController.daysOfWeek
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
         
@@ -279,15 +279,15 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             gotCalTotals = false //resetting to false for next call
             return cell
         }
-        
+            
         else if gotCalTotals == true { //change cell calorie label to nutrition value
-        cell.configureCell(data[indexPath.row], calTotalsArray[indexPath.row])
+            cell.configureCell(data[indexPath.row], calTotalsArray[indexPath.row])
             if indexPath.row == 6 {
                 gotCalTotals = true
             }
-        return cell
+            return cell
         }
-        
+            
         else {
             print("error")
             return cell
@@ -304,7 +304,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "pushDetailView" { //segue used pushes to collectionView
-
+            
             if segue.destination is CardTableViewController
             {
                 let vc = segue.destination as? CardTableViewController //seguing to CardTableViewController
@@ -316,7 +316,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
                     vc?.groupName = self.getGroupNameInput //send leaders name to next vc
                     vc?.usrPerm = "leader"
                 }
-                
+                    
                 else if permType == "follower" { //if permission type is follower...
                     vc?.groupName = self.getGroupNameInput //send follower name to next vc
                     vc?.usrPerm = "follower"
@@ -335,7 +335,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 extension HomeViewController: TypeOfUserDelegate {
     
     func didSelectUser(type: String, groupName: String, uid: String, update: Bool) { //recieving group type and email
-
+        
         updatedAlert = update //Control flow of viewDidAppear
         gotCalTotals = true //used to control whether firebase is called or not
         permType = type // permission type create group returns "leader", join group returns "follower"
@@ -343,9 +343,9 @@ extension HomeViewController: TypeOfUserDelegate {
         userUid = uid
         
         if type == "follower" {
-        joinGroupButton.setTitle(getGroupNameInput, for: .normal) //changing join button to group chosen in AddGroupController
+            joinGroupButton.setTitle(getGroupNameInput, for: .normal) //changing join button to group chosen in AddGroupController
         }
-        
+            
         else if type == "leader" {
             joinGroupButton.setTitle(getGroupNameInput, for: .normal)//changing join button to group chosen in AddGroupController
         }

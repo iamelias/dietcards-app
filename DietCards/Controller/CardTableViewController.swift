@@ -59,35 +59,35 @@ class CardTableViewController: UIViewController {
     }
     
     func getDayFromCard() -> String {
-         
-         var fireBaseCard = "" //to be used for firebase call
-         
-         switch selectedCard { //choosing dayCard string using dayCard int, to be used for firebase read
-         case 0: fireBaseCard = "Monday"
-         case 1: fireBaseCard = "Tuesday"
-         case 2: fireBaseCard = "Wednesday"
-         case 3: fireBaseCard = "Thursday"
-         case 4: fireBaseCard = "Friday"
-         case 5: fireBaseCard = "Saturday"
-         case 6: fireBaseCard = "Sunday"
-         default: print("Error in selected card switch array")
-         }
-         
-         return fireBaseCard
-     }
+        
+        var fireBaseCard = "" //to be used for firebase call
+        
+        switch selectedCard { //choosing dayCard string using dayCard int, to be used for firebase read
+        case 0: fireBaseCard = "Monday"
+        case 1: fireBaseCard = "Tuesday"
+        case 2: fireBaseCard = "Wednesday"
+        case 3: fireBaseCard = "Thursday"
+        case 4: fireBaseCard = "Friday"
+        case 5: fireBaseCard = "Saturday"
+        case 6: fireBaseCard = "Sunday"
+        default: print("Error in selected card switch array")
+        }
+        
+        return fireBaseCard
+    }
     
     func getCurrentUsrUid() -> String { //getting current usrs uid for comparison.
         
-    if Auth.auth().currentUser != nil {
-    let user = Auth.auth().currentUser!
-    currentUsrUid = user.uid
+        if Auth.auth().currentUser != nil {
+            let user = Auth.auth().currentUser!
+            currentUsrUid = user.uid
         }
         
         return currentUsrUid
     }
     
     override func viewDidAppear(_ animated: Bool) {
-
+        
         calSum = 0.0 //is necessary?
         
         loadFirebaseData() //calling realtime database
@@ -243,7 +243,7 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
             }
         }
         activityIndicator.stopAnimating()
-
+        
         return cell
     }
     
@@ -257,12 +257,12 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
             if breakfastArray.count == 1 || breakfastArray.count == 0 {
                 firebaseDelete(breakfastArray[indexPath.row].id, "Breakfast") //passing in foodid unique to the indexpath.row
                 breakfastArray.removeAll()
-    
+                
                 tableView.reloadData()
             }
             else {
                 
-                 firebaseDelete(breakfastArray[indexPath.row].id, "Breakfast") //passing in foodid unique to the indexpath.row
+                firebaseDelete(breakfastArray[indexPath.row].id, "Breakfast") //passing in foodid unique to the indexpath.row
                 breakfastArray.remove(at: indexPath.row)
                 
                 tableView.deleteRows(at: [indexPath], with: .fade)
@@ -270,12 +270,12 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         }
         if indexPath.section == 1 {
             if lunchArray.count == 1 || lunchArray.count == 0 {
-                 firebaseDelete(lunchArray[indexPath.row].id, "Lunch") //passing in foodid unique to the indexpath.row
+                firebaseDelete(lunchArray[indexPath.row].id, "Lunch") //passing in foodid unique to the indexpath.row
                 lunchArray.removeAll()
                 tableView.reloadData()
             }
             else {
-                 firebaseDelete(lunchArray[indexPath.row].id, "Lunch") //passing in foodid unique to the indexpath.row
+                firebaseDelete(lunchArray[indexPath.row].id, "Lunch") //passing in foodid unique to the indexpath.row
                 lunchArray.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
@@ -284,13 +284,13 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 2 {
             if dinnerArray.count == 1 || dinnerArray.count == 0 {
                 //MARK: Where I want to delete from database
-                 firebaseDelete(dinnerArray[indexPath.row].id, "Dinner") //passing in foodid unique to the indexpath.row
+                firebaseDelete(dinnerArray[indexPath.row].id, "Dinner") //passing in foodid unique to the indexpath.row
                 dinnerArray.removeAll()
                 tableView.reloadData()
             }
             else {
                 firebaseDelete(dinnerArray[indexPath.row].id, "Dinner")
-                    //passing in foodid unique to the indexpath.row
+                //passing in foodid unique to the indexpath.row
                 dinnerArray.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
@@ -298,12 +298,12 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         
         if indexPath.section == 3 {
             if snackArray.count == 1 || snackArray.count == 0 {
-                 firebaseDelete(breakfastArray[indexPath.row].id, "Snack") //passing in foodid unique to the indexpath.row
+                firebaseDelete(breakfastArray[indexPath.row].id, "Snack") //passing in foodid unique to the indexpath.row
                 snackArray.removeAll()
                 tableView.reloadData()
             }
             else {
-                   firebaseDelete(snackArray[indexPath.row].id, "Snack") //passing in foodid unique to the indexpath.row
+                firebaseDelete(snackArray[indexPath.row].id, "Snack") //passing in foodid unique to the indexpath.row
                 snackArray.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
@@ -327,12 +327,12 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         snackArray.removeAll()
         
         let fireBaseCard = getDayFromCard() //to be used for firebase call
-    
+        
         ref.child("\(groupName)/\(uid)/\(groupName)/\(fireBaseCard)").observeSingleEvent(of: .value, with: { (snapshot) in
-
+            
             guard let value = snapshot.value as? NSDictionary else { //if there are no saved records return
                 print("There are no saved records")
-//                self.loadFirebaseData()
+                //                self.loadFirebaseData()
                 return
             }
             

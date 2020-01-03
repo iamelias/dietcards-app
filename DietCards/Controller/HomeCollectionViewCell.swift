@@ -25,9 +25,9 @@ class HomeCollectionViewCell: UICollectionViewCell
         cardTitleLabel.textAlignment = .center
         cardTitleLabel.textColor = .black
         //calTotalLabel.text = "\(calTotal) kcals"
-       // calTotalLabel.textAlignment = .center
+        // calTotalLabel.textAlignment = .center
         //lastUpdateLabel.textAlignment = .center
-    
+        
     }
     
     override func layoutSubviews() {
@@ -37,7 +37,7 @@ class HomeCollectionViewCell: UICollectionViewCell
         layer.shadowRadius = 10
         layer.shadowOpacity = 0.2
         layer.shadowOffset = CGSize(width: 5, height: 10)
-                
+        
         self.clipsToBounds = false
     }
 }
