@@ -24,9 +24,9 @@ class HomeCollectionViewCell: UICollectionViewCell
         cardTitleLabel.text = dayOfWeek
         cardTitleLabel.textAlignment = .center
         cardTitleLabel.textColor = .black
-        calTotalLabel.text = "\(calTotal) kcals"
-        calTotalLabel.textAlignment = .center
-        lastUpdateLabel.textAlignment = .center
+        //calTotalLabel.text = "\(calTotal) kcals"
+       // calTotalLabel.textAlignment = .center
+        //lastUpdateLabel.textAlignment = .center
     
     }
     

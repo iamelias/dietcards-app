@@ -117,17 +117,10 @@ Join Group</string>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0 kcal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="igK-PM-nwo">
-                                                            <rect key="frame" x="8" y="324" width="184" height="17"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Select to View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bs-fd-7Ue">
+                                                            <rect key="frame" x="45" y="334" width="115" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="55/55/5555" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4SO-J9-IMf">
-                                                            <rect key="frame" x="8" y="349" width="184" height="17"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -137,10 +130,8 @@ Join Group</string>
                                             </subviews>
                                         </view>
                                         <connections>
-                                            <outlet property="calTotalLabel" destination="igK-PM-nwo" id="teZ-xj-NUL"/>
                                             <outlet property="cardColorView" destination="lHf-Hk-rQn" id="XHu-jj-glI"/>
                                             <outlet property="cardTitleLabel" destination="2Ng-3r-9qh" id="Wk3-Fi-fKS"/>
-                                            <outlet property="lastUpdateLabel" destination="4SO-J9-IMf" id="3Iz-XM-1be"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
