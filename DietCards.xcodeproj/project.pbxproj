@@ -22,6 +22,7 @@
 		64C0290B237E71E30052FD1D /* DietCards.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 64C02909237E71E30052FD1D /* DietCards.xcdatamodeld */; };
 		64C0290D237E71E50052FD1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64C0290C237E71E50052FD1D /* Assets.xcassets */; };
 		64C02910237E71E50052FD1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64C0290E237E71E50052FD1D /* LaunchScreen.storyboard */; };
+		64C53BAF23BEC2FD00222E1D /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C53BAE23BEC2FD00222E1D /* DataController.swift */; };
 		64DD73EB238768E900E1D042 /* FoodClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD73EA238768E900E1D042 /* FoodClient.swift */; };
 		64EFB18B23AEE53B00617AA6 /* AddGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EFB18A23AEE53B00617AA6 /* AddGroupController.swift */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,7 @@
 		64C0290C237E71E50052FD1D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		64C0290F237E71E50052FD1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		64C02911237E71E50052FD1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		64C53BAE23BEC2FD00222E1D /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		64DD73EA238768E900E1D042 /* FoodClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodClient.swift; sourceTree = "<group>"; };
 		64EFB18A23AEE53B00617AA6 /* AddGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGroupController.swift; sourceTree = "<group>"; };
 		BDC85A4644E264929219FE6B /* Pods_DietCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DietCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +110,7 @@
 				646D1D4E238C66F200374FA4 /* NutritionData.swift */,
 				64A8A67323B819B2003C259D /* CalorieTotals.swift */,
 				6497E371239738F5007AD1F9 /* CardData.swift */,
+				64C53BAE23BEC2FD00222E1D /* DataController.swift */,
 			);
 			path = DietCards;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 				6497E372239738F5007AD1F9 /* CardData.swift in Sources */,
 				644A651D237F393700610568 /* HomeCollectionViewCell.swift in Sources */,
 				64A86AC523A5C5CA001E2877 /* LoginViewController.swift in Sources */,
+				64C53BAF23BEC2FD00222E1D /* DataController.swift in Sources */,
 				644A651F237F5E9700610568 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

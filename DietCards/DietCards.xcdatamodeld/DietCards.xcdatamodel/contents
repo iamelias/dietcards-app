@@ -2,8 +2,10 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19C57" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="SavedGroup" representedClassName="SavedGroup" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="permType" optional="YES" attributeType="String"/>
+        <attribute name="uid" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="SavedGroup" positionX="-63" positionY="-18" width="128" height="58"/>
+        <element name="SavedGroup" positionX="-63" positionY="-18" width="128" height="88"/>
     </elements>
 </model>

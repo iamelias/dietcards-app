@@ -19,13 +19,17 @@ class CardTableViewController: UIViewController {
     var ref: DatabaseReference! // reference to Firebase database
     
     var groupName: String = "" //current user email or group's email - from previous vc
-    var uid: String = "" //will use to find leaders data branch
+    var usrPerm: String = "" //usr permission type "leader"/"follower" - from previous vc
+    var uid: String = "" //will use to find leaders data branch. This is group leaders uid
+    var currentUsrUid = "" //This is current usrs uid
     
     //4 arrays below are populated with Firebase saved food data
     var breakfastArray: [NutritionData] = []
     var lunchArray: [NutritionData] = []
     var dinnerArray: [NutritionData] = []
     var snackArray: [NutritionData] = []
+    
+    var tempFoodIdHolder = ""
     
     var calSum: Double = 0 //necessary?
     static var calorieSum: Double = 0 //necessary?
@@ -39,9 +43,11 @@ class CardTableViewController: UIViewController {
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var addButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("started CardTableViewController")
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -49,6 +55,11 @@ class CardTableViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isHidden = true
         
+        let currentUsrUid = getCurrentUsrUid()
+        
+        if currentUsrUid != uid { //if current usrs uid and group leaders uid are not equal
+            addButton.isEnabled = false //current usr is not leader and he/she can't edit
+        }
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         tableView.separatorColor = .black
@@ -57,6 +68,20 @@ class CardTableViewController: UIViewController {
         tableView.allowsSelection = false
         
     }
+    
+    
+    func getCurrentUsrUid() -> String { //getting current usrs uid for comparison.
+        
+    if Auth.auth().currentUser != nil {
+    let user = Auth.auth().currentUser!
+    currentUsrUid = user.uid
+        }
+        
+        return currentUsrUid
+    }
+    
+    
+    
     
     override func viewDidAppear(_ animated: Bool) {
 
@@ -74,6 +99,8 @@ class CardTableViewController: UIViewController {
     
     
     @IBAction func cancelButton(_ sender: Any) {
+        
+        
         dismiss(animated: true, completion: nil)
     }
     
@@ -83,6 +110,7 @@ class CardTableViewController: UIViewController {
         
         addFoodVC.passedInDay = selectedCard //sending selected day data to AddFoodItemController
         addFoodVC.passedInGroupName = groupName
+        addFoodVC.uid = uid
         addFoodVC.modalPresentationStyle = .fullScreen
         
         present(addFoodVC, animated: true, completion: nil ) // presenting AddFoodItemController
@@ -193,6 +221,8 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
                 
                 cell.textLabel!.textColor = .black
                 cell.textLabel!.text = breakfastArray[indexPath.row].foodName
+                tempFoodIdHolder = breakfastArray[indexPath.row].id
+                print(breakfastArray[indexPath.row].id)
                 if !breakfastArray.isEmpty {
                     cell.detailTextLabel!.text = "\(breakfastArray[indexPath.row].nutrition) kcal"
                 }
@@ -240,15 +270,27 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 0 {
             
             if breakfastArray.count == 1 || breakfastArray.count == 0 {
+                
+                //MARK: Where I want to delete from database
+                print(indexPath.row)
+                firebaseDelete(breakfastArray[indexPath.row].id, "Breakfast") //passing in foodid unique to the indexpath.row
+                
                 breakfastArray.removeAll()
                 
+
                 
                 tableView.reloadData()
             }
             else {
+                
+                print(breakfastArray[indexPath.row].id)
+                 firebaseDelete(breakfastArray[indexPath.row].id, "Breakfast") //passing in foodid unique to the indexpath.row
+               
                 breakfastArray.remove(at: indexPath.row)
                 
                 tableView.deleteRows(at: [indexPath], with: .fade)
+                //MARK: Where I want to delete from database
+
                 
             }
         }
@@ -256,13 +298,22 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 1 {
             
             if lunchArray.count == 1 || lunchArray.count == 0 {
+                
+                //MARK: Where I want to delete from database
+                 firebaseDelete(lunchArray[indexPath.row].id, "Lunch") //passing in foodid unique to the indexpath.row
                 lunchArray.removeAll()
                 
+
                 
                 tableView.reloadData()
             }
             else {
+                
+                //MARK: Where I want to delete from database
+                 firebaseDelete(lunchArray[indexPath.row].id, "Lunch") //passing in foodid unique to the indexpath.row
                 lunchArray.remove(at: indexPath.row)
+                
+
                 
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 
@@ -272,13 +323,24 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 2 {
             
             if dinnerArray.count == 1 || dinnerArray.count == 0 {
+                
+                //MARK: Where I want to delete from database
+                 firebaseDelete(dinnerArray[indexPath.row].id, "Dinner") //passing in foodid unique to the indexpath.row
                 dinnerArray.removeAll()
+                
+
                 
                 
                 tableView.reloadData()
             }
             else {
+                
+                //MARK: Where I want to delete from database
+                 firebaseDelete(dinnerArray[indexPath.row].id, "Dinner")
+                    //passing in foodid unique to the indexpath.row
                 dinnerArray.remove(at: indexPath.row)
+                
+
                 
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 
@@ -288,17 +350,60 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 3 {
             
             if snackArray.count == 1 || snackArray.count == 0 {
+                
+                //MARK: Where I want to delete from database
+                 firebaseDelete(breakfastArray[indexPath.row].id, "Snack") //passing in foodid unique to the indexpath.row
                 snackArray.removeAll()
                 
+
                 
                 tableView.reloadData()
             }
             else {
+                
+                //MARK: Where I want to delete from database
+                   firebaseDelete(snackArray[indexPath.row].id, "Snack") //passing in foodid unique to the indexpath.row
                 snackArray.remove(at: indexPath.row)
+                
+  
                 
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
         }
+    }
+    
+    func firebaseDelete(_ uniqueID: String,_ mealType: String){ //deletes indexpath
+        
+
+            
+        var fireBaseCard = "" //to be used for firebase call
+            
+        switch selectedCard { //choosing dayCard string using dayCard int, to be used for firebase read
+        case 0: fireBaseCard = "Monday"
+        case 1: fireBaseCard = "Tuesday"
+        case 2: fireBaseCard = "Wednesday"
+        case 3: fireBaseCard = "Thursday"
+        case 4: fireBaseCard = "Friday"
+        case 5: fireBaseCard = "Saturday"
+        case 6: fireBaseCard = "Sunday"
+        default: print("Error in selected card switch array")
+        }
+//        cell.textLabel!.text = dinnerArray[indexPath.row].foodName
+        
+        
+        print("wwwwwwwwwwwwwwww")
+        print(mealType)
+        print(groupName)
+        let groupName2 = "\(groupName)"
+        print(fireBaseCard)
+        let fireBaseCard2 = "\(fireBaseCard)"
+        print(uniqueID)
+        let uniqueID2 = "\(uniqueID)"
+        print("\(groupName)/\(fireBaseCard)/\(mealType)/\(uniqueID)")
+        print("wwwwwwwwwwwwwwww")
+        
+        ref.child("\(groupName2)/\(uid)/\(groupName2)/\(fireBaseCard2)/\(mealType)/\(uniqueID2)").setValue(nil)
+        
     }
     
     func loadFirebaseData() { //reading all saved food items from firebase realtime database, saving them to breakfastArray,lunchArray,dinnerArray,andSnackArray. Then reloading the table to display data.
@@ -327,17 +432,7 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         
      print(groupName)
         
-//        self.ref.child(email).setValue(fireBaseCard)
-
-        
-//        ref.child(fireBaseCard).observeSingleEvent(of: .value, with: { (snapshot) in
-//        ref.child(email).child(fireBaseCard).observeSingleEvent(of: .value, with: { (snapshot) in
-        
-       // ref.child("\(email)").setValue(fireBaseCard)
-            
-       // let check = "eliashall" //username
-        
-        ref.child("\(groupName)/\(fireBaseCard)").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("\(groupName)/\(uid)/\(groupName)/\(fireBaseCard)").observeSingleEvent(of: .value, with: { (snapshot) in
 
         
             guard let value = snapshot.value as? NSDictionary else { //if there are no saved records return
@@ -381,16 +476,58 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         })
     }
     
-    
     override func viewWillDisappear(_ animated: Bool) {
-        ref = Database.database().reference() //connecting to firebase database
-
-        ref.child("\(groupName)/\("calTotal")/\(selectedCard)").setValue(calSum) //setting to tal in view Controller.
         
+//        ref = Database.database().reference() //connecting to firebase database
+////
+//        ref.child("\(groupName)/\(uid)/\(groupName)/\("calTotal")/\(selectedCard)").setValue(calSum)//setting to tal in view Controller.
+
+        //********
+        
+//                ref = Database.database().reference() //connecting to firebase database
+//
+//                let selectedCardCopy = selectedCard
+//                let calSumCopy = calSum
+//
+//        //        let data = ["\(selectedCard)": calSum] as NSDictionary
+//        //        ref.child("\(groupName)/\("calTotal")").setValue(data) //setting to tal in view Controller.
+//
+//
+        //        ref.child("\(groupName)/\("calTotal")/\(selectedCard)").setValue(calSum) //setting to tal in view Controller.
+        
+        let calSumCopy = calSum
+        let selectedCardCopy = selectedCard
+//
+//                let ref1 = Database.database().reference().child(groupName)
+//                //let calKey = ref1.child("\(selectedCardCopy)").key!
+//
+//                let calTotal: NSDictionary = ["\(selectedCardCopy)": calSumCopy]
+//
+//                //let calValue: NSDictionary = [selectedCardCopy: calSumCopy]
+//
+//                print(calTotal)
+//
+//                ref1.child("calTotal").setValue(calTotal)
+        
+        
+                    ref = Database.database().reference() //connecting to firebase database
+        //let key = ref.child("\(groupName)/calTotal").key
+        
+        
+//        let data = [ //data to be added to database
+//            "\(selectedCardCopy)":calSumCopy
+//        ] as [String: Any]
+//
+//        ref.child("\(groupName)/\(uid)/\(groupName)/calTotal").setValue(data as [String: Any])
+        
+        ref.child("\(groupName)/\(uid)/\(groupName)/calTotal/\(selectedCardCopy)").setValue("\(calSumCopy)")
+//
+//
         
         
     }
     
 }
+
 
 

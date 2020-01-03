@@ -9,15 +9,23 @@
 import UIKit
 import FirebaseAuth
 import FirebaseUI
+import CoreData
 
 class LoginViewController: UIViewController {
+
+    var dataController: DataController?
+    var coreGroupName: [SavedGroup] = []
+
    
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+        print("started LoginViewController")
+        retrieveCoreData()
+//        deleteCoreGroup()
         
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        print("sdfasdfa \(dataController)")
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -48,6 +56,33 @@ class LoginViewController: UIViewController {
         present(authVC, animated: true, completion: nil) //presenting firebase View Controller
     }
     
+    func deleteCoreGroup() { //deletes the saved groupName from core data
+        for i in 0..<coreGroupName.count {
+            dataController!.viewContext.delete(coreGroupName[i])
+            try? dataController!.viewContext.save()
+        }
+        coreGroupName.removeAll()
+    }
+    
+    
+    
+    func retrieveCoreData() { //getting saved groupName from core Data - To pass to HomeVC
+    let fetchRequest: NSFetchRequest<SavedGroup> = SavedGroup.fetchRequest()
+        
+    if let result = try? dataController?.viewContext.fetch(fetchRequest) { //fetching persisted pins
+        coreGroupName = result //storing in pins array for use in class
+        print("44444555555566666666")
+        print(coreGroupName)
+//        print(coreGroupName[0].name!) //saved name
+       // print(coreGroupName[0])
+                    return
+                }
+        else {
+            debugPrint("unable to fetch")
+            return
+        }
+        
+    }
 }
 
 extension LoginViewController: FUIAuthDelegate {
@@ -61,4 +96,16 @@ extension LoginViewController: FUIAuthDelegate {
         performSegue(withIdentifier: "toHomeSegue", sender: self)
 
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) { //gets called if segue is used
+        if segue.identifier == "toHomeSegue" { //segue used pushes to collectionView
+            let key = segue.destination as! HomeViewController //data to be sent to PhotoAlbum Controller
+            //key.fetchedGroupName = coreGroupName[0].name
+
+            key.coreGroupName = coreGroupName
+            key.dataController = dataController
+        }
+    }
+    
 }
+

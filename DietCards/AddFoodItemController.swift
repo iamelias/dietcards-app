@@ -20,6 +20,7 @@ class AddFoodItemController: UIViewController {
     var selectedMeal: String?
     var passedInDay: Int = 0 // Day of the Week passed in as Int
     var passedInGroupName: String = ""
+    var uid: String = ""
     var ref: DatabaseReference! // reference to Firebase database
     
     // giving passedInDay a string value using daysDict
@@ -27,6 +28,7 @@ class AddFoodItemController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("started AddFoodItemViewController")
         foodText.delegate = self
         activityIndicator.isHidden = true
        
@@ -59,7 +61,7 @@ class AddFoodItemController: UIViewController {
         if success { //if response is sucessful
 
             ref = Database.database().reference() //connecting to firebase database
-            let key = ref.child("\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
+            let key = ref.child("\(passedInGroupName)/\(uid)/\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
 
 //            let key = ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
 
@@ -73,7 +75,7 @@ class AddFoodItemController: UIViewController {
             
            
 //            ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
-            ref.child("\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
+            ref.child("\(passedInGroupName)/\(uid)/\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
         }
         
         return
@@ -136,3 +138,4 @@ extension AddFoodItemController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
 }
+
