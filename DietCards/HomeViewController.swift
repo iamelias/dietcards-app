@@ -15,36 +15,15 @@ import CoreData
 class HomeViewController: UIViewController {
     
     var selectedCard = 8 //default card setting
-    
-    var retrievedCalSum = 0.0
-    
     var permType = "" //will change to indicate permission type group creator or member
-    
-    var userEmail = "" //user details
     var userUid = ""
-    
     var getGroupNameInput = "" //changed in delegate when returning from AddGroupController
-    
     var updatedAlert: Bool = false//changed in delegate when returning from AddGroupContro..
-    
     var firstTimeRun: Bool = true //changed in viewDidAppear after first run
-    
     var gotCalTotals: Bool = false
-    
-    var currentWeekDay = ""
-    
     var coreGroupName: [SavedGroup] = [] //from LoginViewController
-    
     var calTotalsArray:[Double] = [] //Stores total calories index = day card
-    
     var useFirebase: Bool = false
-    
-    var tempGroupName = ""
-    
-    var secondCalorieArray: [Double] = []
-
-    //var fetchedGroupName: String?
-    
     var dataController: DataController?
     
     enum Days: Int {
@@ -69,7 +48,6 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("started HomeViewController")
         
         navigationController?.navigationBar.isHidden = true
         navigationController?.navigationBar.backgroundColor = .clear
@@ -102,7 +80,7 @@ class HomeViewController: UIViewController {
                 coreCheck = "Join Group"
             }
             joinGroupButton.setTitle(coreCheck, for: .normal) //setting join button title to savedCoreData name at index 0
-            //getCalTotalsFirebase() //to set up
+            //getCalTotalsFirebase()
         }
         else {
             print("coreGroupName is empty/ nothing saved in core data")
@@ -111,23 +89,10 @@ class HomeViewController: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) { //**** maybe unecessary
-        print("called HomeVC viewWillAppear")
-         
-//        if Auth.auth().currentUser != nil {
-//            let user = Auth.auth().currentUser!
-//
-//            self.userEmail = user.email! //getting copy of current users email and uid
-//            self.userUid = user.uid
-//    }
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
-        print("called viewDidAppear")
        NotificationCenter.default.removeObserver(self) //removing notification observer
  
     if updatedAlert == true { // when returning from AddGroupController...
-        print("getGroupNameInput in viewDidAppear: \(getGroupNameInput)")
         joinGroupButton.setTitle(getGroupNameInput, for: .normal) //default title
 
         hideColor.isHidden = true //hide the hidecolor uiview
@@ -151,13 +116,11 @@ class HomeViewController: UIViewController {
             pulseAnim() //calling pulse animation
         }
         
-        
         if firstTimeRun == true { //Making scrollview middle cell, same as current day of the week.
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "EEEE" //weekday format ex. Monday
             let weekDay = dateFormatter.string(from: Date())
-            currentWeekDay = weekDay //storing day of week
             
         collectionView.selectItem(at: [0,Days2[weekDay]!], animated: false, scrollPosition: .centeredHorizontally) //Displaying current weekday at center of view
             
@@ -165,7 +128,6 @@ class HomeViewController: UIViewController {
         }
         
         if useFirebase == true { //controlling use of firebase
-        print("***** About to call second getCalTotalsFirebase() **")
         //getCalTotalsFirebase() //database recalled after updating AddGroup. Getting new nutrition
         useFirebase = false //resetting
         }
@@ -175,7 +137,6 @@ class HomeViewController: UIViewController {
     @IBAction func joinGroupTapped(_ sender: Any) {
         
         joinGroupButton.isHighlighted = false //turning off highlight at tap
-//MARK: ADDGROUPCONTROLLER SEGUE
         let selectedVC = storyboard?.instantiateViewController(withIdentifier: "AddGroupController") as! AddGroupController //seguing to AddGroupVC
         selectedVC.chosenUser = self //for didSelectUser delegate below
         selectedVC.dataController = dataController //passing dataController container
@@ -212,48 +173,20 @@ class HomeViewController: UIViewController {
         
         guard !coreGroupName.isEmpty else { //if coreGroup is empty don't execute anymore
             calTotalsArray = [0.0,0.0,0.0,0.0,0.0,0.0,0.0] //so doesn't crash
-            print("coreGroupName is empty in getCalTotalsFirebase")
             //collectionView.reloadData()
             return
             
         //This function is never called if calling getCalTotalsFirebase from viewDidLoad
         }
         
-       
-    //    *******************
-        let ref = Database.database().reference()
-
-//        print("getCalTotalsFirebase: \(coreGroupName[0].name!)") //Error
-        print("&&&getCalTotalsFirebase: \(getGroupNameInput)") //Error
+            let ref = Database.database().reference()
         ref.child("\(getGroupNameInput)/\(userUid)/\(getGroupNameInput)").child("calTotal").observeSingleEvent(of: .value, with: { (snapshot) in //reading nutrition calories from space
-
-           //let value2 = snapshot.value as? NSArray
-               print("***************")
-            //print(snapshot.value! as? [String: Any])
-            print(snapshot.value as? NSDictionary)
-            
-            //let value2 = snapshot.value![1]
-            
-//
-//            for item in value { // iterating through breakfast,lunch,dinner,snack
-//                let uniqueKey = item.value as! NSDictionary // mealtime value is unique key
-//            //print(snapshot.value? as NSDictionary)
-//
-//            }
-            
-        
-            print(snapshot.value as? String)
-            print(snapshot.value)
-           // print(snapshot.value(forKey: "0"))
-            print(snapshot.value as? Any)
             
         guard let value = snapshot.value as? NSDictionary else { //if there are no saved records return
             
 
-            print("There are no saved records - Error")
             return
         }
-// ************
                 let detailDictionary = value //as! NSDictionary
                 let mon = detailDictionary["0"] as? Double ?? 0.0 // ex. 0
                 let tue = detailDictionary["1"] as? Double ?? 0.0 // ex. 0
@@ -400,12 +333,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 extension HomeViewController: TypeOfUserDelegate {
     
     func didSelectUser(type: String, groupName: String, uid: String, update: Bool) { //recieving group type and email
-       // getCalTotalsFirebase()
-        print("TypeOfUserDelegate called")
-        print("uid in TypeUserDelegate: \(uid)")
-        print("type in TypeOfUserDelegate: \(type)")
-        print("groupName in TypeOfUserDelegate: \(groupName)")
-        print("Delegate extension Thead: \(Thread.current)")
+
         updatedAlert = update //Control flow of viewDidAppear
         gotCalTotals = true //used to control whether firebase is called or not
         permType = type // permission type create group returns "leader", join group returns "follower"

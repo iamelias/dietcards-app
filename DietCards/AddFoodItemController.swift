@@ -28,7 +28,6 @@ class AddFoodItemController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("started AddFoodItemViewController")
         foodText.delegate = self
         activityIndicator.isHidden = true
        

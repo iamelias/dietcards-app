@@ -16,8 +16,6 @@ class HomeCollectionViewCell: UICollectionViewCell
     @IBOutlet weak var calTotalLabel: UILabel!
     @IBOutlet weak var lastUpdateLabel: UILabel!
     
-    
-
     func configureCell(_ dayOfWeek: String,_ calTotal: Double) {
         
         backgroundColor = .clear
@@ -29,7 +27,6 @@ class HomeCollectionViewCell: UICollectionViewCell
         calTotalLabel.text = "\(calTotal) kcals"
         calTotalLabel.textAlignment = .center
         lastUpdateLabel.textAlignment = .center
-        //calTotalLabel.sizeToFit()
     
     }
     

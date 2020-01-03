@@ -47,7 +47,6 @@ class CardTableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("started CardTableViewController")
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -69,7 +68,6 @@ class CardTableViewController: UIViewController {
         
     }
     
-    
     func getCurrentUsrUid() -> String { //getting current usrs uid for comparison.
         
     if Auth.auth().currentUser != nil {
@@ -80,15 +78,9 @@ class CardTableViewController: UIViewController {
         return currentUsrUid
     }
     
-    
-    
-    
     override func viewDidAppear(_ animated: Bool) {
 
-        calSum = 0.0
-        print(groupName) //current user state email or group email
-        print(uid) //current user uid
-        print(selectedCard) //selected card number
+        calSum = 0.0 //is necessary?
         
         loadFirebaseData() //calling realtime database
         
@@ -104,7 +96,7 @@ class CardTableViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func addFoodTapped(_ sender: Any) {
+    @IBAction func addFoodTapped(_ sender: Any) { 
         
         let addFoodVC = storyboard?.instantiateViewController(withIdentifier: "AddFoodItemController") as! AddFoodItemController
         
@@ -120,7 +112,6 @@ class CardTableViewController: UIViewController {
     func sumCalories(_ foodCal: Double) { //function calculates sum of calories
         
         self.calSum += foodCal
-        print(self.calSum)
     }
 }
 
@@ -222,7 +213,6 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.textLabel!.textColor = .black
                 cell.textLabel!.text = breakfastArray[indexPath.row].foodName
                 tempFoodIdHolder = breakfastArray[indexPath.row].id
-                print(breakfastArray[indexPath.row].id)
                 if !breakfastArray.isEmpty {
                     cell.detailTextLabel!.text = "\(breakfastArray[indexPath.row].nutrition) kcal"
                 }
@@ -261,7 +251,6 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
             }
         }
         
-        
         return cell
     }
     
@@ -272,18 +261,14 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
             if breakfastArray.count == 1 || breakfastArray.count == 0 {
                 
                 //MARK: Where I want to delete from database
-                print(indexPath.row)
                 firebaseDelete(breakfastArray[indexPath.row].id, "Breakfast") //passing in foodid unique to the indexpath.row
                 
                 breakfastArray.removeAll()
-                
-
                 
                 tableView.reloadData()
             }
             else {
                 
-                print(breakfastArray[indexPath.row].id)
                  firebaseDelete(breakfastArray[indexPath.row].id, "Breakfast") //passing in foodid unique to the indexpath.row
                
                 breakfastArray.remove(at: indexPath.row)
@@ -291,7 +276,6 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 //MARK: Where I want to delete from database
 
-                
             }
         }
         
@@ -309,7 +293,6 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
             }
             else {
                 
-                //MARK: Where I want to delete from database
                  firebaseDelete(lunchArray[indexPath.row].id, "Lunch") //passing in foodid unique to the indexpath.row
                 lunchArray.remove(at: indexPath.row)
                 
@@ -391,17 +374,11 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
 //        cell.textLabel!.text = dinnerArray[indexPath.row].foodName
         
         
-        print("wwwwwwwwwwwwwwww")
-        print(mealType)
-        print(groupName)
-        let groupName2 = "\(groupName)"
-        print(fireBaseCard)
-        let fireBaseCard2 = "\(fireBaseCard)"
-        print(uniqueID)
-        let uniqueID2 = "\(uniqueID)"
-        print("\(groupName)/\(fireBaseCard)/\(mealType)/\(uniqueID)")
-        print("wwwwwwwwwwwwwwww")
         
+        let groupName2 = "\(groupName)"
+        let fireBaseCard2 = "\(fireBaseCard)"
+        let uniqueID2 = "\(uniqueID)"
+
         ref.child("\(groupName2)/\(uid)/\(groupName2)/\(fireBaseCard2)/\(mealType)/\(uniqueID2)").setValue(nil)
         
     }
@@ -429,9 +406,7 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         case 6: fireBaseCard = "Sunday"
         default: print("Error in selected card switch array")
         }
-        
-     print(groupName)
-        
+                
         ref.child("\(groupName)/\(uid)/\(groupName)/\(fireBaseCard)").observeSingleEvent(of: .value, with: { (snapshot) in
 
         
@@ -477,57 +452,7 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        
-//        ref = Database.database().reference() //connecting to firebase database
-////
-//        ref.child("\(groupName)/\(uid)/\(groupName)/\("calTotal")/\(selectedCard)").setValue(calSum)//setting to tal in view Controller.
-
-        //********
-        
-//                ref = Database.database().reference() //connecting to firebase database
-//
-//                let selectedCardCopy = selectedCard
-//                let calSumCopy = calSum
-//
-//        //        let data = ["\(selectedCard)": calSum] as NSDictionary
-//        //        ref.child("\(groupName)/\("calTotal")").setValue(data) //setting to tal in view Controller.
-//
-//
-        //        ref.child("\(groupName)/\("calTotal")/\(selectedCard)").setValue(calSum) //setting to tal in view Controller.
-        
-        let calSumCopy = calSum
-        let selectedCardCopy = selectedCard
-//
-//                let ref1 = Database.database().reference().child(groupName)
-//                //let calKey = ref1.child("\(selectedCardCopy)").key!
-//
-//                let calTotal: NSDictionary = ["\(selectedCardCopy)": calSumCopy]
-//
-//                //let calValue: NSDictionary = [selectedCardCopy: calSumCopy]
-//
-//                print(calTotal)
-//
-//                ref1.child("calTotal").setValue(calTotal)
-        
-        
-                    ref = Database.database().reference() //connecting to firebase database
-        //let key = ref.child("\(groupName)/calTotal").key
-        
-        
-//        let data = [ //data to be added to database
-//            "\(selectedCardCopy)":calSumCopy
-//        ] as [String: Any]
-//
-//        ref.child("\(groupName)/\(uid)/\(groupName)/calTotal").setValue(data as [String: Any])
-        
-        ref.child("\(groupName)/\(uid)/\(groupName)/calTotal/\(selectedCardCopy)").setValue("\(calSumCopy)")
-//
-//
-        
-        
-    }
-    
 }
 
 
-
+}

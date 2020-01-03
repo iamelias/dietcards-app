@@ -35,7 +35,6 @@ class AddGroupController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        // notify() //to run viewDidAppear when returning to HomeViewController
-        print("started AddGroupViewController")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -154,7 +153,6 @@ class AddGroupController: UIViewController {
         
         ref.child("\(getGroupName.self)").observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() { //if username exists in database
-                print("Group name already taken")
                 taken = true //reassign taken to true
             completion(taken) //exit closure pass true for taken
                 
@@ -184,55 +182,30 @@ class AddGroupController: UIViewController {
                 print("Group doesn't exist")
                 taken = false
             completion(taken) //exiting closure passing false
-                print("**** made it 1")
-
             }
                 
             else if snapshot.exists() { //if group does exist
                 print("Added to group") //assigning delegate's parameters
                 //below didselect may be unecessary
                 self.chosenUser.didSelectUser(type: "follower", groupName: self.getGroupName, uid: self.uid, update: true) //returning type and groupName that will be used in HomeViewController
-                print("**** made it 2")
                 print("\(getGroupName)")
                 print("\(self.uid)") //may print old uid before
                 
         //************** check creators node for leaders uid ***********
                 
-                print("tttttttttttt")
-                print("string: creators/\(getGroupName)")
-//            ref.child("creators)").child(getGroupName).observeSingleEvent(of: .value, with: { (snapshot) in
             ref.child("creators").observeSingleEvent(of: .value, with: { (snapshot) in
 
-                print("&&&&&&&&&&&&&&&&&&")
-                print(snapshot)
-                    // Get user value
                 let value = snapshot.value as? NSDictionary
-                print("string: creators/\(self.getGroupName)")
 
-                print("value: \(value)")
             let leaderUid = value?[getGroupName] as? String ?? ""
                     
                 self.chosenUser.didSelectUser(type: "follower", groupName: self.getGroupName, uid: leaderUid, update: true)
-                print("+++++++++++")
                 self.uid = leaderUid
-                print("uid")
-                print("leaderUid: \(leaderUid)")
-                print("self.uid: \(self.uid)")
-                print("+++++++++++")
-
-
-                print("&&&&&&&&&&&&&&&&&&")
-
                           // ...
                 }) { (error) in
-                    print("@@@@@@@@@@")
                 print(error.localizedDescription)
             }
                         
-                        
-                //****************************************************************
-                
-                
                 taken = true
                 completion(taken) //exiting closure passing true
             }
@@ -271,11 +244,7 @@ class AddGroupController: UIViewController {
         ref.child("\(groupName)/\(gotUid)/\(groupName)").setValue("reserved") //making a placeholder
         
         //Add to creators node
-        print("???????????")
-        print(gotUid)
-        print("creators/\(groupName)")
         ref.child("creators/\(groupName)").setValue(gotUid)
-        print("????????????")
     }
     
     func getUid() -> String {
@@ -294,14 +263,9 @@ class AddGroupController: UIViewController {
         coreSave.name = getGroupName
         coreSave.permType = usrPerm
         coreSave.uid = uid
-        print("saveNameCore coreSave.name: \(coreSave.name)")
-        print("saveNameCore coreSave.permType: \(coreSave.permType)")
 
-        print("coreSave.name: \(String(describing: coreSave.name))")
         try? dataController!.viewContext.save() //saving groupname object and it's attributes
         coreGroupName.append(coreSave)
-        print("saveNameCore coreGroupName: \(coreGroupName[0].name)")
-
     }
     
     func deleteCoreGroup() { //deletes everything from core Data everytime
