@@ -49,14 +49,12 @@
             activityIndicator.startAnimating()
             FoodClient.getFood(foodID: self.foodText.text ?? "", completion: self.getFoodResponse(success: foodID: error:)) //calling nutrionix api
             
-            dismiss(animated: true, completion: nil)
+            //dismiss(animated: true, completion: nil)
             
         }
         
         func getFoodResponse(success: Bool, foodID: NutritionData, error: Error?) { //Network response
             
-            activityIndicator.stopAnimating()
-            activityIndicator.isHidden = true
             if success { //if response is sucessful
 
                 ref = Database.database().reference() //connecting to firebase database
@@ -71,6 +69,12 @@
                     ] as [String : Any]
                 
             ref.child("\(passedInGroupName)/\(uid)/\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
+                
+                self.dismiss(animated: true, completion: nil)
+                self.activityIndicator.isHidden = true
+                activityIndicator.isHidden = true
+
+
             }
             
             else if !success {

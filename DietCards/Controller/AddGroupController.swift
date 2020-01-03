@@ -21,6 +21,7 @@ class AddGroupController: UIViewController {
     
     @IBOutlet weak var createGroupButton: UIButton! //user options Create/Join Group
     @IBOutlet weak var joinGroupButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var chosenUser: TypeOfUserDelegate! //to return to HomeViewController, from HomeVC
     var getGroupName: String = "" //to return to HomeViewController, from HomeVC
@@ -35,6 +36,7 @@ class AddGroupController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.isHidden = true
         // notify() //to run viewDidAppear when returning to HomeViewController
     }
     
@@ -47,12 +49,16 @@ class AddGroupController: UIViewController {
     
     @IBAction func createGroupTapped(_ sender: Any) { //when create button is tapped
         usrPerm = "leader"
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
         promptForCreate() //create alert function
     }
     
     
     @IBAction func joinGroupTapped(_ sender: Any) { //when join button is tapped
         usrPerm = "follower"
+        self.activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
         promptForJoin() //join alert function
     }
     
@@ -77,7 +83,7 @@ class AddGroupController: UIViewController {
                 return
             }
             self.checkDatabase(self.getGroupName, completion: { group in
-                
+
                 if group == true { //if group name does exist
                     let passMessage = "This group name has already been taken"
                     self.presentAlert(self.getGroupName, passMessage) //alert to say it already exists
@@ -87,6 +93,8 @@ class AddGroupController: UIViewController {
                 else if group == false { //if doesn't already exist...
                     self.notify() //notify to rerun viewDidAppear
                     //delegate will pass back group name and permission type for firebase in HomeVC
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
                     self.dismiss(animated: true) //auto dismiss back to HomeVC
                 }
             })
@@ -127,6 +135,7 @@ class AddGroupController: UIViewController {
             
             self.checkDatabase2(self.getGroupName, completion: { group in
                 //checking if groupName is in database
+                
                 if group == false { //if it isn't in group
                     self.presentAlert2(self.getGroupName) //present alert saying not in group
                     return
@@ -134,6 +143,8 @@ class AddGroupController: UIViewController {
                     
                 else if group == true { //if it is in group
                     self.notify() //notify to run viewDidAppear  in HomeVC
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
                     self.dismiss(animated: true) //dismiss this view controller back to HomeVC
                 }
             })
@@ -165,6 +176,8 @@ class AddGroupController: UIViewController {
                 
                 //MARK: ADD FIREBASE POSTING FUNCTIONALITY
                 self.addToFirebase(self.getGroupName, gotUid) //adding new group name to database
+               self.activityIndicator.stopAnimating()
+               self.activityIndicator.isHidden = true
                 taken = false
                 completion(taken) //exist closure with false for group name is not taken
             }

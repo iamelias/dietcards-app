@@ -64,11 +64,16 @@ Join Group</string>
                                     <action selector="dismissVC:" destination="UTp-jn-d0G" eventType="touchUpInside" id="cg0-mJ-cd3"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="S5e-CG-3Ls">
+                                <rect key="frame" x="177" y="594" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="CSW-qI-Lyu"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="S5e-CG-3Ls" id="sVE-jE-QPG"/>
                         <outlet property="createGroupButton" destination="mgt-ZG-09B" id="x1s-rz-SbF"/>
                         <outlet property="joinGroupButton" destination="spV-ID-veQ" id="fb1-GU-OPl"/>
                     </connections>
