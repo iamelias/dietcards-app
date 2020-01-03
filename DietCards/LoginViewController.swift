@@ -21,11 +21,10 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         print("started LoginViewController")
         retrieveCoreData()
-//        deleteCoreGroup()
+//        deleteCoreGroup() //If I want to delete coredata for coding purposes
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        print("sdfasdfa \(dataController)")
     }
 
     override func viewWillDisappear(_ animated: Bool) {
