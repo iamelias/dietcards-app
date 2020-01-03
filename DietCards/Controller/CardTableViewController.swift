@@ -254,7 +254,12 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         if indexPath.section == 0 {
+            
+            
             if breakfastArray.count == 1 || breakfastArray.count == 0 {
+                if breakfastArray.isEmpty {
+                    return
+                }
                 firebaseDelete(breakfastArray[indexPath.row].id, "Breakfast") //passing in foodid unique to the indexpath.row
                 breakfastArray.removeAll()
                 
@@ -270,6 +275,9 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         }
         if indexPath.section == 1 {
             if lunchArray.count == 1 || lunchArray.count == 0 {
+                if lunchArray.isEmpty {
+                    return
+                }
                 firebaseDelete(lunchArray[indexPath.row].id, "Lunch") //passing in foodid unique to the indexpath.row
                 lunchArray.removeAll()
                 tableView.reloadData()
@@ -283,6 +291,9 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         
         if indexPath.section == 2 {
             if dinnerArray.count == 1 || dinnerArray.count == 0 {
+                if dinnerArray.isEmpty {
+                    return
+                }
                 //MARK: Where I want to delete from database
                 firebaseDelete(dinnerArray[indexPath.row].id, "Dinner") //passing in foodid unique to the indexpath.row
                 dinnerArray.removeAll()
@@ -298,6 +309,9 @@ extension CardTableViewController: UITableViewDataSource, UITableViewDelegate {
         
         if indexPath.section == 3 {
             if snackArray.count == 1 || snackArray.count == 0 {
+                if snackArray.isEmpty {
+                    return
+                }
                 firebaseDelete(breakfastArray[indexPath.row].id, "Snack") //passing in foodid unique to the indexpath.row
                 snackArray.removeAll()
                 tableView.reloadData()
