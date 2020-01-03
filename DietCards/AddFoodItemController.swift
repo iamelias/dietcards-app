@@ -62,8 +62,6 @@ class AddFoodItemController: UIViewController {
             ref = Database.database().reference() //connecting to firebase database
             let key = ref.child("\(passedInGroupName)/\(uid)/\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
 
-//            let key = ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)").childByAutoId().key
-
             let data = [ //data to be added to database
                 "foodid": key!, //unique key
                 "foodName": foodID.foodName, //from Network response
@@ -72,9 +70,7 @@ class AddFoodItemController: UIViewController {
                 "mealTime": mealText.text! //selected in pickerView
                 ] as [String : Any]
             
-           
-//            ref.child("\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
-            ref.child("\(passedInGroupName)/\(uid)/\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
+        ref.child("\(passedInGroupName)/\(uid)/\(passedInGroupName)/\(daysDict[passedInDay]!)/\(mealText.text!)/\(key!)").setValue(data)
         }
         
         return

@@ -29,6 +29,7 @@ class AddGroupController: UIViewController {
     var coreGroupName2: [SavedGroup] = [] //backup fore delete/save sequential move
     
     var uid = ""
+    var currentUserUid = ""
     
     var dataController: DataController? //from HomeVC
     
@@ -240,10 +241,16 @@ class AddGroupController: UIViewController {
     }
     
     func addToFirebase(_ groupName: String,_ gotUid: String) { //adds a reserve placeholder in database
+        
+        guard currentUserUid == uid else {
+            return
+        }
+        
         let ref = Database.database().reference()
         ref.child("\(groupName)/\(gotUid)/\(groupName)").setValue("reserved") //making a placeholder
         
         //Add to creators node
+        print(gotUid)
         ref.child("creators/\(groupName)").setValue(gotUid)
     }
     

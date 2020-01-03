@@ -24,7 +24,10 @@ class HomeViewController: UIViewController {
     var coreGroupName: [SavedGroup] = [] //from LoginViewController
     var calTotalsArray:[Double] = [] //Stores total calories index = day card
     var useFirebase: Bool = false
+    var currentUserUid = ""
     var dataController: DataController?
+    let ref = Database.database().reference() //For Firebase database call
+
     
     enum Days: Int {
         case Monday = 0
@@ -36,9 +39,9 @@ class HomeViewController: UIViewController {
         case Sunday = 6
     }
     
-    var Days2:[String:Int] = ["Monday": 0, "Tuesday": 1, "Wednesday": 2, "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6]
-    
     static let daysOfWeek: [String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    
+    var Days2:[String:Int] = ["Monday": 0, "Tuesday": 1, "Wednesday": 2, "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6]
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
@@ -62,7 +65,6 @@ class HomeViewController: UIViewController {
 
         hideColor.isHidden = false
         hideColor.backgroundColor = .gray
-        //hideColor.isOpaque = false
         hideColor.alpha = 0.5
         calTotalsArray = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] //default
                 
@@ -80,13 +82,11 @@ class HomeViewController: UIViewController {
                 coreCheck = "Join Group"
             }
             joinGroupButton.setTitle(coreCheck, for: .normal) //setting join button title to savedCoreData name at index 0
-            //getCalTotalsFirebase()
+            //getCalTotalsFirebase() //future project addition
         }
         else {
             print("coreGroupName is empty/ nothing saved in core data")
-            print("GetGroupName")
         }
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -134,6 +134,14 @@ class HomeViewController: UIViewController {
 
     }
     
+    func getCurrentUserUID() {
+        if Auth.auth().currentUser != nil {
+        let user = Auth.auth().currentUser!
+        currentUserUid = user.uid
+        
+    }
+    }
+    
     @IBAction func joinGroupTapped(_ sender: Any) {
         
         joinGroupButton.isHighlighted = false //turning off highlight at tap
@@ -142,6 +150,7 @@ class HomeViewController: UIViewController {
         selectedVC.dataController = dataController //passing dataController container
         selectedVC.coreGroupName = coreGroupName //passing persisted array
         selectedVC.uid = userUid
+        selectedVC.currentUserUid = currentUserUid
                 
         present(selectedVC, animated: true, completion: dismissResponse)
     }
@@ -155,12 +164,9 @@ class HomeViewController: UIViewController {
     
     func saveNameCore(){ //saving groupName to Core Data
         let coreSave = SavedGroup(context: dataController!.viewContext) //defining persisted pin attribute data
-        print("uuuuuuuuuuu")
-        print(getGroupNameInput)
         coreSave.name = "space"
         try? dataController!.viewContext.save() //saving pin object and it's new attributes
         coreGroupName.append(coreSave)
-
     }
     
     func deleteCoreGroup() { //deletes the saved groupName from core data
@@ -169,7 +175,7 @@ class HomeViewController: UIViewController {
         coreGroupName.removeAll()
     }
     
-    func getCalTotalsFirebase() {
+    func getCalTotalsFirebase() { //For future project addition- grader ignore method
         
         guard !coreGroupName.isEmpty else { //if coreGroup is empty don't execute anymore
             calTotalsArray = [0.0,0.0,0.0,0.0,0.0,0.0,0.0] //so doesn't crash
@@ -178,13 +184,10 @@ class HomeViewController: UIViewController {
             
         //This function is never called if calling getCalTotalsFirebase from viewDidLoad
         }
-        
-            let ref = Database.database().reference()
-        ref.child("\(getGroupNameInput)/\(userUid)/\(getGroupNameInput)").child("calTotal").observeSingleEvent(of: .value, with: { (snapshot) in //reading nutrition calories from space
+    ref.child("\(getGroupNameInput)/\(userUid)/\(getGroupNameInput)").child("calTotal").observeSingleEvent(of: .value, with: { (snapshot) in //reading nutrition calories from space
             
         guard let value = snapshot.value as? NSDictionary else { //if there are no saved records return
             
-
             return
         }
                 let detailDictionary = value //as! NSDictionary
@@ -206,14 +209,14 @@ class HomeViewController: UIViewController {
                 self.calTotalsArray.append(sat)
                 self.calTotalsArray.append(sun)
                 
-                var calTotal = CalorieTotals() //**** Check if necessary
-                calTotal.Monday = mon
-                calTotal.Tuesday = tue
-                calTotal.Wednesday = wed
-                calTotal.Thursday = thu
-                calTotal.Friday = fri
-                calTotal.Saturday = sat
-                calTotal.Sunday = sun
+//                var calTotal = CalorieTotals() //**** Check if necessary
+//                calTotal.Monday = mon
+//                calTotal.Tuesday = tue
+//                calTotal.Wednesday = wed
+//                calTotal.Thursday = thu
+//                calTotal.Friday = fri
+//                calTotal.Saturday = sat
+//                calTotal.Sunday = sun
                 
                 self.gotCalTotals = true
             
@@ -327,7 +330,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     override func viewWillDisappear(_ animated: Bool) {
         updatedAlert = false
     }
-    
 }
 
 extension HomeViewController: TypeOfUserDelegate {
@@ -342,7 +344,6 @@ extension HomeViewController: TypeOfUserDelegate {
         
         if type == "follower" {
         joinGroupButton.setTitle(getGroupNameInput, for: .normal) //changing join button to group chosen in AddGroupController
-    
         }
         
         else if type == "leader" {
