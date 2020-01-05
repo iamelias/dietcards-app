@@ -255,9 +255,9 @@ class AddGroupController: UIViewController {
     
     func addToFirebase(_ groupName: String,_ gotUid: String) { //adds a reserve placeholder in database
         
-        guard currentUserUid == uid else {
-            return
-        }
+//        guard currentUserUid == uid else {
+//            return
+//        }
         
         let ref = Database.database().reference()
         ref.child("\(groupName)/\(gotUid)/\(groupName)").setValue("reserved") //making a placeholder
