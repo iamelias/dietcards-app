@@ -25,6 +25,7 @@ class HomeViewController: UIViewController {
     var calTotalsArray:[Double] = [] //Stores total calories index = day card
     var useFirebase: Bool = false
     var currentUserUid = ""
+    var currentDay: String = ""
     var dataController: DataController?
     let ref = Database.database().reference() //For Firebase database call
     
@@ -62,7 +63,13 @@ class HomeViewController: UIViewController {
         homeTitleLabel.textColor = .black
         
         joinGroupButton.setTitle("Join Group", for: .normal) //default title
+//        hideColor.layer.masksToBounds = true
         
+//        hideColor.leadingAnchor.constraint(equalTo: hideColor.heightAnchor),
+//        hideColor.trailingAnchor.constraint(equalTo: other.trailingAnchor).isActive = true
+//        hideColor.topAnchor.constraint(equalTo: other.topAnchor).isActive = true
+//        hideColor.bottomAnchor.constraint(equalTo: other.bottomAnchor).isActive = true
+//        
         hideColor.isHidden = false
         hideColor.backgroundColor = .gray
         hideColor.alpha = 0.5
@@ -208,15 +215,6 @@ class HomeViewController: UIViewController {
             self.calTotalsArray.append(fri)
             self.calTotalsArray.append(sat)
             self.calTotalsArray.append(sun)
-            
-            //                var calTotal = CalorieTotals() //**** Check if necessary
-            //                calTotal.Monday = mon
-            //                calTotal.Tuesday = tue
-            //                calTotal.Wednesday = wed
-            //                calTotal.Thursday = thu
-            //                calTotal.Friday = fri
-            //                calTotal.Saturday = sat
-            //                calTotal.Sunday = sun
             
             self.gotCalTotals = true
             

@@ -20,7 +20,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         retrieveCoreData() //fetching persisted data
-        //deleteCoreGroup() //If I want to delete persisted data for testing purposes
+//        deleteCoreGroup() //If I want to delete persisted data for testing purposes //uncomment, run, then comment back, then run again.
         
     }
     

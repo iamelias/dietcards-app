@@ -21,6 +21,7 @@ class CardTableViewController: UIViewController {
     var usrPerm: String = "" //usr permission type "leader"/"follower" - from previous vc
     var uid: String = "" //will use to find leaders data branch. This is group leaders uid
     var currentUsrUid = "" //This is current usrs uid
+    //var currentDay = ""
     
     //4 arrays below are populated with Firebase saved food data
     var breakfastArray: [NutritionData] = []
@@ -34,6 +35,7 @@ class CardTableViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView! //displayed during download
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addButton: UIBarButtonItem! //used to control access to AddFoodController
+    @IBOutlet weak var navTitle: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +45,8 @@ class CardTableViewController: UIViewController {
         
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isHidden = true
+        navTitle.text = DaysDictionary[selectedCard]
+        navTitle.textAlignment = .center
         
         let currentUsrUid = getCurrentUsrUid()
         
