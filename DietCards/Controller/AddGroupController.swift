@@ -75,11 +75,11 @@ class AddGroupController: UIViewController {
                 self.getGroupName = "Join Group"
             }
             
-            guard self.getGroupName != "Join Group" else {// if Join Group
+            guard self.getGroupName != "Join Group" else {// if Join Group is name chosen
                 //self.notify()
                 // self.dismiss(animated: true)
                 let passMessage = "Choose different group name"
-                self.presentAlert(self.getGroupName, passMessage)
+                self.presentAlert(self.getGroupName, passMessage) //alert to rechoose name
                 return
             }
             self.checkDatabase(self.getGroupName, completion: { group in
@@ -137,7 +137,8 @@ class AddGroupController: UIViewController {
                 //checking if groupName is in database
                 
                 if group == false { //if it isn't in group
-                    self.presentAlert2(self.getGroupName) //present alert saying not in group
+                    let passMessage: String = "This group doesn't exist"
+                    self.presentAlert(self.getGroupName, passMessage) //present alert saying not in group
                     return
                 }
                     
@@ -224,14 +225,12 @@ class AddGroupController: UIViewController {
                 completion(taken) //exiting closure passing true
             }
         })
-        
-        
     }
     
     func presentAlert(_ groupName: String,_ passMessage: String) { //present alert group name is taken
         //
         //        let alert = UIAlertController(title: "Error: \(groupName)", message: "This group name has already been taken", preferredStyle: .alert)
-        let alert = UIAlertController(title: "Error: \(groupName)", message: "This group name has already been taken", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Error: \(groupName)", message: passMessage, preferredStyle: .alert)
         
         let ok = UIAlertAction(title: "Back", style: .default, handler: nil)
         
@@ -239,20 +238,11 @@ class AddGroupController: UIViewController {
         
         present(alert, animated: true)
         
-    }
-    
-    func presentAlert2(_ groupName: String) { //alert when group to join doesn't exist
-        
-        let alert = UIAlertController(title: "\(groupName)?", message: "This group doesn't exist", preferredStyle: .alert)
-        
-        let ok = UIAlertAction(title: "Back", style: .default, handler: nil)
-        
-        alert.addAction(ok)
-        
-        present(alert, animated: true)
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
         
     }
-    
+        
     func addToFirebase(_ groupName: String,_ gotUid: String) { //adds a reserve placeholder in database
         
 //        guard currentUserUid == uid else {
