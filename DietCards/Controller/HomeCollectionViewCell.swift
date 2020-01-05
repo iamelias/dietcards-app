@@ -16,8 +16,6 @@ class HomeCollectionViewCell: UICollectionViewCell
     @IBOutlet weak var calTotalLabel: UILabel!
     @IBOutlet weak var lastUpdateLabel: UILabel!
     
-    
-
     func configureCell(_ dayOfWeek: String,_ calTotal: Double) {
         
         backgroundColor = .clear
@@ -26,11 +24,10 @@ class HomeCollectionViewCell: UICollectionViewCell
         cardTitleLabel.text = dayOfWeek
         cardTitleLabel.textAlignment = .center
         cardTitleLabel.textColor = .black
-        calTotalLabel.text = "\(calTotal) kcals"
-        calTotalLabel.textAlignment = .center
-        lastUpdateLabel.textAlignment = .center
-        //calTotalLabel.sizeToFit()
-    
+        //calTotalLabel.text = "\(calTotal) kcals"
+        // calTotalLabel.textAlignment = .center
+        //lastUpdateLabel.textAlignment = .center
+        
     }
     
     override func layoutSubviews() {
@@ -40,7 +37,7 @@ class HomeCollectionViewCell: UICollectionViewCell
         layer.shadowRadius = 10
         layer.shadowOpacity = 0.2
         layer.shadowOffset = CGSize(width: 5, height: 10)
-                
+        
         self.clipsToBounds = false
     }
 }

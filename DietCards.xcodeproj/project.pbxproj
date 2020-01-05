@@ -14,7 +14,6 @@
 		646A68E92380FEDA00AF1F5E /* CardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646A68E82380FEDA00AF1F5E /* CardTableViewController.swift */; };
 		646D1D4F238C66F200374FA4 /* NutritionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646D1D4E238C66F200374FA4 /* NutritionData.swift */; };
 		6497A68F2381E15E00BE58F0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6497A68E2381E15E00BE58F0 /* GoogleService-Info.plist */; };
-		6497E372239738F5007AD1F9 /* CardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6497E371239738F5007AD1F9 /* CardData.swift */; };
 		64A86AC523A5C5CA001E2877 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A86AC423A5C5CA001E2877 /* LoginViewController.swift */; };
 		64A8A67423B819B2003C259D /* CalorieTotals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A8A67323B819B2003C259D /* CalorieTotals.swift */; };
 		64C02903237E71E30052FD1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C02902237E71E30052FD1D /* AppDelegate.swift */; };
@@ -36,7 +35,6 @@
 		646A68E82380FEDA00AF1F5E /* CardTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTableViewController.swift; sourceTree = "<group>"; };
 		646D1D4E238C66F200374FA4 /* NutritionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionData.swift; sourceTree = "<group>"; };
 		6497A68E2381E15E00BE58F0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		6497E371239738F5007AD1F9 /* CardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardData.swift; sourceTree = "<group>"; };
 		64A86AC423A5C5CA001E2877 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		64A8A67323B819B2003C259D /* CalorieTotals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieTotals.swift; sourceTree = "<group>"; };
 		64C028FF237E71E30052FD1D /* DietCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DietCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,26 +91,49 @@
 		64C02901237E71E30052FD1D /* DietCards */ = {
 			isa = PBXGroup;
 			children = (
-				64C02902237E71E30052FD1D /* AppDelegate.swift */,
+				64C53BB223BF078500222E1D /* Controller */,
+				64C53BB023BF076B00222E1D /* Model */,
+				64C53BB123BF077F00222E1D /* View */,
 				64C02906237E71E30052FD1D /* Main.storyboard */,
 				64C0290C237E71E50052FD1D /* Assets.xcassets */,
 				64C0290E237E71E50052FD1D /* LaunchScreen.storyboard */,
 				64C02911237E71E50052FD1D /* Info.plist */,
+				6497A68E2381E15E00BE58F0 /* GoogleService-Info.plist */,
+			);
+			path = DietCards;
+			sourceTree = "<group>";
+		};
+		64C53BB023BF076B00222E1D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				64DD73EA238768E900E1D042 /* FoodClient.swift */,
 				64C02909237E71E30052FD1D /* DietCards.xcdatamodeld */,
+				64A8A67323B819B2003C259D /* CalorieTotals.swift */,
+				646D1D4E238C66F200374FA4 /* NutritionData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		64C53BB123BF077F00222E1D /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		64C53BB223BF078500222E1D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				64C02902237E71E30052FD1D /* AppDelegate.swift */,
+				64C53BAE23BEC2FD00222E1D /* DataController.swift */,
 				64A86AC423A5C5CA001E2877 /* LoginViewController.swift */,
 				644A651C237F393700610568 /* HomeCollectionViewCell.swift */,
 				644A651E237F5E9700610568 /* HomeViewController.swift */,
-				646A68E82380FEDA00AF1F5E /* CardTableViewController.swift */,
-				6441BC61238B3C0B0066B5DE /* AddFoodItemController.swift */,
 				64EFB18A23AEE53B00617AA6 /* AddGroupController.swift */,
-				64DD73EA238768E900E1D042 /* FoodClient.swift */,
-				6497A68E2381E15E00BE58F0 /* GoogleService-Info.plist */,
-				646D1D4E238C66F200374FA4 /* NutritionData.swift */,
-				64A8A67323B819B2003C259D /* CalorieTotals.swift */,
-				6497E371239738F5007AD1F9 /* CardData.swift */,
-				64C53BAE23BEC2FD00222E1D /* DataController.swift */,
+				6441BC61238B3C0B0066B5DE /* AddFoodItemController.swift */,
+				646A68E82380FEDA00AF1F5E /* CardTableViewController.swift */,
 			);
-			path = DietCards;
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		DD0174F4E0CD9B4B01C3AF2F /* Pods */ = {
@@ -266,7 +287,6 @@
 				646D1D4F238C66F200374FA4 /* NutritionData.swift in Sources */,
 				64EFB18B23AEE53B00617AA6 /* AddGroupController.swift in Sources */,
 				64C02903237E71E30052FD1D /* AppDelegate.swift in Sources */,
-				6497E372239738F5007AD1F9 /* CardData.swift in Sources */,
 				644A651D237F393700610568 /* HomeCollectionViewCell.swift in Sources */,
 				64A86AC523A5C5CA001E2877 /* LoginViewController.swift in Sources */,
 				64C53BAF23BEC2FD00222E1D /* DataController.swift in Sources */,
