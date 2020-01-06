@@ -21,3 +21,4 @@ Group Follower: Read only permission on database.
 
 
 <img src = "Images/Screen%20Shot%202020-01-05%20at%2011.33.33%20AM.png" width="100" height="200">
+<img src = "Images/Screen%20Shot%202020-01-05%20at%2011.44.07%20PM.png" width="100" height="200">
