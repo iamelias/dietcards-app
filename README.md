@@ -19,6 +19,8 @@ Group Follower: Read only permission on database.
 
 **Tools used:** **Xcode 11.3**, **iphone 11 Pro simulator**, **UIKit**, **Alamofire 5**, **Firebase-Realtime Database**, **Nutritionix API**, **Core Data** to fetch/save group name so user is automatically in their last accessed group.
 
+**Select below for larger clearer image**
+
 <p float="left">
 <img src = "Images/Screen%20Shot%202020-01-05%20at%2011.33.33%20AM.png" width="100" height="200">
 <img src = "Images/Screen%20Shot%202020-01-05%20at%2011.48.49%20AM.png" width="100" height="200">
