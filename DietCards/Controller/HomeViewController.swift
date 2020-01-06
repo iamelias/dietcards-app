@@ -25,29 +25,14 @@ class HomeViewController: UIViewController {
     var calTotalsArray:[Double] = [] //Stores total calories index = day card
     var useFirebase: Bool = false
     var currentUserUid = ""
+    var currentDay: String = ""
     var dataController: DataController?
     let ref = Database.database().reference() //For Firebase database call
-    
-    
-    enum Days: Int {
-        case Monday = 0
-        case Tuesday = 1
-        case Wednesday = 2
-        case Thursday = 3
-        case Friday = 4
-        case Saturday = 5
-        case Sunday = 6
-    }
-    
-    static let daysOfWeek: [String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    
-    var Days2:[String:Int] = ["Monday": 0, "Tuesday": 1, "Wednesday": 2, "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6]
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var homeTitleLabel: UILabel!
     @IBOutlet weak var joinGroupButton: UIButton!
     @IBOutlet weak var hideColor: UIView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +47,6 @@ class HomeViewController: UIViewController {
         homeTitleLabel.textColor = .black
         
         joinGroupButton.setTitle("Join Group", for: .normal) //default title
-        
         hideColor.isHidden = false
         hideColor.backgroundColor = .gray
         hideColor.alpha = 0.5
@@ -122,11 +106,10 @@ class HomeViewController: UIViewController {
             dateFormatter.dateFormat = "EEEE" //weekday format ex. Monday
             let weekDay = dateFormatter.string(from: Date())
             
-            collectionView.selectItem(at: [0,Days2[weekDay]!], animated: false, scrollPosition: .centeredHorizontally) //Displaying current weekday at center of view
+            collectionView.selectItem(at: [0,DaysDictionaryRev[weekDay]!], animated: false, scrollPosition: .centeredHorizontally) //Displaying current weekday at center of view
             
             firstTimeRun = false
         }
-        
         if useFirebase == true { //controlling use of firebase
             //getCalTotalsFirebase() //database recalled after updating AddGroup. Getting new nutrition
             useFirebase = false //resetting
@@ -209,15 +192,6 @@ class HomeViewController: UIViewController {
             self.calTotalsArray.append(sat)
             self.calTotalsArray.append(sun)
             
-            //                var calTotal = CalorieTotals() //**** Check if necessary
-            //                calTotal.Monday = mon
-            //                calTotal.Tuesday = tue
-            //                calTotal.Wednesday = wed
-            //                calTotal.Thursday = thu
-            //                calTotal.Friday = fri
-            //                calTotal.Saturday = sat
-            //                calTotal.Sunday = sun
-            
             self.gotCalTotals = true
             
             DispatchQueue.main.async {
@@ -271,17 +245,16 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     //MARK: CELL DEFINITION
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let data = HomeViewController.daysOfWeek
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
         
         if gotCalTotals == false { //0.0 calorie label if nutrition not called
-            cell.configureCell(data[indexPath.row], 0.0)
+            cell.configureCell(DaysDictionary[indexPath.row]!, 0.0)
             gotCalTotals = false //resetting to false for next call
             return cell
         }
             
         else if gotCalTotals == true { //change cell calorie label to nutrition value
-            cell.configureCell(data[indexPath.row], calTotalsArray[indexPath.row])
+            cell.configureCell(DaysDictionary[indexPath.row]!, calTotalsArray[indexPath.row])
             if indexPath.row == 6 {
                 gotCalTotals = true
             }
