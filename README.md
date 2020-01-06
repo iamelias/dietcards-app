@@ -1,7 +1,7 @@
 # DietCardsApp, iOS Developer: Elias Hall
 
 **Run Instructions:** 
-Xcode 11.3, DietCards.xcworkspace, iphone pro 11, lightMode, portrait only, user needs username and password at login screen.
+Xcode 11.3, DietCards.xcworkspace, iPhone 11 Pro, lightMode, portrait only, user needs username and password at login screen.
 
 **Overview:** 
 Overview: This is a diet calorie sharing app. Users can see/follow another’s daily consumed foods.
