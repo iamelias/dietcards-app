@@ -148,6 +148,8 @@ class AddGroupController: UIViewController {
     @objc func acBackgroundTapped()
     {
         self.dismiss(animated: true, completion: nil) //dismissing alert at background tap
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
     }
     
     func checkDatabaseCreate(_ getGroupName: String,completion: @escaping (_ group: Bool) -> Void){ //checking database for createGroup
