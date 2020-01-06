@@ -1,7 +1,7 @@
-# DietCardsApp, iOS Developer: Elias Hall
+# DietCardsApp, iOS Developer: Elias H.
 
-**Run Instructions:** 
-Xcode 11.3, DietCards.xcworkspace, iPhone 11 Pro, lightMode, portrait only, user needs username and password at login screen.
+**Run instructions:** 
+Xcode 11.3, DietCards.xcworkspace, iPhone 11 Pro, light mode, portrait only, user needs username and password at login screen.
 
 **Overview:** 
 Overview: This is a diet calorie sharing app. Users can see/follow another’s daily consumed foods.
@@ -13,7 +13,7 @@ User is now part of group or group creator so now user has access to cards. They
 If they are not the creator they can only view. If they are creator they can tap on add button to add food item. User inputs name of food item they want to search using Nutritionix api. When they have downloaded the calorie information using alamofire in FoodClient. They are returned to table view.
 Group creator has ability to delete food item by swipe if user wants to. This removes food item from user database.
 
-**User Permissions:**
+**User permissions:**
 Group Creator: Read and Write Permission on database
 Group Follower: Read only permission on database.
 
