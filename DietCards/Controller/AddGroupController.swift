@@ -58,8 +58,7 @@ class AddGroupController: UIViewController {
         passCreateObj.pMessage1 = "This group name has already been taken"
         passCreateObj.bool1 = true
         passCreateObj.bool2 = false
-        promptForCreate3(passCreateObj)
-//        promptForCreate() //create alert function
+        prompt(passCreateObj)
     }
     
     
@@ -74,15 +73,10 @@ class AddGroupController: UIViewController {
         passJoinObj.bool2 = true
         self.activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        promptForCreate3(passJoinObj)
-//        promptForJoin() //join alert function
+        prompt(passJoinObj)
     }
-    
-    func Define() {
-        
-    }
-    
-    func promptForCreate3(_ passObject: PromptObject) {
+
+    func prompt(_ passObject: PromptObject) {
         let ac = UIAlertController(title: passObject.title, message: passObject.message, preferredStyle: .alert)
         ac.addTextField() //user inputs name of group
         
@@ -225,7 +219,7 @@ class AddGroupController: UIViewController {
     
     func presentAlert(_ groupName: String,_ passMessage: String) { //present alert group name is taken
         //
-        //        let alert = UIAlertController(title: "Error: \(groupName)", message: "This group name has already been taken", preferredStyle: .alert)
+ 
         let alert = UIAlertController(title: "Error: \(groupName)", message: passMessage, preferredStyle: .alert)
         
         let ok = UIAlertAction(title: "Back", style: .default, handler: nil)
@@ -236,14 +230,9 @@ class AddGroupController: UIViewController {
         
         activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
-        
     }
         
     func addToFirebase(_ groupName: String,_ gotUid: String) { //adds a reserve placeholder in database
-        
-//        guard currentUserUid == uid else {
-//            return
-//        }
         
         let ref = Database.database().reference()
         ref.child("\(groupName)/\(gotUid)/\(groupName)").setValue("reserved") //making a placeholder
