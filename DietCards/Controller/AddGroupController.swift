@@ -66,7 +66,7 @@ class AddGroupController: UIViewController {
         usrPerm = "follower"
         var passJoinObj = PromptObject()
         passJoinObj.title = "Join Group"
-        passJoinObj.message = "Enter group leader's username"
+        passJoinObj.message = "Enter group name"
         passJoinObj.submitTitle = "Join"
         passJoinObj.pMessage1 = "This group doesn't exist"
         passJoinObj.bool1 = false
