@@ -51,23 +51,42 @@ class AddGroupController: UIViewController {
         usrPerm = "leader"
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        promptForCreate() //create alert function
+        var passCreateObj = PromptObject()
+        passCreateObj.title = "Create Group"
+        passCreateObj.message =  "Pick a unique group name (use characters 0-9,a-z only). Note: Group name is reserved only after adding at least 1 food entry"
+        passCreateObj.submitTitle = "Add"
+        passCreateObj.pMessage1 = "This group name has already been taken"
+        passCreateObj.bool1 = true
+        passCreateObj.bool2 = false
+        promptForCreate3(passCreateObj)
+//        promptForCreate() //create alert function
     }
     
     
     @IBAction func joinGroupTapped(_ sender: Any) { //when join button is tapped
         usrPerm = "follower"
+        var passJoinObj = PromptObject()
+        passJoinObj.title = "Join Group"
+        passJoinObj.message = "Enter group leader's username"
+        passJoinObj.submitTitle = "Join"
+        passJoinObj.pMessage1 = "This group doesn't exist"
+        passJoinObj.bool1 = false
+        passJoinObj.bool2 = true
         self.activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        promptForJoin() //join alert function
+        promptForCreate3(passJoinObj)
+//        promptForJoin() //join alert function
     }
     
+    func Define() {
+        
+    }
     
-    func promptForCreate() { //alert to create database group
-        let ac = UIAlertController(title: "Create Group", message: "Pick a unique group name (use characters 0-9,a-z only). Note: Group name is reserved only after adding at least 1 food entry", preferredStyle: .alert)
+    func promptForCreate3(_ passObject: PromptObject) {
+        let ac = UIAlertController(title: passObject.title, message: passObject.message, preferredStyle: .alert)
         ac.addTextField() //user inputs name of group
         
-        let submitAction = UIAlertAction(title: "Add", style: .default) { [unowned ac] _ in
+        let submitAction = UIAlertAction(title: passObject.submitTitle, style: .default) { [unowned ac] _ in
             let answer = ac.textFields![0]
             
             self.getGroupName = answer.text ?? "Join Group" //checking if entered name exists already
@@ -82,24 +101,15 @@ class AddGroupController: UIViewController {
                 self.presentAlert(self.getGroupName, passMessage) //alert to rechoose name
                 return
             }
-            self.checkDatabase(self.getGroupName, completion: { group in
-
-                if group == true { //if group name does exist
-                    let passMessage = "This group name has already been taken"
-                    self.presentAlert(self.getGroupName, passMessage) //alert to say it already exists
-                    return
-                }
-                    
-                else if group == false { //if doesn't already exist...
-                    self.notify() //notify to rerun viewDidAppear
-                    //delegate will pass back group name and permission type for firebase in HomeVC
-                    self.activityIndicator.stopAnimating()
-                    self.activityIndicator.isHidden = true
-                    self.dismiss(animated: true) //auto dismiss back to HomeVC
-                }
-            })
+     
+            if passObject.submitTitle == "Add" {
+                self.presentInfoCreate(passObject)
+            }
+            else if passObject.submitTitle == "Join" {
+                self.presentInfoJoin(passObject)
+            }
         }
-        
+    
         ac.addAction(submitAction) // adding above action
         
         present(ac, animated: true, completion:{ //setting up tap gesture recognizer
@@ -107,59 +117,46 @@ class AddGroupController: UIViewController {
             ac.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.acBackgroundTapped)))} )
     }
     
+    func presentInfoCreate(_ passObject: PromptObject ) {
+        self.checkDatabaseCreate(self.getGroupName, completion: { group in
+        if group == passObject.bool1 { //if group name does exist
+            let passMessage = passObject.pMessage1
+            self.presentAlert(self.getGroupName, passMessage) //alert to say it already exists
+            return
+        }
+        else if group == passObject.bool2 { //if doesn't already exist...
+            self.notify() //notify to rerun viewDidAppear
+            //delegate will pass back group name and permission type for firebase in HomeVC
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
+            self.dismiss(animated: true) //auto dismiss back to HomeVC
+        }
+         })
+    }
+    
+    func presentInfoJoin(_ passObject: PromptObject ) {
+        self.checkDatabaseJoin(self.getGroupName, completion: { group in
+        if group == passObject.bool1 { //if group name does exist
+            let passMessage = passObject.pMessage1
+            self.presentAlert(self.getGroupName, passMessage) //alert to say it already exists
+            return
+        }
+        else if group == passObject.bool2 { //if doesn't already exist...
+            self.notify() //notify to rerun viewDidAppear
+            //delegate will pass back group name and permission type for firebase in HomeVC
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
+            self.dismiss(animated: true) //auto dismiss back to HomeVC
+        }
+         })
+    }
+    
     @objc func acBackgroundTapped()
     {
         self.dismiss(animated: true, completion: nil) //dismissing alert at background tap
     }
     
-    func promptForJoin() { //alert to join database group
-        let ac = UIAlertController(title: "Join Group", message: "Enter group leader's username", preferredStyle: .alert)
-        ac.addTextField()
-        
-        let submitAction = UIAlertAction(title: "Join", style: .default) { [unowned ac] _ in
-            let answer = ac.textFields![0]
-            
-            self.getGroupName = answer.text ?? "Join Group" //getting user input text
-            if self.getGroupName == "" { //empty string will be reassigned to Join Group
-                self.getGroupName = "Join Group"
-            }
-            
-            guard self.getGroupName != "Join Group" else {// if Join Group
-                //self.notify()
-                //self.dismiss(animated: true)
-                let passMessage = "Choose different group name"
-                
-                self.presentAlert(self.getGroupName, passMessage)
-                return
-            }
-            
-            self.checkDatabase2(self.getGroupName, completion: { group in
-                //checking if groupName is in database
-                
-                if group == false { //if it isn't in group
-                    let passMessage: String = "This group doesn't exist"
-                    self.presentAlert(self.getGroupName, passMessage) //present alert saying not in group
-                    return
-                }
-                    
-                else if group == true { //if it is in group
-                    self.notify() //notify to run viewDidAppear  in HomeVC
-                    self.activityIndicator.stopAnimating()
-                    self.activityIndicator.isHidden = true
-                    self.dismiss(animated: true) //dismiss this view controller back to HomeVC
-                }
-            })
-            
-        }
-        
-        ac.addAction(submitAction)
-        
-        present(ac, animated: true, completion:{ //setting up tap gesture recognizer
-            ac.view.superview?.isUserInteractionEnabled = true
-            ac.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.acBackgroundTapped)))})
-    }
-    
-    func checkDatabase(_ getGroupName: String,completion: @escaping (_ group: Bool) -> Void){ //checking database for createGroup
+    func checkDatabaseCreate(_ getGroupName: String,completion: @escaping (_ group: Bool) -> Void){ //checking database for createGroup
         let ref = Database.database().reference()
         
         var taken = false //group name is default not taken
@@ -181,17 +178,16 @@ class AddGroupController: UIViewController {
                self.activityIndicator.isHidden = true
                 taken = false
                 completion(taken) //exist closure with false for group name is not taken
+                
+                
             }
         })
     }
     
-    func checkDatabase2(_ getGroupName: String,completion: @escaping (_ group: Bool) -> Void){
+    func checkDatabaseJoin(_ getGroupName: String,completion: @escaping (_ group: Bool) -> Void){
         let ref = Database.database().reference()
         
         var taken = true
-        
-        
-        
         ref.child("\(getGroupName.self)").observeSingleEvent(of: .value, with: { (snapshot) in
             if !snapshot.exists() { //if group doesn't exist
                 print("Group doesn't exist")
