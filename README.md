@@ -17,6 +17,6 @@ Group creator has ability to delete food item by swipe if user wants to. This re
 Group Creator: Read and Write Permission on database
 Group Follower: Read only permission on database.
 
-**Tools used:** xcode 11.3, iphone 11 pro simulator, Alamofire 5, Firebase Realtime Database, Nutritionix api, core data to fetch/save group name so user is automatically in their last accessed group.
+**Tools used:** **xcode 11.3**, **iphone 11 pro simulator**, **Alamofire 5**, **Firebase Realtime Database**, **Nutritionix api**, **core data** to fetch/save group name so user is automatically in their last accessed group.
 
 
