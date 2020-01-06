@@ -53,7 +53,7 @@ class AddGroupController: UIViewController {
         activityIndicator.startAnimating()
         var passCreateObj = PromptObject()
         passCreateObj.title = "Create Group"
-        passCreateObj.message =  "Pick a unique group name (use characters 0-9,a-z only). Note: Group name is reserved only after adding at least 1 food entry"
+        passCreateObj.message =  "Pick a unique group name (use characters 0-9,A-Z,a-z only)."
         passCreateObj.submitTitle = "Add"
         passCreateObj.pMessage1 = "This group name has already been taken"
         passCreateObj.bool1 = true
@@ -75,7 +75,7 @@ class AddGroupController: UIViewController {
         activityIndicator.startAnimating()
         prompt(passJoinObj)
     }
-
+    
     func prompt(_ passObject: PromptObject) {
         let ac = UIAlertController(title: passObject.title, message: passObject.message, preferredStyle: .alert)
         ac.addTextField() //user inputs name of group
@@ -95,7 +95,7 @@ class AddGroupController: UIViewController {
                 self.presentAlert(self.getGroupName, passMessage) //alert to rechoose name
                 return
             }
-     
+            
             if passObject.submitTitle == "Add" {
                 self.presentInfoCreate(passObject)
             }
@@ -103,7 +103,7 @@ class AddGroupController: UIViewController {
                 self.presentInfoJoin(passObject)
             }
         }
-    
+        
         ac.addAction(submitAction) // adding above action
         
         present(ac, animated: true, completion:{ //setting up tap gesture recognizer
@@ -113,36 +113,36 @@ class AddGroupController: UIViewController {
     
     func presentInfoCreate(_ passObject: PromptObject ) {
         self.checkDatabaseCreate(self.getGroupName, completion: { group in
-        if group == passObject.bool1 { //if group name does exist
-            let passMessage = passObject.pMessage1
-            self.presentAlert(self.getGroupName, passMessage) //alert to say it already exists
-            return
-        }
-        else if group == passObject.bool2 { //if doesn't already exist...
-            self.notify() //notify to rerun viewDidAppear
-            //delegate will pass back group name and permission type for firebase in HomeVC
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-            self.dismiss(animated: true) //auto dismiss back to HomeVC
-        }
-         })
+            if group == passObject.bool1 { //if group name does exist
+                let passMessage = passObject.pMessage1
+                self.presentAlert(self.getGroupName, passMessage) //alert to say it already exists
+                return
+            }
+            else if group == passObject.bool2 { //if doesn't already exist...
+                self.notify() //notify to rerun viewDidAppear
+                //delegate will pass back group name and permission type for firebase in HomeVC
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.isHidden = true
+                self.dismiss(animated: true) //auto dismiss back to HomeVC
+            }
+        })
     }
     
     func presentInfoJoin(_ passObject: PromptObject ) {
         self.checkDatabaseJoin(self.getGroupName, completion: { group in
-        if group == passObject.bool1 { //if group name does exist
-            let passMessage = passObject.pMessage1
-            self.presentAlert(self.getGroupName, passMessage) //alert to say it already exists
-            return
-        }
-        else if group == passObject.bool2 { //if doesn't already exist...
-            self.notify() //notify to rerun viewDidAppear
-            //delegate will pass back group name and permission type for firebase in HomeVC
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-            self.dismiss(animated: true) //auto dismiss back to HomeVC
-        }
-         })
+            if group == passObject.bool1 { //if group name does exist
+                let passMessage = passObject.pMessage1
+                self.presentAlert(self.getGroupName, passMessage) //alert to say it already exists
+                return
+            }
+            else if group == passObject.bool2 { //if doesn't already exist...
+                self.notify() //notify to rerun viewDidAppear
+                //delegate will pass back group name and permission type for firebase in HomeVC
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.isHidden = true
+                self.dismiss(animated: true) //auto dismiss back to HomeVC
+            }
+        })
     }
     
     @objc func acBackgroundTapped()
@@ -168,8 +168,8 @@ class AddGroupController: UIViewController {
                 
                 //MARK: ADD FIREBASE POSTING FUNCTIONALITY
                 self.addToFirebase(self.getGroupName, gotUid) //adding new group name to database
-               self.activityIndicator.stopAnimating()
-               self.activityIndicator.isHidden = true
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.isHidden = true
                 taken = false
                 completion(taken) //exist closure with false for group name is not taken
                 
@@ -219,7 +219,7 @@ class AddGroupController: UIViewController {
     
     func presentAlert(_ groupName: String,_ passMessage: String) { //present alert group name is taken
         //
- 
+        
         let alert = UIAlertController(title: "Error: \(groupName)", message: passMessage, preferredStyle: .alert)
         
         let ok = UIAlertAction(title: "Back", style: .default, handler: nil)
@@ -231,12 +231,12 @@ class AddGroupController: UIViewController {
         activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
     }
-        
+    
     func addToFirebase(_ groupName: String,_ gotUid: String) { //adds a reserve placeholder in database
         
-//        guard currentUserUid == uid else {
-//            return
-//        }
+        //        guard currentUserUid == uid else {
+        //            return
+        //        }
         
         let ref = Database.database().reference()
         ref.child("\(groupName)/\(gotUid)/\(groupName)").setValue("reserved") //making a placeholder
