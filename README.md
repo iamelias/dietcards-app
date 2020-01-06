@@ -19,6 +19,15 @@ Group Follower: Read only permission on database.
 
 **Tools used:** **xcode 11.3**, **iphone 11 pro simulator**, **Alamofire 5**, **Firebase Realtime Database**, **Nutritionix api**, **core data** to fetch/save group name so user is automatically in their last accessed group.
 
-
+<p float="left">
 <img src = "Images/Screen%20Shot%202020-01-05%20at%2011.33.33%20AM.png" width="100" height="200">
 <img src = "Images/Screen%20Shot%202020-01-05%20at%2011.44.07%20PM.png" width="100" height="200">
+<img src = "Images/Screen%20Shot%202020-01-05%20at%2011.48.01%20AM.png" width="100" height="200">
+<img src = "Images/Screen%20Shot%202020-01-05%20at%2011.48.49%20AM.png" width="100" height="200">
+<img src = "Images/Screen%20Shot%202020-01-05%20at%2011.49.12%20AM.png" width="100" height="200">
+<img src = "Images/Screen%20Shot%202020-01-05%20at%2011.52.19%20AM.png" width="100" height="200">
+<img src = "Images/Screen%20Shot%202020-01-05%20at%206.34.31%20PM.png" width="100" height="200">
+<img src = "Images/Screen%20Shot%202020-01-05%20at%206.34.48%20PM.png" width="100" height="200">
+<img src = "Images/Screen%20Shot%202020-01-05%20at%206.35.35%20PM.png" width="100" height="200">
+<img src = "Images/Screen%20Shot%202020-01-05%20at%206.35.40%20PM.png" width="100" height="200">
+</p>
