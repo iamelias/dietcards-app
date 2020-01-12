@@ -1,19 +1,19 @@
 # DietCardsApp, iOS Developer: Elias H.
 
 **Run instructions:** 
-Xcode 11.3, DietCards.xcworkspace, iPhone 11 Pro, light mode, portrait only, user needs username and password at login screen.
+Xcode 11.3, iOS Deployment Target: 12.4, DietCards.xcworkspace, iPhone 11 Pro, light mode, portrait only, user needs username and password at login screen.
 
 **Overview:** 
-Overview: This is a diet calorie sharing app. Users can see/follow another’s daily consumed foods.
+This is a diet calorie sharing app. Users can see/follow another’s daily consumed foods.
 
 **Walkthrough:**
-User logs in if not in any group they tap the join group yellow button, which takes them to AddGroupController. If this is there second try They will have fetched group name from core data automatically. 
-User decides if he once to create his own group or join anothers group. He taps one of the buttons and enters name of group he wants to create or join. User is dismissed back to HomeViewController if successful
-User is now part of group or group creator so now user has access to cards. They can tap on day of the week to see/add nutrition on that day.
-If they are not the creator they can only view. If they are creator they can tap on add button to add food item. User inputs name of food item they want to search using Nutritionix api. When they have downloaded the calorie information using alamofire in FoodClient. They are returned to table view.
-Group creator has ability to delete food item by swipe if user wants to. This removes food item from user database.
+User logs in. If they are not in any group, they will tap the "Join Group" yellow button which will take them to AddGroupController. In AddGroupController, user taps the Create or Join group button and enters name of group they want to create or join. If succesful in creating/joining group, the user is dismissed back to HomeViewController. Note: If data is persisted, they will have fetched the group name from core data automatically.
+User is now part of a group as a member or creator. User now has access to cards(CardTableViewController). They can tap on a card, to see or add food items for that day.
+If they are not the creator they can only view CardTableViewController. If they are the creator they can tap on the add button to access AddFoodItemController to add a food item to table and database. In the AddFoodItemController, the user inputs the name of the food item they want to add, which searches for the food item using the Nutritionix API. After adding the food item, they are returned to the food table view(CardTableViewController).
+In the CardTableViewController, only the group creator has the ability to delete a food item by swipe, if the creator wants to. This removes food item from user database.
 
 **User permissions:**
+Login Required
 Group Creator: Read and Write Permission on database
 Group Follower: Read only permission on database.
 
