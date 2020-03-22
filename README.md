@@ -22,6 +22,7 @@ Group Follower: Read only permission on database.
 **Select below for larger clearer image**
 
 <p float="left">
+ <img src = "Images/ScreenShot1" width="100" height="200">
 <img src = "Images/Screen%20Shot%202020-01-05%20at%2011.33.33%20AM.png" width="100" height="200">
 <img src = "Images/Screen%20Shot%202020-01-05%20at%2011.48.49%20AM.png" width="100" height="200">
 <img src = "Images/Screen%20Shot%202020-01-05%20at%2011.48.01%20AM.png" width="100" height="200">
