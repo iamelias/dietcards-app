@@ -22,7 +22,7 @@ class FoodClient {
         let headers: HTTPHeaders = [
             "Content-Type": "application/x-www-form-urlencoded",
             "x-app-id": "257ebe77",
-            "x-app-key": "bcce7c3f3c60be3c944af99a977197de",
+            "x-app-key": "GET_API_KEY_FROM_NUTRITIONIX",
             "x-remote-user-id": "0"
         ]
         
